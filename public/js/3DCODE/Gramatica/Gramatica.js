@@ -72,12 +72,12 @@
   }
 */
 var Gramatica = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,6],$V1=[1,7],$V2=[1,11],$V3=[1,10];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,6],$V1=[1,7],$V2=[1,7,11],$V3=[1,13],$V4=[1,15],$V5=[1,12],$V6=[1,14];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"inicio":3,"instrucciones":4,"instruccion":5,"asignacion":6,"MAS":7,"COMA":8,"e":9,"TEMPORAL":10,"ENTERO":11,"$accept":0,"$end":1},
-terminals_: {2:"error",7:"MAS",8:"COMA",10:"TEMPORAL",11:"ENTERO"},
-productions_: [0,[3,1],[3,1],[4,2],[4,1],[5,1],[6,7],[9,1],[9,1]],
+symbols_: {"error":2,"inicio":3,"instrucciones":4,"instruccion":5,"asignacion":6,"MAS":7,"COMA":8,"e":9,"TEMPORAL":10,"IGUAL":11,"HEAP":12,"H":13,"ENTERO":14,"DECIMAL":15,"$accept":0,"$end":1},
+terminals_: {2:"error",7:"MAS",8:"COMA",10:"TEMPORAL",11:"IGUAL",12:"HEAP",13:"H",14:"ENTERO",15:"DECIMAL"},
+productions_: [0,[3,1],[3,1],[4,2],[4,1],[5,1],[6,7],[6,7],[6,7],[9,1],[9,1],[9,1],[9,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -102,15 +102,27 @@ case 6:
 this.$ = new Asignacion($$[$0-4],$$[$0-2],"suma",$$[$0]);
 break;
 case 7:
-this.$ = {tipo : "int", valor: $$[$0]};
+this.$ = new Asignacion($$[$0-4],$$[$0-2],"asignarheap",$$[$0]);
 break;
 case 8:
-this.$ = {tipo : "temporal", valor: $$[$0]};
+this.$ = new Asignacion($$[$0-4],$$[$0-2],"aumentarheap",$$[$0]);
+break;
+case 9:
+this.$ = {tipo : "int", valor: $$[$0], linea: _$[$0].first_line, columna: _$[$0].first_column};
+break;
+case 10:
+this.$ = {tipo : "temporal", valor: $$[$0], linea: _$[$0].first_line, columna: _$[$0].first_column};
+break;
+case 11:
+this.$ = {tipo: "double", valor:  $$[$0], linea: _$[$0].first_line, columna: _$[$0].first_column};
+break;
+case 12:
+this.$ = {tipo: "posHeap", valor:  $$[$0], linea: _$[$0].first_line, columna: _$[$0].first_column};
 break;
 }
 },
-table: [{2:[1,3],3:1,4:2,5:4,6:5,7:$V0},{1:[3]},{1:[2,1],5:7,6:5,7:$V0},{1:[2,2]},o($V1,[2,4]),o($V1,[2,5]),{8:[1,8]},o($V1,[2,3]),{9:9,10:$V2,11:$V3},{8:[1,12]},{8:[2,7]},{8:[2,8]},{9:13,10:$V2,11:$V3},{8:[1,14]},{10:[1,15]},o($V1,[2,6])],
-defaultActions: {3:[2,2],10:[2,7],11:[2,8]},
+table: [{2:[1,3],3:1,4:2,5:4,6:5,7:$V0,11:$V1},{1:[3]},{1:[2,1],5:8,6:5,7:$V0,11:$V1},{1:[2,2]},o($V2,[2,4]),o($V2,[2,5]),{8:[1,9]},{8:[1,10]},o($V2,[2,3]),{9:11,10:$V3,13:$V4,14:$V5,15:$V6},{9:16,10:$V3,13:$V4,14:$V5,15:$V6},{8:[1,17]},{8:[2,9]},{8:[2,10]},{8:[2,11]},{8:[2,12]},{8:[1,18]},{9:19,10:$V3,13:$V4,14:$V5,15:$V6},{9:20,10:$V3,13:$V4,14:$V5,15:$V6},{8:[1,21]},{8:[1,22]},{10:[1,23],13:[1,24]},{12:[1,25]},o($V2,[2,6]),o($V2,[2,8]),o($V2,[2,7])],
+defaultActions: {3:[2,2],12:[2,9],13:[2,10],14:[2,11],15:[2,12]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -692,24 +704,36 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:
 break;
-case 1:return 11
+case 1:
 break;
-case 2:return 7
+case 2:
 break;
-case 3:return 8
+case 3:return 15
 break;
-case 4:return 10
+case 4:return 14
 break;
-case 5:return 'ETIQUETA'
+case 5:return 7
 break;
-case 6:
+case 6:return "IGUAL"
 break;
-case 7: console.error('Este es un error léxico: ' + yy_.yytext + ', en la linea: ' + yy_.yylloc.first_line + ', en la columna: ' + yy_.yylloc.first_column); 
+case 7:return 8
+break;
+case 8:return 12
+break;
+case 9:return 13
+break;
+case 10:return 10
+break;
+case 11:return 'ETIQUETA'
+break;
+case 12:
+break;
+case 13: console.error('Este es un error léxico: ' + yy_.yytext + ', en la linea: ' + yy_.yylloc.first_line + ', en la columna: ' + yy_.yylloc.first_column); 
 break;
 }
 },
-rules: [/^(?:[ \r\t\n]+)/i,/^(?:[0-9]+)/i,/^(?:\+)/i,/^(?:,)/i,/^(?:T[0-9]+)/i,/^(?:L[0-9]+)/i,/^(?:$)/i,/^(?:.)/i],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7],"inclusive":true}}
+rules: [/^(?:[ \r\t\n]+)/i,/^(?:\/\/.([^\n])*)/i,/^(?:\/\*(.?\n?)*\*\/)/i,/^(?:[0-9]+(\.[0-9]+))/i,/^(?:[0-9]+)/i,/^(?:\+)/i,/^(?:=)/i,/^(?:,)/i,/^(?:HEAP\b)/i,/^(?:H\b)/i,/^(?:T[0-9]+)/i,/^(?:L[0-9]+)/i,/^(?:$)/i,/^(?:.)/i],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13],"inclusive":true}}
 });
 return lexer;
 })();
