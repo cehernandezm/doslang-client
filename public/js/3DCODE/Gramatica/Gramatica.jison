@@ -9,10 +9,23 @@
 [0-9]+("."[0-9]+)                           return 'DECIMAL'
 [0-9]+                                      return 'ENTERO'
 "+"                                         return 'MAS'
+"-"                                         return 'MENOS'
+"*"                                         return 'POR'
+"/"                                         return 'DIVIDIR'
+"%"                                         return 'MODULO'
+"^"                                         return 'POTENCIA'
 "="                                         return "IGUAL"
 ","                                         return 'COMA'
+":"                                         return 'DSPUNTOS'
 "HEAP"                                      return 'HEAP'
 "H"                                         return 'H'
+"Jmp"                                       return 'JMP'
+"Je"                                        return 'JE'
+"Jne"                                       return 'JNE'
+"Jg"                                        return 'JG'
+"Jl"                                        return "JL"
+"Jge"                                       return "JGE"
+"Jle"                                       return "JLE"
 "T"[0-9]+                                   return 'TEMPORAL'
 "L"[0-9]+                                   return 'ETIQUETA'
 
@@ -26,34 +39,68 @@
 /*
 * ANALISIS SINTACTICO
 */
-inicio: instrucciones                                {parser.arbol.raiz = $1}
+inicio: instrucciones                                {parser.arbol.raiz = $1; parser.linea = 0;}
       | error                                        { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
       ;
 
 
-instrucciones : instrucciones instruccion            {$$ = $1; $$.push($2);}
-              | instruccion                          {$$ = []; $$.push($1);}
+instrucciones : instrucciones instruccion            {$$ = $1; $$.push($2); parser.linea++;}
+              | instruccion                          {$$ = []; $$.push($1); parser.linea++;}
               ;
 
 
-instruccion : asignacion                             {$$ = $1}
+instruccion : asignacion                             {$$ = $1;}
+            | etiqueta                               {$$ = $1;}
+            | incondicional                          {$$ = $1;}
+            | condicional                            {$$ = $1;}
             ;
 
-asignacion : MAS COMA e COMA e COMA TEMPORAL          {$$ = new Asignacion($3,$5,"suma",$7);}
-           | IGUAL COMA e COMA e COMA HEAP            {$$ = new Asignacion($3,$5,"asignarheap",$7);}
-           | MAS COMA e COMA e COMA H              {$$ = new Asignacion($3,$5,"aumentarheap",$7);}
+asignacion : operacion COMA e COMA e COMA TEMPORAL          {$$ = new Asignacion($3,$5,$1,$7);}
+           | IGUAL COMA e COMA e COMA HEAP                  {$$ = new Asignacion($3,$5,"asignarheap",$7);}
+           | operacion COMA e COMA e COMA H                 {$$ = new Asignacion($3,$5,$1,"h");}
            ;
 
 
 
 
-e : ENTERO                                   {$$ = {tipo : "int", valor: $1, linea: @1.first_line, columna: @1.first_column};}
-  | TEMPORAL                                 {$$ = {tipo : "temporal", valor: $1, linea: @1.first_line, columna: @1.first_column};}
-  | DECIMAL                                  {$$ = {tipo: "double", valor:  $1, linea: @1.first_line, columna: @1.first_column};}
-  | H                                        {$$ = {tipo: "posHeap", valor:  $1, linea: @1.first_line, columna: @1.first_column};} 
+operacion : MAS                                             {$$ = "suma";}
+          | MENOS                                           {$$ = "resta";}
+          | POR                                             {$$ = "multiplicacion";}
+          | DIVIDIR                                         {$$ = "division";}
+          | MODULO                                          {$$ = "modulo";}
+          | POTENCIA                                        {$$ = "potencia";}
+          ;
+
+e : ENTERO                                   {$$ = new Valor({tipo : "int", valor: $1, linea: @1.first_line, columna: @1.first_column});}
+  | TEMPORAL                                 {$$ = new Valor({tipo : "temporal", valor: $1, linea: @1.first_line, columna: @1.first_column});}
+  | DECIMAL                                  {$$ = new Valor({tipo: "double", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
+  | H                                        {$$ = new Valor({tipo: "posHeap", valor:  $1, linea: @1.first_line, columna: @1.first_column});} 
   ;
+
+
+
+etiqueta : ETIQUETA DSPUNTOS                 {$$ = new Etiqueta($1,@1.first_line,@1.first_column,parser.linea);}
+         ;
+
+
+incondicional : JMP COMA COMA COMA ETIQUETA     { $$ = new Incondicional(parser.linea,@1.first_line,@1.first_column, $5);}
+              ;
+
+condicional : operador COMA e COMA e COMA ETIQUETA       {$$ = new Condicional(parser.linea,@1.first_line,@1.first_column,$1,$3,$5,$7);}
+            ;
+
+operador : JE                   {$$ = "=="}
+         | JNE                  {$$ = "!="}
+         | JG                   {$$ = ">"}
+         | JL                   {$$ = "<"}
+         | JGE                  {$$ = ">="}
+         | JLE                  {$$ = "<="}
+         ;
+
 %%
 
 parser.arbol = {
     raiz: null
 };
+
+parser.linea = 0;
