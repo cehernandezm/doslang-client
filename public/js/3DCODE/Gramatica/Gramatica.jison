@@ -18,7 +18,9 @@
 ","                                         return 'COMA'
 ":"                                         return 'DSPUNTOS'
 "HEAP"                                      return 'HEAP'
+"STACK"                                     return 'STACK'
 "H"                                         return 'H'
+"P"                                         return 'P'
 "Jmp"                                       return 'JMP'
 "Je"                                        return 'JE'
 "Jne"                                       return 'JNE'
@@ -55,12 +57,17 @@ instruccion : asignacion                             {$$ = $1;}
             | condicional                            {$$ = $1;}
             ;
 
-asignacion : operacion COMA e COMA e COMA TEMPORAL          {$$ = new Asignacion($3,$5,$1,$7);}
-           | IGUAL COMA e COMA e COMA HEAP                  {$$ = new Asignacion($3,$5,"asignarheap",$7);}
-           | operacion COMA e COMA e COMA H                 {$$ = new Asignacion($3,$5,$1,"h");}
+asignacion : operacion COMA e COMA e2 COMA TEMPORAL          {$$ = new Asignacion($3,$5,$1,$7,@1.first_line,@1.first_column,parser.linea);} // T = e op e
+           | operacion COMA e COMA e2 COMA estructura        {$$ = new Asignacion($3,$5,$1,$7,@1.first_line,@1.first_column,parser.linea);} // H|S [e] = e;
+           | operacion COMA e COMA e2 COMA H                 {$$ = new Asignacion($3,$5,$1,"h",@1.first_line,@1.first_column,parser.linea);}// H = H op e
+           | operacion COMA e COMA e2 COMA P                 {$$ = new Asignacion($3,$5,$1,"p",@1.first_line,@1.first_column,parser.linea);}// P = P op e
+           | operacion COMA e COMA  COMA TEMPORAL            {$$ = new Asignacion($3,null,$1,$6,@1.first_line,@1.first_column,parser.linea);}// T = e
            ;
 
 
+estructura : HEAP                                           {$$ = "heap";}
+           | STACK                                          {$$ = "stack";}
+           ;
 
 
 operacion : MAS                                             {$$ = "suma";}
@@ -69,14 +76,23 @@ operacion : MAS                                             {$$ = "suma";}
           | DIVIDIR                                         {$$ = "division";}
           | MODULO                                          {$$ = "modulo";}
           | POTENCIA                                        {$$ = "potencia";}
+          | IGUAL                                           {$$ = "igual";}
           ;
 
 e : ENTERO                                   {$$ = new Valor({tipo : "int", valor: $1, linea: @1.first_line, columna: @1.first_column});}
   | TEMPORAL                                 {$$ = new Valor({tipo : "temporal", valor: $1, linea: @1.first_line, columna: @1.first_column});}
   | DECIMAL                                  {$$ = new Valor({tipo: "double", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
-  | H                                        {$$ = new Valor({tipo: "posHeap", valor:  $1, linea: @1.first_line, columna: @1.first_column});} 
+  | H                                        {$$ = new Valor({tipo: "h", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
+  | P                                        {$$ = new Valor({tipo: "p", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
+  | estructura                               {$$ = new Valor({tipo: $1, valor:  $1, linea: @1.first_line, columna: @1.first_column});}
   ;
 
+e2 : ENTERO                                   {$$ = new Valor({tipo : "int", valor: $1, linea: @1.first_line, columna: @1.first_column});}
+   | TEMPORAL                                 {$$ = new Valor({tipo : "temporal", valor: $1, linea: @1.first_line, columna: @1.first_column});}
+   | DECIMAL                                  {$$ = new Valor({tipo: "double", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
+   | H                                        {$$ = new Valor({tipo: "h", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
+   | P                                        {$$ = new Valor({tipo: "p", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
+   ;
 
 
 etiqueta : ETIQUETA DSPUNTOS                 {$$ = new Etiqueta($1,@1.first_line,@1.first_column,parser.linea);}
@@ -86,7 +102,7 @@ etiqueta : ETIQUETA DSPUNTOS                 {$$ = new Etiqueta($1,@1.first_line
 incondicional : JMP COMA COMA COMA ETIQUETA     { $$ = new Incondicional(parser.linea,@1.first_line,@1.first_column, $5);}
               ;
 
-condicional : operador COMA e COMA e COMA ETIQUETA       {$$ = new Condicional(parser.linea,@1.first_line,@1.first_column,$1,$3,$5,$7);}
+condicional : operador COMA e2 COMA e2 COMA ETIQUETA       {$$ = new Condicional(parser.linea,@1.first_line,@1.first_column,$1,$3,$5,$7);}
             ;
 
 operador : JE                   {$$ = "=="}

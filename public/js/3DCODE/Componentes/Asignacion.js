@@ -1,81 +1,231 @@
 var Asignacion = /** @class */ (function () {
-    function Asignacion(izq, der, operacion, temporal, l, c) {
+    /**
+     * CONSTRUCTOR DE LA CLASE
+     * @param izq OPERANDO IZQ
+     * @param der OPERANDO DER
+     * @param operacion TIPO DE OPEACION
+     * @param temporal TEMPORAL|HEAP|H|STACK|
+     * @param l LINEA
+     * @param c COLUMNA
+     * @param posicion POSICION EN EL ARREGLO DE INSTRUCCIONES
+     */
+    function Asignacion(izq, der, operacion, temporal, l, c, posicion) {
         this.izq = izq;
         this.der = der;
         this.operacion = operacion;
         this.temporal = temporal;
+        this.l = l;
+        this.c = c;
+        this.posicion = posicion;
     }
     Asignacion.prototype.ejecutar = function () {
         var op1 = (this.izq == null) ? null : this.izq.ejecutar();
         ;
         var op2 = (this.der == null) ? null : this.der.ejecutar();
-        if (op1 instanceof MensajeError || op2 instanceof MensajeError) {
-            return;
+        //-------------------------------------- PRIMERA VALIDACION DE ERRORES ------------------------------------------
+        if (op1 instanceof MensajeError || op2 instanceof MensajeError)
+            return -1;
+        switch (this.temporal) {
+            case "heap": return this.controlHeap(op1, op2);
+            case "stack": return this.controlStack(op1, op2);
+            case "h": return this.controlH(op1, op2);
+            case "p": return this.controlP(op1, op2);
+            default: return this.controlTemporal(op1, op2);
+        }
+        return -1;
+    };
+    /**
+     * METODO QUE SE ENCARGARA DE REALIZAR LAS OPERACIONES SOBRE LOS TEMPORALES
+     * @param op1 VALOR|HEAP|STACK|H|TEMPORAL|
+     * @param op2 VALOR|H
+     */
+    Asignacion.prototype.controlTemporal = function (op1, op2) {
+        //--------------------------------------------- SI EL VALOR ESTA EN EL HEAP ------------------------------------------------------
+        if (op1.tipo === "heap") {
+            if (op2 != null) {
+                if (op2.tipo === "number" || op2.tipo == "h") {
+                    var valorTemp = valorHeap(op2.valor);
+                    //---------------------------------- Si encuentra el valor entonces op1 obtendra ese valor y op2 sera null (Solo se puede realizar asignaciones);
+                    if (valorTemp != null) {
+                        op1 = valorTemp;
+                        op2 = null;
+                    }
+                    else {
+                        listaSalida.push(new MensajeError("Semantico", "No se encontro la posicion: " + op2.valor + " en el Heap", this.l, this.c));
+                        return -1;
+                    }
+                }
+                else {
+                    listaSalida.push(new MensajeError("Semantico", "Se necesita una posicion para acceder al Heap", this.l, this.c));
+                    return -1;
+                }
+            }
+            else {
+                listaSalida.push(new MensajeError("Semantico", "Se necesita una posicion para acceder al Heap", this.l, this.c));
+                return -1;
+            }
+        }
+        //----------------------------------------- SI ES UN VALOR EN EL STACK ------------------------------------------------------------------
+        else if (op1.tipo === "stack") {
+            if (op2 != null) {
+                if (op2.tipo === "number" || op2.tipo === "p") {
+                    var valorTemp = valorStack(op2.valor);
+                    //---------------------------------- Si encuentra el valor entonces op1 obtendra ese valor y op2 sera null (Solo se puede realizar asignaciones);
+                    if (valorTemp != null) {
+                        op1 = valorTemp;
+                        op2 = null;
+                    }
+                    else {
+                        listaSalida.push(new MensajeError("Semantico", "No se encontro la posicion: " + op2.valor + " en el Stack", this.l, this.c));
+                        return -1;
+                    }
+                }
+                else {
+                    listaSalida.push(new MensajeError("Semantico", "Se necesita una posicion para acceder al Stack", this.l, this.c));
+                    return -1;
+                }
+            }
+            else {
+                listaSalida.push(new MensajeError("Semantico", "Se necesita una posicion para acceder al Stack", this.l, this.c));
+                return -1;
+            }
         }
         switch (this.operacion) {
-            //------------------------ TEMP | H = e + e
             case "suma":
-                if (op1.tipo == "number" && op2.tipo == "number")
-                    agregarTemporal({ id: this.temporal, valor: op1.valor + op2.valor, tipo: "number" });
-                //-------------------------- H = e + e -------------------------------------------------------------------------------------------------
-                else if ((op1.tipo == "posHeap" && op2.tipo == "number" || op1.tipo == "number" && op2.tipo == "posHeap") && (this.temporal == "H" || this.temporal == "h"))
-                    H = op1.valor + op2.valor;
-                else if (op1.tipo == "posHeap" && op2.tipo == "number" || op1.tipo == "number" && op2.tipo == "posHeap")
-                    agregarTemporal({ id: this.temporal, valor: op1.valor + op2.valor, tipo: "posHeap" });
+                if (op2 != null)
+                    return agregarTemporal({ id: this.temporal, valor: op1.valor + op2.valor, tipo: "number" });
                 else
-                    listaSalida.push(new MensajeError("Semantico", "No se puede sumar: " + op1.tipo + " con: " + op2.tipo, izq.linea, izq.columna));
+                    listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una suma con un null", this.l, this.c));
                 break;
-            //----------------------- TEMP = e - e 
             case "resta":
-                if (op1.tipo == "number" && op2.tipo == "number")
-                    agregarTemporal({ id: this.temporal, valor: op1.valor - op2.valor, tipo: "number" });
+                if (op2 != null)
+                    return agregarTemporal({ id: this.temporal, valor: op1.valor - op2.valor, tipo: "number" });
                 else
-                    listaSalida.push(new MensajeError("Semantico", "No se puede restar: " + op1.tipo + " con: " + op2.tipo, izq.linea, izq.columna));
+                    listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una resta con un null", this.l, this.c));
                 break;
-            //----------------------- TEMP = e * e 
             case "multiplicacion":
-                if (op1.tipo == "number" && op2.tipo == "number")
-                    agregarTemporal({ id: this.temporal, valor: op1.valor * op2.valor, tipo: "number" });
+                if (op2 != null)
+                    return agregarTemporal({ id: this.temporal, valor: op1.valor * op2.valor, tipo: "number" });
                 else
-                    listaSalida.push(new MensajeError("Semantico", "No se puede multiplicar: " + op1.tipo + " con: " + op2.tipo, izq.linea, izq.columna));
+                    listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una multiplicacion con un null", this.l, this.c));
                 break;
-            //----------------------- TEMP = e / e 
             case "division":
-                if (op1.tipo == "number" && op2.tipo == "number") {
-                    if (op2.valor == 0)
-                        listaSalida.push(new MensajeError("Semantico", "No se puede dividir dentro de 0 ", this.der.linea, this.der.columna));
+                if (op2 != null) {
+                    if (op2.valor != 0)
+                        return agregarTemporal({ id: this.temporal, valor: op1.valor / op2.valor, tipo: "number" });
                     else
-                        agregarTemporal({ id: this.temporal, valor: op1.valor / op2.valor, tipo: "number" });
+                        listaSalida.push(new MensajeError("Semantico", "No se puede dividir entre 0", this.l, this.c));
                 }
                 else
-                    listaSalida.push(new MensajeError("Semantico", "No se puede dividir: " + op1.tipo + " con: " + op2.tipo, izq.linea, izq.columna));
+                    listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una division con un null", this.l, this.c));
                 break;
-            //----------------------- TEMP = e % e 
             case "modulo":
-                if (op1.tipo == "number" && op2.tipo == "number") {
-                    if (op2.valor == 0)
-                        listaSalida.push(new MensajeError("Semantico", "No se puede obtener el modulo de 0 ", this.der.linea, this.der.columna));
+                if (op2 != null) {
+                    if (op2.valor != 0)
+                        return agregarTemporal({ id: this.temporal, valor: op1.valor % op2.valor, tipo: "number" });
                     else
-                        agregarTemporal({ id: this.temporal, valor: op1.valor % op2.valor, tipo: "number" });
+                        listaSalida.push(new MensajeError("Semantico", "No se puede obtener el modulo entre 0", this.l, this.c));
                 }
                 else
-                    listaSalida.push(new MensajeError("Semantico", "No se puede obtener el modulo: " + op1.tipo + " con: " + op2.tipo, izq.linea, izq.columna));
+                    listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar un modulo con un null", this.l, this.c));
                 break;
-            //----------------------- TEMP = e % e 
             case "potencia":
-                if (op1.tipo == "number" && op2.tipo == "number")
-                    agregarTemporal({ id: this.temporal, valor: Math.pow(op1.valor, op2.valor), tipo: "number" });
+                if (op2 != null)
+                    return agregarTemporal({ id: this.temporal, valor: Math.pow(op1.valor, op2.valor), tipo: "number" });
                 else
-                    listaSalida.push(new MensajeError("Semantico", "No se puede obtener el modulo: " + op1.tipo + " con: " + op2.tipo, izq.linea, izq.columna));
+                    listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una potencia con un null", this.l, this.c));
                 break;
-            //----------------------------------------------- Heap[pos] = numero; ------------------------------------------------------------------
-            case "asignarheap":
-                if (op1.tipo == "posHeap" || op1.tipo == "number")
-                    Heap.push(op2);
+            case "igual":
+                if (op2 === null)
+                    return agregarTemporal({ id: this.temporal, valor: op1.valor, tipo: "number" });
                 else
-                    listaSalida.push(new MenasajeError("Semantico", "No se puede acceder a esta posicion del Heap: " + op1.valor, izq.linea, izq.columna));
+                    listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una asignacion con dos valores", this.l, this.c));
                 break;
         }
+        return -1;
+    };
+    /**
+     * METODO QUE SE ENCARGA DE REALIZAR LAS OPERACIONES SOBRE H
+     * @param op1 VALOR|H > 0
+     * @param op2 VALOR|H > 0
+     */
+    Asignacion.prototype.controlH = function (op1, op2) {
+        switch (this.operacion) {
+            case "suma":
+                if (op1.valor < 0 || op2.valor < 0) {
+                    listaSalida.push(new MensajeError("Semantico", "H solo acepta el incremento " + this.operacion, this.l, this.c));
+                    break;
+                    return -1;
+                }
+                H = op1.valor + op2.valor;
+                incrementarEspacioHeap();
+                break;
+            default:
+                listaSalida.push(new MensajeError("Semantico", "H solo acepta el incremento, No se reconoce: " + this.operacion, this.l, this.c));
+                break;
+        }
+        return -1;
+    };
+    /**
+    * METODO ENCARGADO DE REALIZAR LAS OPERACIONES CON P
+    * @param dato
+    * @param valor
+    */
+    Asignacion.prototype.controlP = function (op1, op2) {
+        switch (this.operacion) {
+            case "suma":
+                P = op1.valor + op2.valor;
+                break;
+            case "resta":
+                P = op1.valor - op2.valor;
+                break;
+            default:
+                listaSalida.push(new MensajeError("Semantico", "H solo acepta el incremento, No se reconoce: " + this.operacion, this.l, this.c));
+                break;
+        }
+        return -1;
+    };
+    /**
+     * METODO QUE SE ENCARGA DE LAS OPERACIONES DEL HEAP
+     * @param dato
+     * @param valor
+     */
+    Asignacion.prototype.controlHeap = function (dato, valor) {
+        switch (this.operacion) {
+            case "igual":
+                var existePos = valorHeap(dato.valor);
+                if (existePos != null)
+                    Heap[dato.valor] = valor;
+                else
+                    listaSalida.push(new MensajeError("Semantico", "No existe esta posicion: " + dato.valor + " en el Heap", this.l, this.c));
+                break;
+                break;
+            default:
+                listaSalida.push(new MensajeError("Semantico", "El Heap solo acepta el operador =, No se reconoce: " + this.operacion, this.l, this.c));
+                break;
+        }
+        return -1;
+    };
+    /**
+   * METODO QUE SE ENCARGA DE LAS OPERACIONES DEL STACK
+   * @param dato
+   * @param valor
+   */
+    Asignacion.prototype.controlStack = function (dato, valor) {
+        switch (this.operacion) {
+            case "igual":
+                var existePos = valorStack(dato.valor);
+                if (existePos != null)
+                    Stack[dato.valor] = valor;
+                else
+                    listaSalida.push(new MensajeError("Semantico", "No existe esta posicion: " + dato.valor + " en el Stack", this.l, this.c));
+                break;
+                break;
+            default:
+                listaSalida.push(new MensajeError("Semantico", "El Stack solo acepta el operador =, No se reconoce: " + this.operacion, this.l, this.c));
+                break;
+        }
+        return -1;
     };
     return Asignacion;
 }());
