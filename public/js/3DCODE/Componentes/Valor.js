@@ -30,7 +30,7 @@ var Valor = /** @class */ (function () {
         else if (dato.tipo === "stack")
             return { tipo: "stack", valor: 0 };
         else
-            dato.valor;
+            return dato.valor;
     };
     return Valor;
 }());

@@ -1,6 +1,12 @@
+declare function agregarTemporal(temporal:any):any;
+declare function valorHeap(temporal:any):any;
+declare function valorStack(temporal:any):any;
+declare function incrementarEspacioHeap():any;
+declare var Heap:any;
+declare var Stack:any;
 class Asignacion {
-    izq: Object;
-    der: Object;
+    izq: any;
+    der: any;
     operacion: String;
     temporal: String;
     posicion: number;
@@ -18,7 +24,7 @@ class Asignacion {
      * @param c COLUMNA
      * @param posicion POSICION EN EL ARREGLO DE INSTRUCCIONES
      */
-    constructor(izq, der, operacion, temporal, l, c, posicion) {
+    constructor(izq:any, der:any, operacion:String, temporal:String, l:number, c:number, posicion:number) {
         this.izq = izq;
         this.der = der;
         this.operacion = operacion;
@@ -55,7 +61,7 @@ class Asignacion {
      * @param op1 VALOR|HEAP|STACK|H|TEMPORAL|
      * @param op2 VALOR|H
      */
-    controlTemporal(op1, op2) {
+    controlTemporal(op1:any, op2:any) {
         //--------------------------------------------- SI EL VALOR ESTA EN EL HEAP ------------------------------------------------------
         if(op1.tipo === "heap"){
             if(op2 != null){
@@ -164,7 +170,7 @@ class Asignacion {
      * @param op1 VALOR|H > 0
      * @param op2 VALOR|H > 0
      */
-    controlH (op1,op2){
+    controlH (op1:any,op2:any){
         switch (this.operacion) {
             case "suma":
                 if(op1.valor < 0 || op2.valor <0){
@@ -186,7 +192,7 @@ class Asignacion {
      * @param dato 
      * @param valor 
      */
-    controlP (op1,op2){
+    controlP (op1:any,op2:any){
         switch (this.operacion) {
             case "suma":  
                 P = op1.valor + op2.valor; 
@@ -204,7 +210,7 @@ class Asignacion {
      * @param dato 
      * @param valor 
      */
-    controlHeap(dato,valor) {
+    controlHeap(dato:any,valor:any) {
         switch (this.operacion) {
             case "igual":
                 let existePos = valorHeap(dato.valor);
@@ -222,7 +228,7 @@ class Asignacion {
      * @param dato 
      * @param valor 
      */
-    controlStack(dato,valor) {
+    controlStack(dato:any,valor:any) {
         switch (this.operacion) {
             case "igual":
                 let existePos = valorStack(dato.valor);

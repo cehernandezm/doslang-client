@@ -3,8 +3,8 @@ class Condicional{
     l:number;
     c:number;
     operacion:string;
-    izq:Object;
-    der:Object;
+    izq:any;
+    der:any;
     etiqueta:String;
 
     /**
@@ -17,7 +17,7 @@ class Condicional{
      * @param der 
      * @param etiqueta 
      */
-    constructor(linea,l,c,operacion,izq,der,etiqueta){
+    constructor(linea:number,l:number,c:number,operacion:string,izq:any,der:Object,etiqueta:String){
         this.linea = linea;
         this.l = l;
         this.c = c;

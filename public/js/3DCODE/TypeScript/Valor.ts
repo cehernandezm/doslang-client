@@ -1,7 +1,12 @@
+declare var listaSalida: any;
+declare function buscarTemporal(dato:any):any;
+declare var P:any,H:any;
+
+
 class Valor{
     dato : Object;
 
-    constructor(valor){
+    constructor(valor:any){
         this.dato = valor;
     }
 
@@ -9,7 +14,7 @@ class Valor{
        return this.tipoDato(this.dato);
     }
 
-    tipoDato(dato) {
+     tipoDato (dato:any):any {
         if (dato.tipo === "int") return { tipo: "number", valor: +dato.valor };
         else if (dato.tipo === "double") return { tipo: "number", valor: +dato.valor };
         else if (dato.tipo === "number") return { tipo: "number", valor: +dato.valor };
@@ -26,6 +31,7 @@ class Valor{
         else if (dato.tipo === "p") return { tipo: "number", valor: P };
         else if(dato.tipo === "heap") return { tipo: "heap", valor: 0 };
         else if(dato.tipo === "stack") return { tipo: "stack", valor: 0};
-        else dato.valor;
+        else return dato.valor;
+        
     }
 }

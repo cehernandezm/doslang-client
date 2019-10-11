@@ -1,3 +1,4 @@
+declare function buscarEtiqueta(etiqueta:any):any;
 class Incondicional{
     pos: number;
     l : number;
@@ -5,7 +6,7 @@ class Incondicional{
     etiqueta : String;
 
 
-    constructor(pos,l,c,etiqueta){
+    constructor(pos:number,l:number,c:number,etiqueta:String){
         this.pos = pos;
         this.l = l;
         this.c = c;

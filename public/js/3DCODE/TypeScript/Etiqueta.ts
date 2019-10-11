@@ -1,3 +1,4 @@
+declare function agregarEtiqueta(etiqueta:any):any;
 class Etiqueta{
     nombre: string;
     l: number;
@@ -11,7 +12,7 @@ class Etiqueta{
      * @param c 
      * @param pos 
      */
-    constructor(nombre,l,c,pos){
+    constructor(nombre:string,l:number,c:number,pos:number){
         this.nombre = nombre;
         this.l = l;
         this.c = c;

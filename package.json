@@ -4,12 +4,13 @@
   "description": "SERVIDOR DEL CLIENTE",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1"  
   },
   "author": "Carlos Hernandez",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "typescript": "^3.6.4"
   },
   "devDependencies": {}
 }
