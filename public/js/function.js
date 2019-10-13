@@ -12,7 +12,7 @@ $("#compiler").on('click',function(e){
     
     listaTemporales = [];
     listaSalida = [];
-    Heap = [ {tipo: "number", valor:-1} ];
+    Heap = [ {tipo: "number", valor:-11} ];
     H = 0;
     P = 0;
     listaEtiquetas = [];
@@ -41,30 +41,35 @@ $("#compiler").on('click',function(e){
         else element.ejecutar();
     }
     
-
+    /*
     listaEtiquetas.forEach(element =>{
         console.log(element);
     });
-
+*/
     console.log("---------------------ERRORES----------------------------");
+    consolaSalida = "";
     listaSalida.forEach(element =>{
-        console.error(element);
-    });
+        if(element instanceof MensajeError) console.error(element);
 
+        else consolaSalida += element;
+    });
+    console.log(consolaSalida);
+    /*
     console.log("----------------------Temporales---------------------------");
     listaTemporales.forEach(element =>{
         console.log(element);
     });
-
+    */
     console.log("--------------------- HEAP ---------------------------------")
     Heap.forEach(element => {
         console.log(element);
     });
-
+    /*
     console.log("--------------------- STACK ---------------------------------")
     Stack.forEach(element => {
         console.log(element);
     });
+    */
 });
 
 
@@ -77,7 +82,7 @@ function buscarTemporal(nombre){
 }
 
 function agregarTemporal(dato){
-    eliminarTemporal(dato.id);
+    if(buscarTemporal(dato.id) != null) eliminarTemporal(dato.id);
     listaTemporales.push(dato);
 }
 
@@ -149,7 +154,7 @@ function incrementarEspacioHeap(){
     let tamOriginal = Heap.length;
     let nuevo = H - (Heap.length - 1);
 
-    for(let i = 0; i < nuevo ; i++) Heap.push({tipo:"number",valor : -1});
+    for(let i = 0; i < nuevo ; i++) Heap.push({tipo:"number",valor : -11});
 }
 
 

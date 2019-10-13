@@ -8,6 +8,8 @@
 \/\*(.?\n?)*\*\/                             {} // COMENTARIO MULTILINEA
 [0-9]+("."[0-9]+)                           return 'DECIMAL'
 [0-9]+                                      return 'ENTERO'
+"-"[0-9]+("."[0-9]+)                        return 'DECIMAL'
+"-"[0-9]+                                   return 'ENTERO'
 "+"                                         return 'MAS'
 "-"                                         return 'MENOS'
 "*"                                         return 'POR'
@@ -17,8 +19,14 @@
 "="                                         return "IGUAL"
 ","                                         return 'COMA'
 ":"                                         return 'DSPUNTOS'
+"("                                         return 'PARIZQ'
+")"                                         return 'PARDER'
 "HEAP"                                      return 'HEAP'
 "STACK"                                     return 'STACK'
+"E"                                         return 'IE'
+"C"                                         return 'IC'
+"D"                                         return 'ID'
+"PRINT"                                     return 'PRINT'
 "H"                                         return 'H'
 "P"                                         return 'P'
 "Jmp"                                       return 'JMP'
@@ -55,6 +63,7 @@ instruccion : asignacion                             {$$ = $1;}
             | etiqueta                               {$$ = $1;}
             | incondicional                          {$$ = $1;}
             | condicional                            {$$ = $1;}
+            | imprimir                               {$$ = $1;}
             ;
 
 asignacion : operacion COMA e COMA e2 COMA TEMPORAL          {$$ = new Asignacion($3,$5,$1,$7,@1.first_line,@1.first_column,parser.linea);} // T = e op e
@@ -80,6 +89,7 @@ operacion : MAS                                             {$$ = "suma";}
           ;
 
 e : ENTERO                                   {$$ = new Valor({tipo : "int", valor: $1, linea: @1.first_line, columna: @1.first_column});}
+  | NENTERO                                  {$$ = new Valor({tipo : "int", valor: $1, linea: @1.first_line, columna: @1.first_column});}
   | TEMPORAL                                 {$$ = new Valor({tipo : "temporal", valor: $1, linea: @1.first_line, columna: @1.first_column});}
   | DECIMAL                                  {$$ = new Valor({tipo: "double", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
   | H                                        {$$ = new Valor({tipo: "h", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
@@ -88,6 +98,7 @@ e : ENTERO                                   {$$ = new Valor({tipo : "int", valo
   ;
 
 e2 : ENTERO                                   {$$ = new Valor({tipo : "int", valor: $1, linea: @1.first_line, columna: @1.first_column});}
+   | NENTERO                                  {$$ = new Valor({tipo : "int", valor: $1, linea: @1.first_line, columna: @1.first_column});}
    | TEMPORAL                                 {$$ = new Valor({tipo : "temporal", valor: $1, linea: @1.first_line, columna: @1.first_column});}
    | DECIMAL                                  {$$ = new Valor({tipo: "double", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
    | H                                        {$$ = new Valor({tipo: "h", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
@@ -111,6 +122,13 @@ operador : JE                   {$$ = "=="}
          | JL                   {$$ = "<"}
          | JGE                  {$$ = ">="}
          | JLE                  {$$ = "<="}
+         ;
+
+
+
+imprimir : PRINT PARIZQ MODULO IE COMA e2 PARDER    { $$ = new Print(0,$6,@1.first_line,@1.first_column,parser.linea); }
+         | PRINT PARIZQ MODULO IC COMA e2 PARDER    { $$ = new Print(1,$6,@1.first_line,@1.first_column,parser.linea); }
+         | PRINT PARIZQ MODULO ID COMA e2 PARDER    { $$ = new Print(2,$6,@1.first_line,@1.first_column,parser.linea); }      
          ;
 
 %%
