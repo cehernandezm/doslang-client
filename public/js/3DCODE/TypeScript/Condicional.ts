@@ -1,5 +1,5 @@
 class Condicional{
-    linea:number;
+    posicion:number;
     l:number;
     c:number;
     operacion:string;
@@ -18,7 +18,7 @@ class Condicional{
      * @param etiqueta 
      */
     constructor(linea:number,l:number,c:number,operacion:string,izq:any,der:Object,etiqueta:String){
-        this.linea = linea;
+        this.posicion = linea;
         this.l = l;
         this.c = c;
         this.operacion = operacion;
@@ -30,9 +30,9 @@ class Condicional{
 
 
 
-    ejecutar(){
-        let op1 = (this.izq == null) ? null : this.izq.ejecutar();
-        let op2 = (this.der == null) ? null : this.der.ejecutar();
+    ejecutar(ambito: Ambito){
+        let op1 = (this.izq == null) ? null : this.izq.ejecutar(ambito);
+        let op2 = (this.der == null) ? null : this.der.ejecutar(ambito);
         if( op1 != null && op2 != null ){
             if(!(op1 instanceof MensajeError) && !(op2 instanceof MensajeError)){
                 let etiqueta = buscarEtiqueta(this.etiqueta);

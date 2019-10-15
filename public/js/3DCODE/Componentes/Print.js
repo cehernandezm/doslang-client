@@ -11,8 +11,8 @@ var Print = /** @class */ (function () {
         this.c = c;
         this.posicion = posicion;
     }
-    Print.prototype.ejecutar = function () {
-        var resultado = (this.valor == null) ? null : this.valor.ejecutar();
+    Print.prototype.ejecutar = function (ambito) {
+        var resultado = (this.valor == null) ? null : this.valor.ejecutar(ambito);
         if (!(resultado instanceof MensajeError)) {
             if (this.operacion === 0)
                 listaSalida.push(Math.floor(resultado.valor));

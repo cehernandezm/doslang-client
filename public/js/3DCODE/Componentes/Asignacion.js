@@ -18,19 +18,19 @@ var Asignacion = /** @class */ (function () {
         this.c = c;
         this.posicion = posicion;
     }
-    Asignacion.prototype.ejecutar = function () {
-        var op1 = (this.izq == null) ? null : this.izq.ejecutar();
+    Asignacion.prototype.ejecutar = function (ambito) {
+        var op1 = (this.izq == null) ? null : this.izq.ejecutar(ambito);
         ;
-        var op2 = (this.der == null) ? null : this.der.ejecutar();
+        var op2 = (this.der == null) ? null : this.der.ejecutar(ambito);
         //-------------------------------------- PRIMERA VALIDACION DE ERRORES ------------------------------------------
         if (op1 instanceof MensajeError || op2 instanceof MensajeError)
             return -1;
         switch (this.temporal) {
-            case "heap": return this.controlHeap(op1, op2);
-            case "stack": return this.controlStack(op1, op2);
-            case "h": return this.controlH(op1, op2);
-            case "p": return this.controlP(op1, op2);
-            default: return this.controlTemporal(op1, op2);
+            case "heap": return this.controlHeap(op1, op2, ambito);
+            case "stack": return this.controlStack(op1, op2, ambito);
+            case "h": return this.controlH(op1, op2, ambito);
+            case "p": return this.controlP(op1, op2, ambito);
+            default: return this.controlTemporal(op1, op2, ambito);
         }
         return -1;
     };
@@ -39,12 +39,12 @@ var Asignacion = /** @class */ (function () {
      * @param op1 VALOR|HEAP|STACK|H|TEMPORAL|
      * @param op2 VALOR|H
      */
-    Asignacion.prototype.controlTemporal = function (op1, op2) {
+    Asignacion.prototype.controlTemporal = function (op1, op2, ambito) {
         //--------------------------------------------- SI EL VALOR ESTA EN EL HEAP ------------------------------------------------------
         if (op1.tipo === "heap") {
             if (op2 != null) {
                 if (op2.tipo === "number" || op2.tipo == "h") {
-                    var valorTemp = valorHeap(op2.valor);
+                    var valorTemp = ambito.getHeap(op2.valor);
                     //---------------------------------- Si encuentra el valor entonces op1 obtendra ese valor y op2 sera null (Solo se puede realizar asignaciones);
                     if (valorTemp != null) {
                         op1 = valorTemp;
@@ -69,7 +69,7 @@ var Asignacion = /** @class */ (function () {
         else if (op1.tipo === "stack") {
             if (op2 != null) {
                 if (op2.tipo === "number" || op2.tipo === "p") {
-                    var valorTemp = valorStack(op2.valor);
+                    var valorTemp = ambito.getValueStack(op2.valor);
                     //---------------------------------- Si encuentra el valor entonces op1 obtendra ese valor y op2 sera null (Solo se puede realizar asignaciones);
                     if (valorTemp != null) {
                         op1 = valorTemp;
@@ -93,26 +93,26 @@ var Asignacion = /** @class */ (function () {
         switch (this.operacion) {
             case "suma":
                 if (op2 != null)
-                    return agregarTemporal({ id: this.temporal, valor: op1.valor + op2.valor, tipo: "number" });
+                    return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor + op2.valor, tipo: "number" });
                 else
                     listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una suma con un null", this.l, this.c));
                 break;
             case "resta":
                 if (op2 != null)
-                    return agregarTemporal({ id: this.temporal, valor: op1.valor - op2.valor, tipo: "number" });
+                    return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor - op2.valor, tipo: "number" });
                 else
                     listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una resta con un null", this.l, this.c));
                 break;
             case "multiplicacion":
                 if (op2 != null)
-                    return agregarTemporal({ id: this.temporal, valor: op1.valor * op2.valor, tipo: "number" });
+                    return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor * op2.valor, tipo: "number" });
                 else
                     listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una multiplicacion con un null", this.l, this.c));
                 break;
             case "division":
                 if (op2 != null) {
                     if (op2.valor != 0)
-                        return agregarTemporal({ id: this.temporal, valor: op1.valor / op2.valor, tipo: "number" });
+                        return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor / op2.valor, tipo: "number" });
                     else
                         listaSalida.push(new MensajeError("Semantico", "No se puede dividir entre 0", this.l, this.c));
                 }
@@ -122,7 +122,7 @@ var Asignacion = /** @class */ (function () {
             case "modulo":
                 if (op2 != null) {
                     if (op2.valor != 0)
-                        return agregarTemporal({ id: this.temporal, valor: op1.valor % op2.valor, tipo: "number" });
+                        return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor % op2.valor, tipo: "number" });
                     else
                         listaSalida.push(new MensajeError("Semantico", "No se puede obtener el modulo entre 0", this.l, this.c));
                 }
@@ -131,13 +131,13 @@ var Asignacion = /** @class */ (function () {
                 break;
             case "potencia":
                 if (op2 != null)
-                    return agregarTemporal({ id: this.temporal, valor: Math.pow(op1.valor, op2.valor), tipo: "number" });
+                    return ambito.agregarTemporal({ id: this.temporal, valor: Math.pow(op1.valor, op2.valor), tipo: "number" });
                 else
                     listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una potencia con un null", this.l, this.c));
                 break;
             case "igual":
                 if (op2 === null)
-                    return agregarTemporal({ id: this.temporal, valor: op1.valor, tipo: "number" });
+                    return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor, tipo: "number" });
                 else
                     listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una asignacion con dos valores", this.l, this.c));
                 break;
@@ -149,7 +149,7 @@ var Asignacion = /** @class */ (function () {
      * @param op1 VALOR|H > 0
      * @param op2 VALOR|H > 0
      */
-    Asignacion.prototype.controlH = function (op1, op2) {
+    Asignacion.prototype.controlH = function (op1, op2, ambito) {
         switch (this.operacion) {
             case "suma":
                 if (op1.valor < 0 || op2.valor < 0) {
@@ -158,7 +158,7 @@ var Asignacion = /** @class */ (function () {
                     return -1;
                 }
                 H = op1.valor + op2.valor;
-                incrementarEspacioHeap();
+                ambito.incrementarEspacioHeap();
                 break;
             default:
                 listaSalida.push(new MensajeError("Semantico", "H solo acepta el incremento, No se reconoce: " + this.operacion, this.l, this.c));
@@ -171,7 +171,7 @@ var Asignacion = /** @class */ (function () {
     * @param dato
     * @param valor
     */
-    Asignacion.prototype.controlP = function (op1, op2) {
+    Asignacion.prototype.controlP = function (op1, op2, ambito) {
         switch (this.operacion) {
             case "suma":
                 P = op1.valor + op2.valor;
@@ -190,12 +190,12 @@ var Asignacion = /** @class */ (function () {
      * @param dato
      * @param valor
      */
-    Asignacion.prototype.controlHeap = function (dato, valor) {
+    Asignacion.prototype.controlHeap = function (dato, valor, ambito) {
         switch (this.operacion) {
             case "igual":
-                var existePos = valorHeap(dato.valor);
+                var existePos = ambito.getHeap(dato.valor);
                 if (existePos != null)
-                    Heap[dato.valor] = valor;
+                    ambito.Heap[dato.valor] = valor;
                 else
                     listaSalida.push(new MensajeError("Semantico", "No existe esta posicion: " + dato.valor + " en el Heap", this.l, this.c));
                 break;
@@ -211,12 +211,12 @@ var Asignacion = /** @class */ (function () {
    * @param dato
    * @param valor
    */
-    Asignacion.prototype.controlStack = function (dato, valor) {
+    Asignacion.prototype.controlStack = function (dato, valor, ambito) {
         switch (this.operacion) {
             case "igual":
-                var existePos = valorStack(dato.valor);
+                var existePos = ambito.getValueStack(dato.valor);
                 if (existePos != null)
-                    Stack[dato.valor] = valor;
+                    ambito.setValueStack(dato.valor, valor);
                 else
                     listaSalida.push(new MensajeError("Semantico", "No existe esta posicion: " + dato.valor + " en el Stack", this.l, this.c));
                 break;

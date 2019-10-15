@@ -1,11 +1,11 @@
 var Incondicional = /** @class */ (function () {
     function Incondicional(pos, l, c, etiqueta) {
-        this.pos = pos;
+        this.posicion = pos;
         this.l = l;
         this.c = c;
         this.etiqueta = etiqueta;
     }
-    Incondicional.prototype.ejecutar = function () {
+    Incondicional.prototype.ejecutar = function (ambito) {
         var etiqueta = buscarEtiqueta(this.etiqueta);
         if (etiqueta != null)
             return etiqueta.posicion;

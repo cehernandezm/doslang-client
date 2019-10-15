@@ -21,8 +21,8 @@ class Print{
     }
 
 
-    ejecutar():any{
-        let resultado:any = (this.valor == null) ? null : this.valor.ejecutar();
+    ejecutar(ambito: Ambito):any{
+        let resultado:any = (this.valor == null) ? null : this.valor.ejecutar(ambito);
         if(!(resultado instanceof MensajeError)){
             if(this.operacion === 0) listaSalida.push(Math.floor(resultado.valor));
             else if(this.operacion === 1) listaSalida.push(String.fromCharCode(resultado.valor));

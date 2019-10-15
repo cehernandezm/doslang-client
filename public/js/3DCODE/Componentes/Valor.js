@@ -2,10 +2,10 @@ var Valor = /** @class */ (function () {
     function Valor(valor) {
         this.dato = valor;
     }
-    Valor.prototype.ejecutar = function () {
-        return this.tipoDato(this.dato);
+    Valor.prototype.ejecutar = function (ambito) {
+        return this.tipoDato(this.dato, ambito);
     };
-    Valor.prototype.tipoDato = function (dato) {
+    Valor.prototype.tipoDato = function (dato, ambito) {
         if (dato.tipo === "int")
             return { tipo: "number", valor: +dato.valor };
         else if (dato.tipo === "double")
@@ -13,9 +13,9 @@ var Valor = /** @class */ (function () {
         else if (dato.tipo === "number")
             return { tipo: "number", valor: +dato.valor };
         else if (dato.tipo === "temporal") {
-            var valorTemp = buscarTemporal(dato.valor);
+            var valorTemp = ambito.getTemporal(dato.valor);
             if (valorTemp != null)
-                return (this.tipoDato(valorTemp));
+                return (this.tipoDato(valorTemp, ambito));
             else {
                 listaSalida.push(new MensajeError("Semantico", "No existe el temporal :" + dato.valor, dato.linea, dato.columna));
                 return new MensajeError("", "", 0, 0);

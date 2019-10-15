@@ -10,7 +10,7 @@ var Condicional = /** @class */ (function () {
      * @param etiqueta
      */
     function Condicional(linea, l, c, operacion, izq, der, etiqueta) {
-        this.linea = linea;
+        this.posicion = linea;
         this.l = l;
         this.c = c;
         this.operacion = operacion;
@@ -18,9 +18,9 @@ var Condicional = /** @class */ (function () {
         this.der = der;
         this.etiqueta = etiqueta;
     }
-    Condicional.prototype.ejecutar = function () {
-        var op1 = (this.izq == null) ? null : this.izq.ejecutar();
-        var op2 = (this.der == null) ? null : this.der.ejecutar();
+    Condicional.prototype.ejecutar = function (ambito) {
+        var op1 = (this.izq == null) ? null : this.izq.ejecutar(ambito);
+        var op2 = (this.der == null) ? null : this.der.ejecutar(ambito);
         if (op1 != null && op2 != null) {
             if (!(op1 instanceof MensajeError) && !(op2 instanceof MensajeError)) {
                 var etiqueta = buscarEtiqueta(this.etiqueta);

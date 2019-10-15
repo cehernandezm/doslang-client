@@ -27,6 +27,9 @@
 "C"                                         return 'IC'
 "D"                                         return 'ID'
 "PRINT"                                     return 'PRINT'
+"BEGIN"                                     return 'BEGIN'
+"CALL"                                      return 'CALL'
+"END"                                       return 'END'
 "H"                                         return 'H'
 "P"                                         return 'P'
 "Jmp"                                       return 'JMP'
@@ -38,6 +41,7 @@
 "Jle"                                       return "JLE"
 "T"[0-9]+                                   return 'TEMPORAL'
 "L"[0-9]+                                   return 'ETIQUETA'
+[A-Za-z]+["_""-"0-9A-Za-z]*                 return 'ID'
 
 <<EOF>>                                     {}
 .					                        { console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column); }
@@ -64,6 +68,21 @@ instruccion : asignacion                             {$$ = $1;}
             | incondicional                          {$$ = $1;}
             | condicional                            {$$ = $1;}
             | imprimir                               {$$ = $1;}
+            | funcion                                {$$ = $1;}
+            | callFuncion                            {$$ = $1;}
+            ;
+
+instruccionesF : instruccionesF instruccionF            {$$ = $1; $$.push($2); parser.linea++;}
+               | instruccionF                           {$$ = []; $$.push($1); parser.linea++;}
+               ;
+
+
+instruccionF : asignacion                             {$$ = $1;}
+             | etiqueta                               {$$ = $1;}
+             | incondicional                          {$$ = $1;}
+             | condicional                            {$$ = $1;}
+             | imprimir                               {$$ = $1;}
+             | callFuncion                            {$$ = $1;}
             ;
 
 asignacion : operacion COMA e COMA e2 COMA TEMPORAL          {$$ = new Asignacion($3,$5,$1,$7,@1.first_line,@1.first_column,parser.linea);} // T = e op e
@@ -131,6 +150,13 @@ imprimir : PRINT PARIZQ MODULO IE COMA e2 PARDER    { $$ = new Print(0,$6,@1.fir
          | PRINT PARIZQ MODULO ID COMA e2 PARDER    { $$ = new Print(2,$6,@1.first_line,@1.first_column,parser.linea); }      
          ;
 
+
+funcion : BEGIN COMA COMA COMA ID instruccionesF END COMA COMA COMA ID      { $$ = new Funcion($5,$6,@1.first_line,@1.first_column,parser.linea);}
+        ;
+
+
+callFuncion : CALL COMA COMA COMA ID                                   {$$ = new CallFuncion($5,@1.first_line,@1.first_column,parser.linea);}
+            ;
 %%
 
 parser.arbol = {
