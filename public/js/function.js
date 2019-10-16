@@ -30,11 +30,11 @@ $("#compiler").on('click',function(e){
         let element = listaInstrucciones[i];
         if(element instanceof Etiqueta || element instanceof Funcion){}
         else if(element instanceof Incondicional){
-            let posicion = element.ejecutar();
+            let posicion = element.ejecutar(ambito);
             if(posicion != -1) i = posicion - 1;
         }
         else if(element instanceof Condicional){
-            let posicion = element.ejecutar();
+            let posicion = element.ejecutar(ambito);
             if(posicion != -1) i = posicion - 1;
         }
         else element.ejecutar(ambito);
@@ -44,7 +44,10 @@ $("#compiler").on('click',function(e){
     listaEtiquetas.forEach(element =>{
         console.log(element);
     });
-
+    console.log("---------------------HRAp----------------------------");
+    ambito.Heap.forEach(element =>{
+        console.log(element);
+    });
     console.log("---------------------ERRORES----------------------------");
     consolaSalida = "";
     listaSalida.forEach(element =>{

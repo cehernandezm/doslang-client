@@ -209,7 +209,7 @@ class Asignacion {
         switch (this.operacion) {
             case "igual":
                 let existePos = ambito.getHeap(dato.valor);
-                if(existePos != null) ambito.Heap[dato.valor] = valor;
+                if(existePos != null) ambito.setValueHeap(dato.valor,valor);
                 else listaSalida.push(new MensajeError("Semantico", "No existe esta posicion: " + dato.valor + " en el Heap", this.l, this.c)); break; 
             break;
             default: listaSalida.push(new MensajeError("Semantico", "El Heap solo acepta el operador =, No se reconoce: " + this.operacion, this.l, this.c)); break;

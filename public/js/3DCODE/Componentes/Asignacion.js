@@ -195,7 +195,7 @@ var Asignacion = /** @class */ (function () {
             case "igual":
                 var existePos = ambito.getHeap(dato.valor);
                 if (existePos != null)
-                    ambito.Heap[dato.valor] = valor;
+                    ambito.setValueHeap(dato.valor, valor);
                 else
                     listaSalida.push(new MensajeError("Semantico", "No existe esta posicion: " + dato.valor + " en el Heap", this.l, this.c));
                 break;

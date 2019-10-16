@@ -67,7 +67,7 @@ var Ambito = /** @class */ (function () {
         var retorno = null;
         for (var i = 0; i < this.Heap.length; i++) {
             var Heap = this.Heap[i];
-            if ((i + 1) === pos)
+            if (i === pos)
                 retorno = Heap;
         }
         return retorno;
@@ -80,6 +80,17 @@ var Ambito = /** @class */ (function () {
         var nuevo = H - (this.Heap.length - 1);
         for (var i = 0; i < nuevo; i++)
             this.Heap.push({ tipo: "number", valor: -11 });
+    };
+    /**
+    * METODO QUE SIRVE PARA AGREGAR UN VALOR AL STACK
+    * @param pos
+    * @param dato
+    */
+    Ambito.prototype.setValueHeap = function (pos, dato) {
+        for (var i = 0; i < this.Heap.length; i++) {
+            if (pos === i)
+                this.Heap[i] = dato;
+        }
     };
     /*
     -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -103,7 +114,7 @@ var Ambito = /** @class */ (function () {
         var retorno = null;
         for (var i = 0; i < this.Stack.length; i++) {
             var stack = this.Stack[i];
-            if ((i + 1) === pos)
+            if ((i) === pos)
                 retorno = stack;
         }
         return retorno;
@@ -115,7 +126,8 @@ var Ambito = /** @class */ (function () {
      */
     Ambito.prototype.setValueStack = function (pos, dato) {
         for (var i = 0; i < this.Stack.length; i++) {
-            this.Stack[i] = dato;
+            if (pos === i)
+                this.Stack[i] = dato;
         }
     };
     /**

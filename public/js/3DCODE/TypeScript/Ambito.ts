@@ -76,7 +76,7 @@ class Ambito{
         let retorno : any = null;
         for(let i = 0; i < this.Heap.length; i++){
             let Heap = this.Heap[i];
-            if((i + 1) === pos) retorno = Heap;
+            if(i === pos) retorno = Heap;
         }
         return retorno;
     }
@@ -89,6 +89,17 @@ class Ambito{
         let nuevo = H - (this.Heap.length - 1);
     
         for(let i = 0; i < nuevo ; i++) this.Heap.push({tipo:"number",valor : -11});
+    }
+
+     /**
+     * METODO QUE SIRVE PARA AGREGAR UN VALOR AL STACK
+     * @param pos 
+     * @param dato 
+     */
+    setValueHeap(pos:number,dato:any){
+        for(let i = 0; i < this.Heap.length; i++){
+           if(pos === i) this.Heap[i] = dato;
+        }
     }
 
 
@@ -120,7 +131,7 @@ class Ambito{
         let retorno:any = null;
         for(let i = 0; i < this.Stack.length; i++){
             let stack = this.Stack[i];
-            if((i + 1) === pos) retorno = stack;
+            if((i) === pos) retorno = stack;
         }
         return retorno;
     }
@@ -132,7 +143,7 @@ class Ambito{
      */
     setValueStack(pos:number,dato:any){
         for(let i = 0; i < this.Stack.length; i++){
-            this.Stack[i] = dato;
+            if(pos === i) this.Stack[i] = dato;
         }
     }
 
