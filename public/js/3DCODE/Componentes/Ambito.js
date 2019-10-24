@@ -23,12 +23,18 @@ var Ambito = /** @class */ (function () {
      */
     Ambito.prototype.getTemporal = function (nombre) {
         var retorno = null;
-        for (var i = 0; i < this.Temporales.length; i++) {
+        for (var i = this.Temporales.length - 1; i >= 0; i--) {
             var temporal = this.Temporales[i];
             if (temporal.id === nombre)
                 retorno = temporal;
         }
         return retorno;
+    };
+    /**
+     * METODO QUE DEVUELVE TODOS LOS TEMPORALES DEL AMBITO
+     */
+    Ambito.prototype.getAllTemporales = function () {
+        return this.Temporales;
     };
     /**
     * METODO QUE AGREGA UN NUEVO TEMPORAL
@@ -45,7 +51,7 @@ var Ambito = /** @class */ (function () {
      * @param nombre
      */
     Ambito.prototype.eliminarTemporal = function (nombre) {
-        for (var i = 0; i < this.Temporales.length; i++) {
+        for (var i = this.Temporales.length - 1; i >= 0; i--) {
             var dato = this.Temporales[i];
             if (dato.id === nombre) {
                 this.Temporales.splice(i, 1);
@@ -92,6 +98,9 @@ var Ambito = /** @class */ (function () {
                 this.Heap[i] = dato;
         }
     };
+    Ambito.prototype.getAllHeap = function () {
+        return this.Heap;
+    };
     /*
     -------------------------------------------------------------------------------------------------------------------------------------------------------
     --------------------------------------------------------------- STACK ---------------------------------------------------------------------------------
@@ -130,9 +139,6 @@ var Ambito = /** @class */ (function () {
                 this.Stack[i] = dato;
         }
     };
-    /**
-     * METODO QUE DEVUELVE TODO EL STACK
-     */
     Ambito.prototype.getAllStack = function () {
         return this.Stack;
     };

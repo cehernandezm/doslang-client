@@ -16,8 +16,13 @@ var Print = /** @class */ (function () {
         if (!(resultado instanceof MensajeError)) {
             if (this.operacion === 0)
                 listaSalida.push(Math.floor(resultado.valor));
-            else if (this.operacion === 1)
-                listaSalida.push(String.fromCharCode(resultado.valor));
+            else if (this.operacion === 1) {
+                var modulo = resultado.valor % 1;
+                if (modulo === 0)
+                    listaSalida.push(String.fromCharCode(resultado.valor));
+                else
+                    listaSalida.push(resultado.valor - 48);
+            }
             else
                 listaSalida.push(resultado.valor);
         }

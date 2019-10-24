@@ -26,24 +26,33 @@ $("#compiler").on('click',function(e){
 
     //------------------------------------------ RECORRIDO QUE EJECUTARA TODO EL CODIGO ------------------------------------------
     let ambito = new Ambito();
+
+
     for(let i = 0; i < listaInstrucciones.length; i++){
         let element = listaInstrucciones[i];
         if(element instanceof Etiqueta || element instanceof Funcion){}
-        else if(element instanceof Incondicional){
-            let posicion = element.ejecutar(ambito);
-            if(posicion != -1) i = posicion - 1;
+        else{
+            if(element instanceof Incondicional){           
+                let posicion = element.ejecutar(ambito);
+                if(posicion != -1) i = redirigir(listaInstrucciones,posicion,i);
+            }
+            else if(element instanceof Condicional){
+                let posicion = element.ejecutar(ambito);
+                if(posicion != -1) i = redirigir(listaInstrucciones,posicion,i);
+            }
+            else element.ejecutar(ambito);
+            
         }
-        else if(element instanceof Condicional){
-            let posicion = element.ejecutar(ambito);
-            if(posicion != -1) i = posicion - 1;
-        }
-        else element.ejecutar(ambito);
+        
+        
+    }
+
+    for(let i = 0; i < 10; i++){
+        console.log(ambito.Stack[i]);
     }
     
     
-    listaEtiquetas.forEach(element =>{
-        console.log(element);
-    });
+    
     console.log("---------------------HRAp----------------------------");
     ambito.Heap.forEach(element =>{
         console.log(element);
@@ -60,6 +69,18 @@ $("#compiler").on('click',function(e){
 });
 
 
+
+function redirigir(listaInstrucciones, posicion, actual){
+    let indice = actual;
+    let index = 0;
+    listaInstrucciones.forEach(element => {
+        if(element.posicion === posicion){
+            indice = index;
+        }
+        index++;
+    });
+    return indice;
+}
 
 /**
  * METODO QUE INSERTA UNA ETIQUETA

@@ -1,3 +1,4 @@
+declare function redirigir(listaInstrucciones:any,posicion:any,i:any):any;
 class Funcion {
     id: String;
     instrucciones: any;
@@ -24,9 +25,7 @@ class Funcion {
 
     ejecutar(ambito: Ambito) {
 
-        for (let i = 0; i < this.instrucciones.length; i++) {
-            this.instrucciones[i].posicion = i;
-        }
+        
         //--------------------------------- HACEMOS UN PRIMER RECORRIDO BUSCANDO TODAS LAS ETIQUETAS QUE EXISTEN EN EL CODIGO -------
         this.instrucciones.forEach(element => {
             if (element instanceof Etiqueta) element.ejecutar(ambito);
@@ -39,11 +38,11 @@ class Funcion {
             if (element instanceof Etiqueta || element instanceof Funcion) { }
             else if (element instanceof Incondicional) {
                 let posicion = element.ejecutar(ambito);
-                if (posicion != -1) i = posicion - 1;
+                if (posicion != -1) i = redirigir(this.instrucciones,posicion,i);
             }
             else if (element instanceof Condicional) {
                 let posicion = element.ejecutar(ambito);
-                if (posicion != -1) i = posicion - 1;
+                if (posicion != -1) i = redirigir(this.instrucciones,posicion,i);
             }
             else element.ejecutar(ambito);
         }

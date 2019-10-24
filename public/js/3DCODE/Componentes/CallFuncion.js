@@ -13,22 +13,26 @@ var CallFuncion = /** @class */ (function () {
         this.posicion = posicion;
     }
     CallFuncion.prototype.ejecutar = function (ambito) {
-        var newAmbito = new Ambito();
-        newAmbito.Heap = newAmbito.Heap.concat(ambito.Heap);
-        newAmbito.Stack = this.llenarStack(ambito.getAllStack());
-        newAmbito.Temporales = newAmbito.Temporales.concat(ambito.Temporales);
+        var nuevoAmbito = new Ambito();
+        nuevoAmbito.Stack = ambito.getAllStack();
+        nuevoAmbito.Heap = ambito.getAllHeap();
+        nuevoAmbito.Temporales = this.llenarTemporales(ambito.getAllTemporales());
         var funcion = buscarFuncion(this.id);
         if (funcion === null)
             listaSalida.push(new MensajeError("Semantico", "La funcion: " + this.id + " no existe", this.l, this.c));
         else
-            funcion.ejecutar(newAmbito);
+            funcion.ejecutar(nuevoAmbito);
         return -1;
     };
-    CallFuncion.prototype.llenarStack = function (stack) {
-        var newStack = [];
-        for (var i = 0; i < stack.length; i++)
-            newStack.push(stack[i]);
-        return newStack;
+    /**
+     * FUNCION ENCARGADA DE LLENAR LA NUEVA LISTA CON LOS TEMPORALES ANTERIORES
+     * @param temporales
+     */
+    CallFuncion.prototype.llenarTemporales = function (temporales) {
+        var newTemporales = [];
+        for (var i = 0; i < temporales.length; i++)
+            newTemporales.push(temporales[i]);
+        return newTemporales;
     };
     return CallFuncion;
 }());

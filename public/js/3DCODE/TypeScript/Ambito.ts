@@ -28,13 +28,20 @@ class Ambito{
      * @return Temporal | null
      */
     getTemporal(nombre:String){
-        let retorno : any = null;
-        for(let i:number = 0; i < this.Temporales.length; i++){
+        let retorno : any = null;   
+        for(let i:number = this.Temporales.length - 1; i >= 0; i--){
             let temporal = this.Temporales[i];
             if(temporal.id === nombre) retorno = temporal;
         }
-        
         return retorno;
+    }
+
+
+    /**
+     * METODO QUE DEVUELVE TODOS LOS TEMPORALES DEL AMBITO
+     */
+    getAllTemporales(){
+        return this.Temporales;
     }
 
      /**
@@ -52,7 +59,7 @@ class Ambito{
      * @param nombre 
      */
     eliminarTemporal(nombre:String){
-        for(let i = 0; i < this.Temporales.length; i++){
+        for(let i = this.Temporales.length - 1; i >= 0; i--){
             let dato = this.Temporales[i];
             if(dato.id === nombre){
                 this.Temporales.splice(i,1);
@@ -102,6 +109,10 @@ class Ambito{
         }
     }
 
+    getAllHeap(){
+        return this.Heap;
+    }
+
 
    
 
@@ -147,11 +158,9 @@ class Ambito{
         }
     }
 
-    /**
-     * METODO QUE DEVUELVE TODO EL STACK
-     */
+
     getAllStack(){
         return this.Stack;
     }
-
+    
 }

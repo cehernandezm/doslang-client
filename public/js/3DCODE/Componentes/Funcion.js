@@ -15,9 +15,6 @@ var Funcion = /** @class */ (function () {
         this.posicion = posicion;
     }
     Funcion.prototype.ejecutar = function (ambito) {
-        for (var i = 0; i < this.instrucciones.length; i++) {
-            this.instrucciones[i].posicion = i;
-        }
         //--------------------------------- HACEMOS UN PRIMER RECORRIDO BUSCANDO TODAS LAS ETIQUETAS QUE EXISTEN EN EL CODIGO -------
         this.instrucciones.forEach(function (element) {
             if (element instanceof Etiqueta)
@@ -29,12 +26,12 @@ var Funcion = /** @class */ (function () {
             else if (element instanceof Incondicional) {
                 var posicion = element.ejecutar(ambito);
                 if (posicion != -1)
-                    i = posicion - 1;
+                    i = redirigir(this.instrucciones, posicion, i);
             }
             else if (element instanceof Condicional) {
                 var posicion = element.ejecutar(ambito);
                 if (posicion != -1)
-                    i = posicion - 1;
+                    i = redirigir(this.instrucciones, posicion, i);
             }
             else
                 element.ejecutar(ambito);

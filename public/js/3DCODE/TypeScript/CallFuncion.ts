@@ -22,22 +22,31 @@ class CallFuncion{
 
 
     ejecutar(ambito:Ambito){
-        let newAmbito : Ambito = new Ambito();
-        newAmbito.Heap = newAmbito.Heap.concat(ambito.Heap);
-        newAmbito.Stack = this.llenarStack(ambito.getAllStack());
-        newAmbito.Temporales = newAmbito.Temporales.concat(ambito.Temporales);
+        
+        let nuevoAmbito : Ambito = new Ambito();
+        nuevoAmbito.Stack = ambito.getAllStack();
+        nuevoAmbito.Heap = ambito.getAllHeap();
+        nuevoAmbito.Temporales = this.llenarTemporales(ambito.getAllTemporales());
 
         let funcion : Funcion = buscarFuncion(this.id);
         if(funcion === null) listaSalida.push(new MensajeError("Semantico", "La funcion: " + this.id + " no existe",this.l,this.c));
-        else funcion.ejecutar(newAmbito);
+        else funcion.ejecutar(nuevoAmbito);
         return -1;
 
     }
 
-    llenarStack(stack:any){
-        let newStack:any = [];
-        for(let i = 0; i < stack.length; i++ ) newStack.push(stack[i]);
-        return newStack;
+
+    /**
+     * FUNCION ENCARGADA DE LLENAR LA NUEVA LISTA CON LOS TEMPORALES ANTERIORES
+     * @param temporales 
+     */
+    llenarTemporales(temporales:any){
+        let newTemporales = [];
+        for(let i = 0; i < temporales.length; i++) newTemporales.push(temporales[i]);
+        return newTemporales;
     }
+
+ 
+
 
 }
