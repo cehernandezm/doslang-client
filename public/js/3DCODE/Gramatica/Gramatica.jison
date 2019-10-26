@@ -70,6 +70,7 @@ instruccion : asignacion                             {$$ = $1;}
             | imprimir                               {$$ = $1;}
             | funcion                                {$$ = $1;}
             | callFuncion                            {$$ = $1;}
+            | read                                   {$$ = $1;}
             ;
 
 instruccionesF : instruccionesF instruccionF            {$$ = $1; $$.push($2); parser.linea++;}
@@ -153,10 +154,13 @@ imprimir : PRINT PARIZQ MODULO IE COMA e2 PARDER    { $$ = new Print(0,$6,@1.fir
 
 funcion : BEGIN COMA COMA COMA ID instruccionesF END COMA COMA COMA ID      { $$ = new Funcion($5,$6,@1.first_line,@1.first_column,parser.linea);}
         ;
-
-
 callFuncion : CALL COMA COMA COMA ID                                   {$$ = new CallFuncion($5,@1.first_line,@1.first_column,parser.linea);}
             ;
+
+read : CALL COMA COMA e2 COMA                       { $$ = new Read($4,null,@1.first_line,@1.first_column,parser.linea); }
+     | CALL COMA COMA e2 COMA e2                    { $$ = new Read($4,$6,@1.first_line,@1.first_column,parser.linea); }
+     ;
+
 %%
 
 parser.arbol = {
