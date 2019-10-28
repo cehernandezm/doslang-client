@@ -22,30 +22,22 @@ class CallFuncion{
 
 
     ejecutar(ambito:Ambito){
+       
         
-        let nuevoAmbito : Ambito = new Ambito();
-        nuevoAmbito.Stack = ambito.getAllStack();
-        nuevoAmbito.Heap = ambito.getAllHeap();
-        nuevoAmbito.Temporales = this.llenarTemporales(ambito.getAllTemporales());
-
+        ambito.entornos.push(this.id);
         let funcion : Funcion = buscarFuncion(this.id);
+        
         if(funcion === null) listaSalida.push(new MensajeError("Semantico", "La funcion: " + this.id + " no existe",this.l,this.c));
-        else funcion.ejecutar(nuevoAmbito);
+        else funcion.ejecutar(ambito);
+        ambito.entornos.pop();
+        
+
         return -1;
 
     }
 
 
-    /**
-     * FUNCION ENCARGADA DE LLENAR LA NUEVA LISTA CON LOS TEMPORALES ANTERIORES
-     * @param temporales 
-     */
-    llenarTemporales(temporales:any){
-        let newTemporales = [];
-        for(let i = 0; i < temporales.length; i++) newTemporales.push(temporales[i]);
-        return newTemporales;
-    }
-
+   
  
 
 

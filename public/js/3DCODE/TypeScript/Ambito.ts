@@ -2,6 +2,7 @@ class Ambito{
     public Temporales : any;
     public Stack : any;
     public Heap : any;
+    entornos : any;
 
     /**
      * CONSTRUCTOR DE LA CLASEs
@@ -14,6 +15,7 @@ class Ambito{
         this.Stack = [];
         this.Heap = [{tipo: "number", valor:-11}];
         this.inicializarStack();
+        this.entornos = [];
     }
 
    /*
@@ -31,42 +33,30 @@ class Ambito{
         let retorno : any = null;   
         for(let i:number = this.Temporales.length - 1; i >= 0; i--){
             let temporal = this.Temporales[i];
-            if(temporal.id === nombre) retorno = temporal;
+            if(temporal.id === nombre && temporal.ambito === this.getEntorno()) retorno = temporal;
         }
         return retorno;
     }
 
 
-    /**
-     * METODO QUE DEVUELVE TODOS LOS TEMPORALES DEL AMBITO
-     */
-    getAllTemporales(){
-        return this.Temporales;
-    }
+  
 
      /**
      * METODO QUE AGREGA UN NUEVO TEMPORAL
      * @param dato 
      */
     agregarTemporal(dato:any){
-        if(this.getTemporal(dato.id) != null) this.eliminarTemporal(dato.id);
+        for(let i = 0; i < this.Temporales.length; i++){
+            if(this.Temporales[i].id === dato.id && this.Temporales[i].ambito === this.getEntorno()){
+                this.Temporales[i] = dato;
+                return;
+            }
+        }
         this.Temporales.push(dato);
         return -1;
     }
 
-    /**
-     * METODO QUE ELIMINA EL TEMPORAL ANTERIOR
-     * @param nombre 
-     */
-    eliminarTemporal(nombre:String){
-        for(let i = this.Temporales.length - 1; i >= 0; i--){
-            let dato = this.Temporales[i];
-            if(dato.id === nombre){
-                this.Temporales.splice(i,1);
-                break;
-            }
-        }
-    }
+    
 
      /*
     -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -162,5 +152,17 @@ class Ambito{
     getAllStack(){
         return this.Stack;
     }
+
+
+    //------------------------------------------------------------------ CAMBIOS DE AMBITO ------------------------------------------------------------------
+    getEntorno(){
+        let inicio = "inicio";
+        this.entornos.forEach(element => {
+            inicio += "," + element;
+        });
+        return inicio;
+    }
+
+    
     
 }

@@ -10,6 +10,7 @@ var Ambito = /** @class */ (function () {
         this.Stack = [];
         this.Heap = [{ tipo: "number", valor: -11 }];
         this.inicializarStack();
+        this.entornos = [];
     }
     /*
      -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -25,39 +26,24 @@ var Ambito = /** @class */ (function () {
         var retorno = null;
         for (var i = this.Temporales.length - 1; i >= 0; i--) {
             var temporal = this.Temporales[i];
-            if (temporal.id === nombre)
+            if (temporal.id === nombre && temporal.ambito === this.getEntorno())
                 retorno = temporal;
         }
         return retorno;
-    };
-    /**
-     * METODO QUE DEVUELVE TODOS LOS TEMPORALES DEL AMBITO
-     */
-    Ambito.prototype.getAllTemporales = function () {
-        return this.Temporales;
     };
     /**
     * METODO QUE AGREGA UN NUEVO TEMPORAL
     * @param dato
     */
     Ambito.prototype.agregarTemporal = function (dato) {
-        if (this.getTemporal(dato.id) != null)
-            this.eliminarTemporal(dato.id);
-        this.Temporales.push(dato);
-        return -1;
-    };
-    /**
-     * METODO QUE ELIMINA EL TEMPORAL ANTERIOR
-     * @param nombre
-     */
-    Ambito.prototype.eliminarTemporal = function (nombre) {
-        for (var i = this.Temporales.length - 1; i >= 0; i--) {
-            var dato = this.Temporales[i];
-            if (dato.id === nombre) {
-                this.Temporales.splice(i, 1);
-                break;
+        for (var i = 0; i < this.Temporales.length; i++) {
+            if (this.Temporales[i].id === dato.id && this.Temporales[i].ambito === this.getEntorno()) {
+                this.Temporales[i] = dato;
+                return;
             }
         }
+        this.Temporales.push(dato);
+        return -1;
     };
     /*
    -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -141,6 +127,14 @@ var Ambito = /** @class */ (function () {
     };
     Ambito.prototype.getAllStack = function () {
         return this.Stack;
+    };
+    //------------------------------------------------------------------ CAMBIOS DE AMBITO ------------------------------------------------------------------
+    Ambito.prototype.getEntorno = function () {
+        var inicio = "inicio";
+        this.entornos.forEach(function (element) {
+            inicio += "," + element;
+        });
+        return inicio;
     };
     return Ambito;
 }());

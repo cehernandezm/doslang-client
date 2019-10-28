@@ -93,26 +93,26 @@ var Asignacion = /** @class */ (function () {
         switch (this.operacion) {
             case "suma":
                 if (op2 != null)
-                    return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor + op2.valor, tipo: "number" });
+                    return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor + op2.valor, tipo: "number", ambito: ambito.getEntorno() });
                 else
                     listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una suma con un null", this.l, this.c));
                 break;
             case "resta":
                 if (op2 != null)
-                    return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor - op2.valor, tipo: "number" });
+                    return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor - op2.valor, tipo: "number", ambito: ambito.getEntorno() });
                 else
                     listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una resta con un null", this.l, this.c));
                 break;
             case "multiplicacion":
                 if (op2 != null)
-                    return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor * op2.valor, tipo: "number" });
+                    return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor * op2.valor, tipo: "number", ambito: ambito.getEntorno() });
                 else
                     listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una multiplicacion con un null", this.l, this.c));
                 break;
             case "division":
                 if (op2 != null) {
                     if (op2.valor != 0)
-                        return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor / op2.valor, tipo: "number" });
+                        return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor / op2.valor, tipo: "number", ambito: ambito.getEntorno() });
                     else
                         listaSalida.push(new MensajeError("Semantico", "No se puede dividir entre 0", this.l, this.c));
                 }
@@ -122,7 +122,7 @@ var Asignacion = /** @class */ (function () {
             case "modulo":
                 if (op2 != null) {
                     if (op2.valor != 0)
-                        return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor % op2.valor, tipo: "number" });
+                        return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor % op2.valor, tipo: "number", ambito: ambito.getEntorno() });
                     else
                         listaSalida.push(new MensajeError("Semantico", "No se puede obtener el modulo entre 0", this.l, this.c));
                 }
@@ -131,13 +131,13 @@ var Asignacion = /** @class */ (function () {
                 break;
             case "potencia":
                 if (op2 != null)
-                    return ambito.agregarTemporal({ id: this.temporal, valor: Math.pow(op1.valor, op2.valor), tipo: "number" });
+                    return ambito.agregarTemporal({ id: this.temporal, valor: Math.pow(op1.valor, op2.valor), tipo: "number", ambito: ambito.getEntorno() });
                 else
                     listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una potencia con un null", this.l, this.c));
                 break;
             case "igual":
                 if (op2 === null)
-                    return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor, tipo: "number" });
+                    return ambito.agregarTemporal({ id: this.temporal, valor: op1.valor, tipo: "number", ambito: ambito.getEntorno() });
                 else
                     listaSalida.push(new MensajeError("Semantico", "No se puede ejecutar una asignacion con dos valores", this.l, this.c));
                 break;
