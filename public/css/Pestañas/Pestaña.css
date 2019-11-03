@@ -1,0 +1,69 @@
+
+.nav{
+    background-color: #21252B;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    
+}
+.nav a{
+    text-decoration: none;
+    color:#7F8388;
+    font-size : 13;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+
+.nav .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #ffff;
+    background-color: #282C34;
+    border-top:0px solid #020202;
+    border-right:1px solid #020202;
+    border-bottom:0px solid #020202;
+    border-left:1px solid #020202;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.nav .nav-tabs .nav-item.show .nav-link, .nav-tabs :hover {
+    background-color: #282C34;
+    border:0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+ 
+.nav .nav-tabs .nav-item.show .nav-link, .nav-tabs  {
+    border:0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.navbar-navEditable {
+    height: 100%;
+    margin-right: -15px;
+    margin-left: -15px;
+    
+}
+
+
+.newFile{
+    border:0;
+    margin-left: -15px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    background-color: #21252B;
+}
+
+.textArea{
+    max-height: 100%;
+    overflow-y:hidden;
+}
+
+
+
+

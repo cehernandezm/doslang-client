@@ -8,21 +8,51 @@
         <link rel="stylesheet" href="../css/CodeMirror/codemirror.css">
         <link rel="stylesheet" href="../theme/dracula.css">
 
+        <link rel="stylesheet" href="../css/Pestañas/Pestaña.css">
+
         <script type="text/javascript" src="../js/Configuracion/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="../js/CodeMirror/codemirror.js"></script>
+        <script type="text/javascript" src="../js/Bootstrap/popper.min.js"></script>
         <script type="text/javascript" src="../js/Bootstrap/bootstrap.min.js"></script>
+        
         <script type="text/javascript" src="../mode/clike.js"></script>
+        <script type="text/javascript" src="../mode/pascal.js"></script>
         <script type="text/javascript" src="../js/Editores/configEditores.js"></script>
         
     </head>
     <body>
 
-        <br>
-        <div class="d-flex justify-content-center">
-            <div id="editorDeTexto"  contenteditable="true" style="width: 1000px;min-height:10px;"></div>
+        <!--                  CONTENEDOR                                  -->
+        <div class="container-fluid">
+            <div class="row" style="height: 5%;">
+                <div class="col-md-10">
+                    <nav class ="nav-tab">
+                        <div class="nav nav-tabs  navbar-navEditable" id="nav-tab" role="tablist" >
+                            
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-md-2" style="background-color:#21252B;border:0;margin-bottom:1px;">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle newFile" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          New File
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" id="newPascal" href="#">Pascal</a>
+                          <a class="dropdown-item" href="#">3D</a>
+                        </div>
+                      </div>
+                </div>
+            </div>
+            
+            <div class="row" style="background-color:#282C34; height: 95%;margin-top: 2px;"  >
+                <div  id="espacioEditores" class="tab-content textArea" style="width: 100%;" ></div>
+                
+            </div>
+            
         </div>
-        <br>
-        <button id="compiler" >Compilar</button>
+        <!--                 FIN  CONTENEDOR                                  -->
+    
     </body>
     <script type="text/javascript" src="../js/function.js"></script>
     <script type="text/javascript" src="../js/3DCODE/Gramatica/Gramatica.js"></script>

@@ -1,12 +1,8 @@
 var editor;
-$(document).ready(function(){
-    var prefEditor = {
-        lineNumbers : true,
-        mode: "text/x-java",
-        theme : "dracula"
-    };
+var prefEditorPascal = {
+    lineNumbers : true,
+    mode: "text/x-pascal",
+    theme:"dracula",
+    gutters: ["CodeMirror-linenumbers", "breakpoints"]
+};
 
-    var divEditable = document.getElementById("editorDeTexto");
-    editor = CodeMirror(divEditable,prefEditor);
-    editor.refresh();
-});

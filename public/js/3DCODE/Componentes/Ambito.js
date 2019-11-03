@@ -36,10 +36,11 @@ var Ambito = /** @class */ (function () {
     * @param dato
     */
     Ambito.prototype.agregarTemporal = function (dato) {
+        var flag = true;
         for (var i = 0; i < this.Temporales.length; i++) {
             if (this.Temporales[i].id === dato.id && this.Temporales[i].ambito === this.getEntorno()) {
                 this.Temporales[i] = dato;
-                return;
+                return -1;
             }
         }
         this.Temporales.push(dato);

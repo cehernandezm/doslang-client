@@ -6,10 +6,10 @@
 [ \r\t\n]+                                  {} // ESPACIOS
 \/\/.([^\n])*                               {} // COMENTARIO SIMPLE
 \/\*(.?\n?)*\*\/                             {} // COMENTARIO MULTILINEA
-[0-9]+("."[0-9]+)                           return 'DECIMAL'
-[0-9]+                                      return 'ENTERO'
 "-"[0-9]+("."[0-9]+)                        return 'DECIMAL'
 "-"[0-9]+                                   return 'ENTERO'
+[0-9]+("."[0-9]+)                           return 'DECIMAL'
+[0-9]+                                      return 'ENTERO'
 "+"                                         return 'MAS'
 "-"                                         return 'MENOS'
 "*"                                         return 'POR'
@@ -109,7 +109,6 @@ operacion : MAS                                             {$$ = "suma";}
           ;
 
 e : ENTERO                                   {$$ = new Valor({tipo : "int", valor: $1, linea: @1.first_line, columna: @1.first_column});}
-  | NENTERO                                  {$$ = new Valor({tipo : "int", valor: $1, linea: @1.first_line, columna: @1.first_column});}
   | TEMPORAL                                 {$$ = new Valor({tipo : "temporal", valor: $1, linea: @1.first_line, columna: @1.first_column});}
   | DECIMAL                                  {$$ = new Valor({tipo: "double", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
   | H                                        {$$ = new Valor({tipo: "h", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
@@ -118,7 +117,6 @@ e : ENTERO                                   {$$ = new Valor({tipo : "int", valo
   ;
 
 e2 : ENTERO                                   {$$ = new Valor({tipo : "int", valor: $1, linea: @1.first_line, columna: @1.first_column});}
-   | NENTERO                                  {$$ = new Valor({tipo : "int", valor: $1, linea: @1.first_line, columna: @1.first_column});}
    | TEMPORAL                                 {$$ = new Valor({tipo : "temporal", valor: $1, linea: @1.first_line, columna: @1.first_column});}
    | DECIMAL                                  {$$ = new Valor({tipo: "double", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
    | H                                        {$$ = new Valor({tipo: "h", valor:  $1, linea: @1.first_line, columna: @1.first_column});}
