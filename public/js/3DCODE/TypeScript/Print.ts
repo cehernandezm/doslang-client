@@ -3,6 +3,7 @@
  * 0  ----------------   IMPRIMIR SU VALOR EN ENTERO 
  * 1 ------------------ CONVERTIR DE ASCII A CARACTER
  */
+declare function addMessage(dato:any):any;
 
 class Print{
 
@@ -24,13 +25,14 @@ class Print{
     ejecutar(ambito: Ambito):any{
         let resultado:any = (this.valor == null) ? null : this.valor.ejecutar(ambito);
         if(!(resultado instanceof MensajeError)){
-            if(this.operacion === 0) listaSalida.push(Math.floor(resultado.valor));
+            if(this.operacion === 0) addMessage(Math.floor(resultado.valor));
+            
             else if(this.operacion === 1) {
                 let modulo:number = resultado.valor % 1;
-                if(modulo === 0) listaSalida.push(String.fromCharCode(resultado.valor));
-                else listaSalida.push(resultado.valor - 48);
+                if(modulo === 0) addMessage(String.fromCharCode(resultado.valor));
+                else addMessage(resultado.valor - 48);
             }
-            else listaSalida.push(resultado.valor);
+            else addMessage(resultado.valor);
         }
         
         return -1;  

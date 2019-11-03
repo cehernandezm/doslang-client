@@ -17,6 +17,7 @@
         
         <script type="text/javascript" src="../mode/clike.js"></script>
         <script type="text/javascript" src="../mode/pascal.js"></script>
+        <script type="text/javascript" src="../mode/gas.js"></script>
         <script type="text/javascript" src="../js/Editores/configEditores.js"></script>
         
     </head>
@@ -24,7 +25,9 @@
 
         <!--                  CONTENEDOR                                  -->
         <div class="container-fluid">
+            <!--                              MENU DE ACCIONES               -->
             <div class="row" style="height: 5%;">
+                <!--                         PESTAÑAS                          -->
                 <div class="col-md-10">
                     <nav class ="nav-tab">
                         <div class="nav nav-tabs  navbar-navEditable" id="nav-tab" role="tablist" >
@@ -32,22 +35,42 @@
                         </div>
                     </nav>
                 </div>
+                <!--                         FIN PESTAÑAS                                     -->
                 <div class="col-md-2" style="background-color:#21252B;border:0;margin-bottom:1px;">
                     <div class="dropdown">
+                        <!--                                      NEW FILE BUTTON                        -->
                         <button class="btn btn-secondary dropdown-toggle newFile" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           New File
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                           <a class="dropdown-item" id="newPascal" href="#">Pascal</a>
-                          <a class="dropdown-item" href="#">3D</a>
+                          <a class="dropdown-item" id="new3D" href="#">3D</a>
                         </div>
+                        <!--                                     DEBUG BUTTON                           -->
+                        <img src="../images/debug.png" id="debugButton" width="30px" height="30px"/>
+                        <!--                                    PLAY BUTTON                             -->
+                        <img src="../images/play.png" id="playButton" width="35px" height="35px" style="margin-left: 10px;"/>
                       </div>
                 </div>
             </div>
-            
-            <div class="row" style="background-color:#282C34; height: 95%;margin-top: 2px;"  >
-                <div  id="espacioEditores" class="tab-content textArea" style="width: 100%;" ></div>
+            <!--                         FIN MENU ACCIONES          -->
+            <!--                         EDTIORES                   -->
+            <div class="row" style="background-color:#282C34; height: 90%;margin-top: 2px; "  >
+                <!--                    CONSOLA                        -->
+                <div  id="espacioEditores" class="tab-content textArea" style="width: 100%;" >
+                    <div id ="consolaTarget" class="consolaTarget"></div>
+                    <div id ="debugTarget" class="debugTarget">
+                        <img src="../images/next.png" width="30px" height="30px" style="margin-left: 15px;">
+                        <img src="../images/stop.png" width="30px" height="30px" style="margin-left: 15px;">
+                    </div>
+
+                </div>
                 
+            </div>
+            <!--                   FIN EDITORES                       -->
+            <div class="row" style="background-color:#21252B; height: 5%;"  >
+                
+               <h7 id="consolaClick">  > consola </h7>
             </div>
             
         </div>

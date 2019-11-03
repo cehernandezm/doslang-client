@@ -7,68 +7,11 @@ var TabId = 0;
 
 var H = 0;
 var P = 0;
-$("#compiler").on("click", function(e) {
-  let codigo = editor.getValue();
 
-  listaSalida = [];
-  listaFuncion = [];
-  listaEtiquetas = [];
-  H = 0;
-  P = 0;
-  Gramatica.parse(codigo);
-  let listaInstrucciones = Gramatica.arbol.raiz;
+let editorActual = null;
 
-  //--------------------------------- HACEMOS UN PRIMER RECORRIDO BUSCANDO TODAS LAS ETIQUETAS QUE EXISTEN EN EL CODIGO -------
-  listaInstrucciones.forEach(element => {
-    if (element instanceof Etiqueta) element.ejecutar();
-    else if (element instanceof Funcion) {
-      if (buscarFuncion(element.id) === null)
-        listaFuncion.push({ nombre: element.id, funcion: element });
-      else
-        listaSalida.push(
-          new MensajeError(
-            "Semantico",
-            "La funcion " + element.id + " ya existe",
-            element.l,
-            element.c
-          )
-        );
-    }
-  });
 
-  //------------------------------------------ RECORRIDO QUE EJECUTARA TODO EL CODIGO ------------------------------------------
-  let ambito = new Ambito();
 
-  for (let i = 0; i < listaInstrucciones.length; i++) {
-    let element = listaInstrucciones[i];
-    if (element instanceof Etiqueta || element instanceof Funcion) {
-    } else {
-      if (element instanceof Incondicional) {
-        let posicion = element.ejecutar(ambito);
-        if (posicion != -1) i = redirigir(listaInstrucciones, posicion, i);
-      } else if (element instanceof Condicional) {
-        let posicion = element.ejecutar(ambito);
-        if (posicion != -1) i = redirigir(listaInstrucciones, posicion, i);
-      } else element.ejecutar(ambito);
-    }
-  }
-
-  for (let i = 0; i < 10; i++) {
-    console.log(ambito.Stack[i]);
-  }
-
-  console.log("---------------------HRAp----------------------------");
-  ambito.Heap.forEach(element => {
-    console.log(element);
-  });
-  console.log("---------------------ERRORES----------------------------");
-  consolaSalida = "";
-  listaSalida.forEach(element => {
-    if (element instanceof MensajeError) console.error(element);
-    else consolaSalida += element;
-  });
-  console.log(consolaSalida);
-});
 
 function redirigir(listaInstrucciones, posicion, actual) {
   let indice = actual;
@@ -153,7 +96,55 @@ $("#newPascal").on("click", function(e) {
     editor : editor,
     id : "Tab" + TabId,
     tab : "nav-" + TabId,
-    breakpoins : []
+    breakpoins : [],
+    tipo : 0
+  };
+
+
+ 
+  listaEditores.push(objectEditor);
+
+  editor.refresh;
+
+  $("#nav-tab a").click();
+  TabId++;
+});
+
+/**
+ * METODO PARA CREAR UN NUEVO ARCHIVO DE 3D
+ */
+$("#new3D").on("click", function(e) {
+  e.preventDefault();
+  $("#nav-tab").append(
+    '<a class="nav-item nav-link"  data-toggle="tab" href="#nav-' +
+      TabId +
+      '" role="tab" >' +
+      " Pestaña " +
+      TabId +
+      '<span class="badge" id="Tab' +
+      TabId +
+      '">x</span>' +
+      " </a>"
+  );
+
+  let tab = document.createElement("div");
+  tab.setAttribute("id", "nav-" + TabId);
+  tab.className = "tab-pane active";
+
+  let cuerpo = document.createElement("textarea");
+  tab.appendChild(cuerpo);
+
+  let es = document.getElementById("espacioEditores");
+  es.appendChild(tab);
+  let editor = CodeMirror.fromTextArea(cuerpo, prefEditor3D);
+  editor.setSize(null, "100%");
+  
+  let objectEditor = {
+    editor : editor,
+    id : "Tab" + TabId,
+    tab : "nav-" + TabId,
+    breakpoins : [],
+    tipo : 1
   };
 
   editor.on("gutterClick", function(cm, n) {
@@ -172,6 +163,8 @@ $("#newPascal").on("click", function(e) {
   $("#nav-tab a").click();
   TabId++;
 });
+
+
 
 /**
  * FUNCION QUE AGREGA UN MARCADOR(BREAKPOINT)
@@ -204,6 +197,13 @@ function addBreakPoint(breakpoins,linea){
  * MUESTRA LA NUEVA PESTAÑA
  */
 $("#nav-tab").on("click", "a", function(e) {
+  let href = $(this).attr("href");
+  href = href.slice(1);
+  
+  editorActual = listaEditores.find(function(element){
+      return element.tab === href;
+  });
+
   $(this).tab("show");
 });
 
@@ -235,4 +235,109 @@ function getEditor(id){
         if(listaEditores[i].id === id) return listaEditores[i].tab;
     }
     return null;
+}
+
+
+
+/**
+ * SHOW / HIDE CONSOLA
+ */
+$("#consolaClick").on("click",function(e){
+  $("#consolaTarget").toggle();
+});
+
+/**
+ * INICIAR DEBUG
+ */
+
+$("#debugButton").on("click",function(e){
+  $("#debugTarget").toggle();
+  console.log(editorActual);
+});
+
+
+/**
+ * METODO ENCARGADO DE EJECUTAR,TRADUCIR
+ */
+$("#playButton").on("click",function(e){
+  e.preventDefault();
+  if(editorActual){
+    switch(editorActual.tipo){
+      //------------------------------------- EJECUTAR 3D -----------------------------------------------------------------------
+      case 1:
+        ejecutar3D();
+        break;
+    }
+  }
+});
+
+
+/**
+ * EJECUTA EL CODIGO 3D -
+ */
+function ejecutar3D(){
+  let codigo = editorActual.editor.getValue();
+  inicializarDatos();
+  
+  Gramatica.parse(codigo);
+  let listaInstrucciones = Gramatica.arbol.raiz;
+
+  //--------------------------------- HACEMOS UN PRIMER RECORRIDO BUSCANDO TODAS LAS ETIQUETAS QUE EXISTEN EN EL CODIGO -------
+  listaInstrucciones.forEach(element => {
+    if (element instanceof Etiqueta) element.ejecutar();
+    else if (element instanceof Funcion) {
+      if (buscarFuncion(element.id) === null)
+        listaFuncion.push({ nombre: element.id, funcion: element });
+      else
+        listaSalida.push(
+          new MensajeError(
+            "Semantico",
+            "La funcion " + element.id + " ya existe",
+            element.l,
+            element.c
+          )
+        );
+    }
+  });
+
+  //------------------------------------------ RECORRIDO QUE EJECUTARA TODO EL CODIGO ------------------------------------------
+  let ambito = new Ambito();
+
+  for (let i = 0; i < listaInstrucciones.length; i++) {
+    let element = listaInstrucciones[i];
+    if (element instanceof Etiqueta || element instanceof Funcion) {
+    } else {
+      if (element instanceof Incondicional) {
+        let posicion = element.ejecutar(ambito);
+        if (posicion != -1) i = redirigir(listaInstrucciones, posicion, i);
+      } else if (element instanceof Condicional) {
+        let posicion = element.ejecutar(ambito);
+        if (posicion != -1) i = redirigir(listaInstrucciones, posicion, i);
+      } else element.ejecutar(ambito);
+    }
+  }
+
+  if(!($("#consolaTarget").is(":visible"))) $("#consolaTarget").toggle();
+  
+}
+
+
+function inicializarDatos(){
+  listaSalida = [];
+  listaFuncion = [];
+  listaEtiquetas = [];
+  H = 0;
+  P = 0;
+  document.getElementById("consolaTarget").innerHTML = "";
+}
+
+
+function addMensajeError(tipo,mensaje,linea,columna){
+  let salida = '<p class="messageError"> > ' + tipo + ": " + mensaje + ", Linea: " + linea + ", Columna: " + columna + "</p>";
+  $("#consolaTarget").append(salida);
+}
+
+function addMessage(mensaje){
+  let salida = '<p class="message"> > ' + mensaje + '</p>';
+  $("#consolaTarget").append(salida);
 }

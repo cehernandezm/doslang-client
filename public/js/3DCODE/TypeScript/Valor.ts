@@ -1,5 +1,6 @@
 declare var listaSalida: any;
 declare function buscarTemporal(dato:any):any;
+declare function addMensajeError(tipo:any,mensaje:any,linea:any,columna:any):any;
 declare var P:any,H:any;
 
 
@@ -24,6 +25,7 @@ class Valor{
             if (valorTemp != null) return (this.tipoDato(valorTemp,ambito));
             else {
                 listaSalida.push(new MensajeError("Semantico", "No existe el temporal :" + dato.valor, dato.linea, dato.columna));
+                addMensajeError("Semantico","No existe el temporal :" + dato.valor, dato.linea, dato.columna);
                 return new MensajeError("", "", 0, 0);
             }
         }

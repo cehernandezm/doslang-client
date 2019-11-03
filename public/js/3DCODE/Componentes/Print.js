@@ -1,8 +1,3 @@
-/**
- *  OPERACION:
- * 0  ----------------   IMPRIMIR SU VALOR EN ENTERO
- * 1 ------------------ CONVERTIR DE ASCII A CARACTER
- */
 var Print = /** @class */ (function () {
     function Print(operacion, valor, l, c, posicion) {
         this.operacion = operacion;
@@ -15,16 +10,16 @@ var Print = /** @class */ (function () {
         var resultado = (this.valor == null) ? null : this.valor.ejecutar(ambito);
         if (!(resultado instanceof MensajeError)) {
             if (this.operacion === 0)
-                listaSalida.push(Math.floor(resultado.valor));
+                addMessage(Math.floor(resultado.valor));
             else if (this.operacion === 1) {
                 var modulo = resultado.valor % 1;
                 if (modulo === 0)
-                    listaSalida.push(String.fromCharCode(resultado.valor));
+                    addMessage(String.fromCharCode(resultado.valor));
                 else
-                    listaSalida.push(resultado.valor - 48);
+                    addMessage(resultado.valor - 48);
             }
             else
-                listaSalida.push(resultado.valor);
+                addMessage(resultado.valor);
         }
         return -1;
     };
