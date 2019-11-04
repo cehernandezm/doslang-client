@@ -53,7 +53,7 @@ var Condicional = /** @class */ (function () {
                     }
                 }
                 else
-                    listaSalida.push(new MensajeError("Semantico", "No existe la etiqueta: " + this.etiqueta, this.l, this.c));
+                    addMensajeError("Semantico", "No existe la etiqueta: " + this.etiqueta, this.l, this.c);
             }
         }
         return -1;

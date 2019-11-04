@@ -16,7 +16,7 @@ class Incondicional{
     ejecutar(ambito : Ambito){
        let etiqueta = buscarEtiqueta(this.etiqueta);
        if(etiqueta != null) return etiqueta.posicion;
-       listaSalida.push(new MensajeError("Semantico","La etiqueta: " + this.etiqueta + " no existe",this.l,this.c));
+       addMensajeError("Semantico","La etiqueta: " + this.etiqueta + " no existe",this.l,this.c);
        return -1;
     }
 

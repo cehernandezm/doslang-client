@@ -45,7 +45,7 @@ class Condicional{
                         case ">=": if(op1.valor >= op2.valor) return etiqueta.posicion; break;
                         case "<=": if(op1.valor <= op2.valor) return etiqueta.posicion; break;
                     }
-                } else listaSalida.push(new MensajeError("Semantico","No existe la etiqueta: " + this.etiqueta,this.l,this.c));
+                } else addMensajeError("Semantico","No existe la etiqueta: " + this.etiqueta,this.l,this.c);
                 
             }
         }

@@ -27,7 +27,7 @@ class CallFuncion{
         ambito.entornos.push(this.id);
         let funcion : Funcion = buscarFuncion(this.id);
         
-        if(funcion === null) listaSalida.push(new MensajeError("Semantico", "La funcion: " + this.id + " no existe",this.l,this.c));
+        if(funcion === null) addMensajeError("Semantico", "La funcion: " + this.id + " no existe",this.l,this.c);
         else funcion.ejecutar(ambito);
         ambito.entornos.pop();
         

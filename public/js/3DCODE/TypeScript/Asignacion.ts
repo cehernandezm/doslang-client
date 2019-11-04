@@ -68,18 +68,18 @@ class Asignacion {
                         op2 = null;
                     }
                     else {
-                        listaSalida.push(new MensajeError("Semantico", "No se encontro la posicion: " + op2.valor + " en el Heap", this.l, this.c));
+                        addMensajeError("Semantico", "No se encontro la posicion: " + op2.valor + " en el Heap", this.l, this.c);
                         return -1;
                     }
                 }
                 else {
-                    listaSalida.push(new MensajeError("Semantico", "Se necesita una posicion para acceder al Heap", this.l, this.c));
+                    addMensajeError("Semantico", "Se necesita una posicion para acceder al Heap", this.l, this.c);
                     return -1;
                 }
 
             }
             else {
-                listaSalida.push(new MensajeError("Semantico", "Se necesita una posicion para acceder al Heap", this.l, this.c));
+                addMensajeError("Semantico", "Se necesita una posicion para acceder al Heap", this.l, this.c);
                 return -1;
             }
         }
@@ -94,18 +94,18 @@ class Asignacion {
                         op2 = null;
                     }
                     else {
-                        listaSalida.push(new MensajeError("Semantico", "No se encontro la posicion: " + op2.valor + " en el Stack", this.l, this.c));
+                        addMensajeError("Semantico", "No se encontro la posicion: " + op2.valor + " en el Stack", this.l, this.c);
                         return -1;
                     }
                 }
                 else {
-                    listaSalida.push(new MensajeError("Semantico", "Se necesita una posicion para acceder al Stack", this.l, this.c));
+                    addMensajeError("Semantico", "Se necesita una posicion para acceder al Stack", this.l, this.c);
                     return -1;
                 }
 
             }
             else {
-                listaSalida.push(new MensajeError("Semantico", "Se necesita una posicion para acceder al Stack", this.l, this.c));
+                addMensajeError("Semantico", "Se necesita una posicion para acceder al Stack", this.l, this.c);
                 return -1;
             }
         }
@@ -169,13 +169,13 @@ class Asignacion {
         switch (this.operacion) {
             case "suma":
                 if(op1.valor < 0 || op2.valor <0){
-                    listaSalida.push(new MensajeError("Semantico", "H solo acepta el incremento " + this.operacion, this.l, this.c)); break;
+                    addMensajeError("Semantico", "H solo acepta el incremento " + this.operacion, this.l, this.c); break;
                     return -1;
                 } 
                 H = op1.valor + op2.valor; 
                 ambito.incrementarEspacioHeap();
             break;
-            default: listaSalida.push(new MensajeError("Semantico", "H solo acepta el incremento, No se reconoce: " + this.operacion, this.l, this.c)); break;
+            default: addMensajeError("Semantico", "H solo acepta el incremento, No se reconoce: " + this.operacion, this.l, this.c); break;
         }
         return -1;
     }
@@ -195,7 +195,7 @@ class Asignacion {
             case "resta":
                 P = op1.valor - op2.valor;
                 break;
-            default: listaSalida.push(new MensajeError("Semantico", "H solo acepta el incremento, No se reconoce: " + this.operacion, this.l, this.c)); break;
+            default: addMensajeError("Semantico", "H solo acepta el incremento, No se reconoce: " + this.operacion, this.l, this.c); break;
         }
         return -1;
     }
@@ -210,9 +210,9 @@ class Asignacion {
             case "igual":
                 let existePos = ambito.getHeap(dato.valor);
                 if(existePos != null) ambito.setValueHeap(dato.valor,valor);
-                else listaSalida.push(new MensajeError("Semantico", "No existe esta posicion: " + dato.valor + " en el Heap", this.l, this.c)); break; 
+                else addMensajeError("Semantico", "No existe esta posicion: " + dato.valor + " en el Heap", this.l, this.c); break; 
             break;
-            default: listaSalida.push(new MensajeError("Semantico", "El Heap solo acepta el operador =, No se reconoce: " + this.operacion, this.l, this.c)); break;
+            default: addMensajeError("Semantico", "El Heap solo acepta el operador =, No se reconoce: " + this.operacion, this.l, this.c); break;
         }
         return -1;
     }
@@ -228,9 +228,9 @@ class Asignacion {
             case "igual":
                 let existePos = ambito.getValueStack(dato.valor);
                 if(existePos != null) ambito.setValueStack(dato.valor,valor);
-                else listaSalida.push(new MensajeError("Semantico", "No existe esta posicion: " + dato.valor + " en el Stack", this.l, this.c)); break; 
+                else addMensajeError("Semantico", "No existe esta posicion: " + dato.valor + " en el Stack", this.l, this.c); break; 
             break;
-            default: listaSalida.push(new MensajeError("Semantico", "El Stack solo acepta el operador =, No se reconoce: " + this.operacion, this.l, this.c)); break;
+            default: addMensajeError("Semantico", "El Stack solo acepta el operador =, No se reconoce: " + this.operacion, this.l, this.c); break;
         }
         return -1;
     }

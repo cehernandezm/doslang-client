@@ -21,7 +21,7 @@ var Read = /** @class */ (function () {
         //------------------------------------------------ Si no existe la posicion en el stack --------------------------------------
         var indiceStack = ambito.getValueStack(pos1.valor);
         if (indiceStack === null) {
-            listaSalida.push(new MensajeError("Semantico", "No existe esta posicion: " + pos1.valor + " en el Stack", this.l, this.c));
+            addMensajeError("Semantico", "No existe esta posicion: " + pos1.valor + " en el Stack", this.l, this.c);
             return -1;
         }
         //------------------------------------ Es una Cadena ------------------------------------
@@ -32,7 +32,7 @@ var Read = /** @class */ (function () {
                 var indiceHeap = ambito.getHeap(pos2.valor);
                 //------------------------------------------------- Si no existe la posicion en el Heap --------------------------
                 if (indiceHeap === null) {
-                    listaSalida.push(new MensajeError("Semantico", "No existe esta posicion en Heap " + pos2.valor, this.l, this.c));
+                    addMensajeError("Semantico", "No existe esta posicion en Heap " + pos2.valor, this.l, this.c);
                     return -1;
                 }
                 for (var i = 0; i < cadena.length; i++) {
@@ -45,7 +45,7 @@ var Read = /** @class */ (function () {
                 ambito.incrementarEspacioHeap();
             }
             else
-                listaSalida.push(new MensajeError("Semantico", "Se necesita que ingrese una cadena", this.l, this.c));
+                addMensajeError("Semantico", "Se necesita que ingrese una cadena", this.l, this.c);
         }
         //----------------------------------------- ENTEROS DECIMALES O CARACTERES-------------------------------------
         else {

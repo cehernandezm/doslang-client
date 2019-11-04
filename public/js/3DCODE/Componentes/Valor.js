@@ -17,7 +17,6 @@ var Valor = /** @class */ (function () {
             if (valorTemp != null)
                 return (this.tipoDato(valorTemp, ambito));
             else {
-                listaSalida.push(new MensajeError("Semantico", "No existe el temporal :" + dato.valor, dato.linea, dato.columna));
                 addMensajeError("Semantico", "No existe el temporal :" + dato.valor, dato.linea, dato.columna);
                 return new MensajeError("", "", 0, 0);
             }

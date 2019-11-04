@@ -44,7 +44,7 @@
 [A-Za-z]+["_""-"0-9A-Za-z]*                 return 'ID'
 
 <<EOF>>                                     {}
-.					                        { console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column); }
+.					                        { parser.arbol.errores.push({tipo : 'Lexico', mensaje: yytext , linea: yylloc.first_line , columna: yylloc.first_column}); }
 /lex
 
 %start inicio
@@ -54,7 +54,7 @@
 * ANALISIS SINTACTICO
 */
 inicio: instrucciones                                {parser.arbol.raiz = $1; parser.linea = 0;}
-      | error                                        { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
+      | error                                        { parser.arbol.errores.push({tipo: 'Sintactico', mensaje : yytext , linea : this._$.first_line , columna: this._$.first_column}); }
       ;
 
 
@@ -162,7 +162,8 @@ read : CALL COMA COMA e2 COMA                       { $$ = new Read($4,null,@1.f
 %%
 
 parser.arbol = {
-    raiz: null
+    raiz: null,
+    errores : []
 };
 
 parser.linea = 0;

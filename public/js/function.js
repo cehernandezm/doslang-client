@@ -9,9 +9,8 @@ var H = 0;
 var P = 0;
 
 let editorActual = null;
-
-
-
+let markedText = null;
+let instruccionesDebug = null;
 
 function redirigir(listaInstrucciones, posicion, actual) {
   let indice = actual;
@@ -91,17 +90,15 @@ $("#newPascal").on("click", function(e) {
   es.appendChild(tab);
   let editor = CodeMirror.fromTextArea(cuerpo, prefEditorPascal);
   editor.setSize(null, "100%");
-  
+
   let objectEditor = {
-    editor : editor,
-    id : "Tab" + TabId,
-    tab : "nav-" + TabId,
-    breakpoins : [],
-    tipo : 0
+    editor: editor,
+    id: "Tab" + TabId,
+    tab: "nav-" + TabId,
+    breakpoins: [],
+    tipo: 0
   };
 
-
- 
   listaEditores.push(objectEditor);
 
   editor.refresh;
@@ -138,24 +135,26 @@ $("#new3D").on("click", function(e) {
   es.appendChild(tab);
   let editor = CodeMirror.fromTextArea(cuerpo, prefEditor3D);
   editor.setSize(null, "100%");
-  
+
   let objectEditor = {
-    editor : editor,
-    id : "Tab" + TabId,
-    tab : "nav-" + TabId,
-    breakpoins : [],
-    tipo : 1
+    editor: editor,
+    id: "Tab" + TabId,
+    tab: "nav-" + TabId,
+    breakpoins: [],
+    tipo: 1
   };
 
   editor.on("gutterClick", function(cm, n) {
     var info = cm.lineInfo(n);
-    addBreakPoint(objectEditor.breakpoins,info.line);
+    addBreakPoint(objectEditor.breakpoins, info.line);
     console.log(objectEditor.breakpoins);
-    cm.setGutterMarker(n,"breakpoints",info.gutterMarkers ? null : makeMarker()
+    cm.setGutterMarker(
+      n,
+      "breakpoints",
+      info.gutterMarkers ? null : makeMarker()
     );
   });
 
- 
   listaEditores.push(objectEditor);
 
   editor.refresh;
@@ -163,8 +162,6 @@ $("#new3D").on("click", function(e) {
   $("#nav-tab a").click();
   TabId++;
 });
-
-
 
 /**
  * FUNCION QUE AGREGA UN MARCADOR(BREAKPOINT)
@@ -178,19 +175,19 @@ function makeMarker() {
 
 /**
  * FUNCION QUE ALMACENA QUE LINEA ESTAMOS AGREGADO EL BREAKPOINT
- * @param {*} breakpoins 
- * @param {*} linea 
+ * @param {*} breakpoins
+ * @param {*} linea
  */
-function addBreakPoint(breakpoins,linea){
-    let flag = 1;
-    for(let i = 0; i < breakpoins.length; i++){
-        if(breakpoins[i] === (linea + 1)){
-            breakpoins.splice(i,1);
-            flag = 0;
-            break;
-        }
+function addBreakPoint(breakpoins, linea) {
+  let flag = 1;
+  for (let i = 0; i < breakpoins.length; i++) {
+    if (breakpoins[i] === linea + 1) {
+      breakpoins.splice(i, 1);
+      flag = 0;
+      break;
     }
-    if(flag) breakpoins.push(linea + 1);
+  }
+  if (flag) breakpoins.push(linea + 1);
 }
 
 /**
@@ -199,14 +196,13 @@ function addBreakPoint(breakpoins,linea){
 $("#nav-tab").on("click", "a", function(e) {
   let href = $(this).attr("href");
   href = href.slice(1);
-  
-  editorActual = listaEditores.find(function(element){
-      return element.tab === href;
+
+  editorActual = listaEditores.find(function(element) {
+    return element.tab === href;
   });
 
   $(this).tab("show");
 });
-
 
 /**
  * BORRA UNA PESTAÑA ACTUAL
@@ -225,24 +221,21 @@ $("#nav-tab").on("click", ".badge", function() {
   if (firsr != null) firsr.tab("show");
 });
 
-
 /**
  * OBTENGO EL EDITOR EN EL QUE ESTOY ACTUALMETE
- * @param {*} id 
+ * @param {*} id
  */
-function getEditor(id){
-    for(let i = 0; i < listaEditores.length;i++){
-        if(listaEditores[i].id === id) return listaEditores[i].tab;
-    }
-    return null;
+function getEditor(id) {
+  for (let i = 0; i < listaEditores.length; i++) {
+    if (listaEditores[i].id === id) return listaEditores[i].tab;
+  }
+  return null;
 }
-
-
 
 /**
  * SHOW / HIDE CONSOLA
  */
-$("#consolaClick").on("click",function(e){
+$("#consolaClick").on("click", function(e) {
   $("#consolaTarget").toggle();
 });
 
@@ -250,19 +243,49 @@ $("#consolaClick").on("click",function(e){
  * INICIAR DEBUG
  */
 
-$("#debugButton").on("click",function(e){
+$("#debugButton").on("click", function(e) {
   $("#debugTarget").toggle();
-  console.log(editorActual);
+  let firstIndex = editorActual.breakpoins[0];
+  //------------------------------------------ RECORRIDO QUE EJECUTARA TODO EL CODIGO ------------------------------------------
+  let ambito = new Ambito();
+  let listaInstrucciones = getInstrucciones();
+  if (listaInstrucciones != null) {
+    instruccionesDebug = new Instruccion(listaInstrucciones, ambito);
+    let index = instruccionesDebug.ejecutarDebugger(firstIndex);
+
+    markedText = editorActual.editor.markText(
+      { line: index, ch: 0 },
+      { line: index, ch: 100 },
+      { className: "styled-background" }
+    );
+  }
+
+  if (!$("#consolaTarget").is(":visible")) $("#consolaTarget").toggle();
 });
 
+$("#nextStep").on("click", function(e) {
+  let index = instruccionesDebug.siguienteDebug();
+  markedText.clear();
+  if (index === -777) {
+    $("#debugTarget").toggle();
+  } else {
+    jumpToLine(index);
+    markedText = editorActual.editor.markText({ line: index, ch: 0 }, { line: index, ch: 100 }, { className: "styled-background" });
+  }
+});
+
+function jumpToLine(i) {
+  editorActual.editor.setCursor(i);
+  
+}
 
 /**
  * METODO ENCARGADO DE EJECUTAR,TRADUCIR
  */
-$("#playButton").on("click",function(e){
+$("#playButton").on("click", function(e) {
   e.preventDefault();
-  if(editorActual){
-    switch(editorActual.tipo){
+  if (editorActual) {
+    switch (editorActual.tipo) {
       //------------------------------------- EJECUTAR 3D -----------------------------------------------------------------------
       case 1:
         ejecutar3D();
@@ -271,58 +294,45 @@ $("#playButton").on("click",function(e){
   }
 });
 
-
 /**
  * EJECUTA EL CODIGO 3D -
  */
-function ejecutar3D(){
-  let codigo = editorActual.editor.getValue();
-  inicializarDatos();
-  
-  Gramatica.parse(codigo);
-  let listaInstrucciones = Gramatica.arbol.raiz;
-
-  //--------------------------------- HACEMOS UN PRIMER RECORRIDO BUSCANDO TODAS LAS ETIQUETAS QUE EXISTEN EN EL CODIGO -------
-  listaInstrucciones.forEach(element => {
-    if (element instanceof Etiqueta) element.ejecutar();
-    else if (element instanceof Funcion) {
-      if (buscarFuncion(element.id) === null)
-        listaFuncion.push({ nombre: element.id, funcion: element });
-      else
-        listaSalida.push(
-          new MensajeError(
-            "Semantico",
-            "La funcion " + element.id + " ya existe",
-            element.l,
-            element.c
-          )
-        );
-    }
-  });
-
+function ejecutar3D() {
   //------------------------------------------ RECORRIDO QUE EJECUTARA TODO EL CODIGO ------------------------------------------
   let ambito = new Ambito();
-
-  for (let i = 0; i < listaInstrucciones.length; i++) {
-    let element = listaInstrucciones[i];
-    if (element instanceof Etiqueta || element instanceof Funcion) {
-    } else {
-      if (element instanceof Incondicional) {
-        let posicion = element.ejecutar(ambito);
-        if (posicion != -1) i = redirigir(listaInstrucciones, posicion, i);
-      } else if (element instanceof Condicional) {
-        let posicion = element.ejecutar(ambito);
-        if (posicion != -1) i = redirigir(listaInstrucciones, posicion, i);
-      } else element.ejecutar(ambito);
-    }
+  let listaInstrucciones = getInstrucciones();
+  if (listaInstrucciones != null) {
+    let instruccionCuerpo = new Instruccion(listaInstrucciones, ambito);
+    instruccionCuerpo.ejecutar();
   }
 
-  if(!($("#consolaTarget").is(":visible"))) $("#consolaTarget").toggle();
-  
+  if (!$("#consolaTarget").is(":visible")) $("#consolaTarget").toggle();
 }
 
+function getInstrucciones() {
+  let codigo = editorActual.editor.getValue();
+  inicializarDatos();
 
-function inicializarDatos(){
+  Gramatica.parse(codigo);
+  let listaInstrucciones = Gramatica.arbol.raiz;
+  if (Gramatica.arbol.errores.length > 0) {
+    Gramatica.arbol.errores.forEach(element => {
+      addMensajeError(
+        element.tipo,
+        element.mensaje,
+        element.linea,
+        element.columna
+      );
+    });
+    return null;
+  }
+  return listaInstrucciones;
+}
+
+/**
+ * INICIALIZA TODAS LAS VARIABLES Y ESTRUCTURAS
+ */
+function inicializarDatos() {
   listaSalida = [];
   listaFuncion = [];
   listaEtiquetas = [];
@@ -331,13 +341,32 @@ function inicializarDatos(){
   document.getElementById("consolaTarget").innerHTML = "";
 }
 
-
-function addMensajeError(tipo,mensaje,linea,columna){
-  let salida = '<p class="messageError"> > ' + tipo + ": " + mensaje + ", Linea: " + linea + ", Columna: " + columna + "</p>";
+/**
+ * MENSAJE DE ERROR
+ * @param {*} tipo
+ * @param {*} mensaje
+ * @param {*} linea
+ * @param {*} columna
+ */
+function addMensajeError(tipo, mensaje, linea, columna) {
+  let salida =
+    '<p class="messageError"> > ' +
+    tipo +
+    ": " +
+    mensaje +
+    ", Linea: " +
+    linea +
+    ", Columna: " +
+    columna +
+    "</p>";
   $("#consolaTarget").append(salida);
 }
 
-function addMessage(mensaje){
-  let salida = '<p class="message"> > ' + mensaje + '</p>';
+/**
+ * CONSOLA NORMAL
+ * @param {} mensaje
+ */
+function addMessage(mensaje) {
+  let salida = '<p class="message"> > ' + mensaje + "</p>";
   $("#consolaTarget").append(salida);
 }

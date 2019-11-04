@@ -116,3 +116,6 @@ h7{
     color:#E0E0E0;
     margin-left : 5px;
 }
+
+.CodeMirror-selected  { background-color: blue !important; }
+.styled-background { background-color: #2196f3; }
