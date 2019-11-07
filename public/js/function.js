@@ -270,13 +270,16 @@ $("#nextStep").on("click", function(e) {
     $("#debugTarget").toggle();
   } else {
     jumpToLine(index);
-    markedText = editorActual.editor.markText({ line: index, ch: 0 }, { line: index, ch: 100 }, { className: "styled-background" });
+    markedText = editorActual.editor.markText(
+      { line: index, ch: 0 },
+      { line: index, ch: 100 },
+      { className: "styled-background" }
+    );
   }
 });
 
 function jumpToLine(i) {
   editorActual.editor.setCursor(i);
-  
 }
 
 /**
@@ -309,6 +312,9 @@ function ejecutar3D() {
   if (!$("#consolaTarget").is(":visible")) $("#consolaTarget").toggle();
 }
 
+/**
+ * NOS DEVUELVE EL CONJUNTO DE INSTRUCCIONES DEL ANALISIS DE UN CODIGO 3D PARA EJECUTAR
+ */
 function getInstrucciones() {
   let codigo = editorActual.editor.getValue();
   inicializarDatos();
@@ -369,4 +375,48 @@ function addMensajeError(tipo, mensaje, linea, columna) {
 function addMessage(mensaje) {
   let salida = '<p class="message"> > ' + mensaje + "</p>";
   $("#consolaTarget").append(salida);
+}
+
+/**
+ * SE ENCARGARA DE TRADUCIR DE 3D A ASSEMBLER
+ */
+$("#translateButton").on("click", function(e) {
+  if (editorActual.tipo === 1) {
+    //------------------------------------------ RECORRIDO QUE EJECUTARA TODO EL CODIGO ------------------------------------------
+    let ambito = new Ambito3D();
+    let listaInstrucciones = getInstrucciones3D();
+    if (listaInstrucciones != null) {
+      let codigo = "";
+      listaInstrucciones.forEach(element =>{
+        let res = element.ejecutar(ambito);
+        if(!(res instanceof Error3D)){
+          codigo += "\n" + res.codigo;
+        } 
+      });
+      console.log(codigo);
+    }
+  }
+});
+
+/**
+ * NOS DEVUELVE EL CONJUNTO DE INSTRUCCIONES DEL ANALISIS DE UN CODIGO 3D PARA TRADUCIR
+ */
+function getInstrucciones3D() {
+  let codigo = editorActual.editor.getValue();
+
+  Gramatica3D.parse(codigo);
+  let listaInstrucciones = Gramatica3D.arbol.raiz;
+
+  if (Gramatica3D.arbol.errores.length > 0) {
+    Gramatica3D.arbol.errores.forEach(element => {
+      addMensajeError(
+        element.tipo,
+        element.mensaje,
+        element.linea,
+        element.columna
+      );
+    });
+    return null;
+  }
+  return listaInstrucciones;
 }

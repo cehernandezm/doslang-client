@@ -28,7 +28,7 @@
             <!--                              MENU DE ACCIONES               -->
             <div class="row" style="height: 5%;">
                 <!--                         PESTAÑAS                          -->
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <nav class ="nav-tab">
                         <div class="nav nav-tabs  navbar-navEditable" id="nav-tab" role="tablist" >
                             
@@ -36,7 +36,7 @@
                     </nav>
                 </div>
                 <!--                         FIN PESTAÑAS                                     -->
-                <div class="col-md-2" style="background-color:#21252B;border:0;margin-bottom:1px;">
+                <div class="col-md-3" style="background-color:#21252B;border:0;margin-bottom:1px;">
                     <div class="dropdown">
                         <!--                                      NEW FILE BUTTON                        -->
                         <button class="btn btn-secondary dropdown-toggle newFile" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,6 +50,8 @@
                         <img src="../images/debug.png" id="debugButton" width="30px" height="30px"/>
                         <!--                                    PLAY BUTTON                             -->
                         <img src="../images/play.png" id="playButton" width="35px" height="35px" style="margin-left: 10px;"/>
+                        <!--                                   TRANSLATE BUTTON                    -->
+                        <img src="../images/traductor.png" id="translateButton" width="30px" height="30px" style="margin-left: 10px;" >
                       </div>
                 </div>
             </div>
@@ -91,4 +93,12 @@
     <script type="text/javascript" src="../js/3DCODE/Componentes/CallFuncion.js"></script>
     <script type="text/javascript" src="../js/3DCODE/Componentes/Read.js"></script>
     <script type="text/javascript" src="../js/3DCODE/Componentes/Instruccion.js"></script>
+    <!--                              ASSEMBLER                                 -->
+    <script type="text/javascript" src="../js/Assembler/Gramatica/Gramatica3D.js"></script>
+    <script type="text/javascript" src="../js/Assembler/Componentes/Ambito3D.js"></script>
+    <script type="text/javascript" src="../js/Assembler/Componentes/Error3D.js"></script>
+    <script type="text/javascript" src="../js/Assembler/Componentes/Generador.js"></script>
+    <script type="text/javascript" src="../js/Assembler/Componentes/Nodo3D.js"></script>
+    <script type="text/javascript" src="../js/Assembler/Componentes/Operacion3D.js"></script>
+    <script type="text/javascript" src="../js/Assembler/Componentes/Valor3D.js"></script>
 </html>
