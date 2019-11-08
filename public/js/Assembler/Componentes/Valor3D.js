@@ -5,7 +5,7 @@ var Valor3D = /** @class */ (function () {
     Valor3D.prototype.ejecutar = function (ambito) {
         if (this.dato.tipo === "int") {
             var nodo = new Nodo3D("", Tipo.INT);
-            nodo.setResultado(this.dato.valor);
+            nodo.$resultado = this.dato.valor;
             return nodo;
         }
         else if (this.dato.tipo === "double")
@@ -17,7 +17,7 @@ var Valor3D = /** @class */ (function () {
                 return new Error3D();
             }
             var nodo = new Nodo3D("", Tipo.INT);
-            nodo.setResultado(temp.nombre);
+            nodo.$resultado = temp.nombre;
             return nodo;
         }
         else if (this.dato.tipo === "h")

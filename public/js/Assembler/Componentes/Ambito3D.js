@@ -2,10 +2,13 @@ var Ambito3D = /** @class */ (function () {
     function Ambito3D() {
         this.listaTemporales = [];
     }
+    /**
+     *
+     * @param nombre
+     */
     Ambito3D.prototype.buscarTemporal = function (nombre) {
         var retorno = null;
         for (var i = 0; i < this.listaTemporales.length; i++) {
-            console.log(this.listaTemporales[i].nombre + "_" + nombre);
             if (this.listaTemporales[i].nombre === nombre) {
                 retorno = this.listaTemporales[i];
                 break;

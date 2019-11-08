@@ -1,9 +1,61 @@
 class Generador{
 
-
-    public static guardarMov(destino:String,origen:String,comentario:String) {
+    /**
+     * GUARDA UN MOVIMIENTO
+     * @param destino 
+     * @param origen 
+     * @param comentario 
+     */
+    public static guardarMov(destino:String,origen:String,comentario:String){
         return "\nMOV " + destino + "," + origen + "                              " + comentario;
     }
 
+    /**
+     * GUARDA UNA SUMA
+     * @param destino 
+     * @param origen 
+     * @param comentario 
+     */
+    public static guardarAdd(destino:String,origen:String,comentario:String){
+        return "\nADD " + destino + "," + origen + "                              " + comentario;
+    }
 
+    /**
+     * GUARDA UNA RESTA
+     * @param destino 
+     * @param origen 
+     * @param comentario 
+     */
+    public static guardarSub(destino:String,origen:String,comentario:String){
+        return "\nSUB " + destino + "," + origen + "                              " + comentario;
+    }
+
+    /**
+     * GUARDA UNA MULTIPLICACION
+     * @param destino 
+     * @param origen 
+     * @param comentario 
+     */
+    public static guardarMul(destino:String,comentario:String){
+        return "\nMUL " + destino  + "                              " + comentario;
+    }
+
+    /**
+     * REALIZA UNA DIVISION
+     * @param destino 
+     * @param comentario 
+     */
+    public static guardarDiv(destino:String,comentario:String){
+        return "\nDIV " + destino  + "                              " + comentario;
+    }
+
+    /**
+     * LLAMAR A UN PROCEDURE
+     * @param nombre 
+     * @param comentario 
+     */
+    public static llamarProc(nombre:String, comentario:String){
+        return "\nCALL "+ nombre + "                              " + comentario;
+    }
+    
 }

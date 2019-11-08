@@ -10,7 +10,7 @@ class Valor3D{
     ejecutar(ambito:Ambito3D){
         if(this.dato.tipo === "int") {
             let nodo:Nodo3D = new Nodo3D("",Tipo.INT);
-            nodo.setResultado(this.dato.valor);
+            nodo.$resultado= this.dato.valor;
             return nodo;
         }
         else if(this.dato.tipo === "double") return new Nodo3D(this.dato.valor,Tipo.DOUBLE);
@@ -21,7 +21,7 @@ class Valor3D{
                 return new Error3D();
             }
             let nodo:Nodo3D = new Nodo3D("",Tipo.INT);
-            nodo.setResultado(temp.nombre);
+            nodo.$resultado = temp.nombre;
             return nodo;
         }
         else if(this.dato.tipo === "h") return new Nodo3D("h",Tipo.INT);

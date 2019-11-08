@@ -6,11 +6,13 @@ class Ambito3D{
     }
 
 
-
+    /**
+     * 
+     * @param nombre 
+     */
     buscarTemporal(nombre:String):any {
         let retorno = null;
         for(let i = 0; i < this.listaTemporales.length; i++){
-            console.log(this.listaTemporales[i].nombre + "_" + nombre);
             if(this.listaTemporales[i].nombre === nombre) {
                 retorno = this.listaTemporales[i];
                 break;
