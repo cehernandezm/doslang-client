@@ -124,22 +124,22 @@ e2 : ENTERO                                   {$$ = new Valor3D({tipo : "int", v
    ;
 
 
-etiqueta : ETIQUETA DSPUNTOS                 {$$ = new Etiqueta($1,@1.first_line,@1.first_column,parser.linea);}
+etiqueta : ETIQUETA DSPUNTOS                 {$$ = new Etiqueta3D($1,@1.first_line,@1.first_column);}
          ;
 
 
-incondicional : JMP COMA COMA COMA ETIQUETA     { $$ = new Incondicional(parser.linea,@1.first_line,@1.first_column, $5);}
+incondicional : JMP COMA COMA COMA ETIQUETA     { $$ = new Incondicional3D($5,@1.first_line,@1.first_column);}
               ;
 
-condicional : operador COMA e2 COMA e2 COMA ETIQUETA       {$$ = new Condicional(parser.linea,@1.first_line,@1.first_column,$1,$3,$5,$7);}
+condicional : operador COMA e2 COMA e2 COMA ETIQUETA       {$$ = new Condicional3D($1,$3,$5,$7,@1.first_line,@1.first_column);}
             ;
 
-operador : JE                   {$$ = "=="}
-         | JNE                  {$$ = "!="}
-         | JG                   {$$ = ">"}
-         | JL                   {$$ = "<"}
-         | JGE                  {$$ = ">="}
-         | JLE                  {$$ = "<="}
+operador : JE                   {$$ = "JE"}
+         | JNE                  {$$ = "JNE"}
+         | JG                   {$$ = "JG"}
+         | JL                   {$$ = "JL"}
+         | JGE                  {$$ = "JGE"}
+         | JLE                  {$$ = "JLE"}
          ;
 
 

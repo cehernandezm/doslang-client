@@ -159,31 +159,31 @@ case 40:
 this.$ = new Valor3D({tipo: $$[$0], valor:  $$[$0], linea: _$[$0].first_line, columna: _$[$0].first_column});
 break;
 case 46:
-this.$ = new Etiqueta($$[$0-1],_$[$0-1].first_line,_$[$0-1].first_column,parser.linea);
+this.$ = new Etiqueta3D($$[$0-1],_$[$0-1].first_line,_$[$0-1].first_column);
 break;
 case 47:
- this.$ = new Incondicional(parser.linea,_$[$0-4].first_line,_$[$0-4].first_column, $$[$0]);
+ this.$ = new Incondicional3D($$[$0],_$[$0-4].first_line,_$[$0-4].first_column);
 break;
 case 48:
-this.$ = new Condicional(parser.linea,_$[$0-6].first_line,_$[$0-6].first_column,$$[$0-6],$$[$0-4],$$[$0-2],$$[$0]);
+this.$ = new Condicional3D($$[$0-6],$$[$0-4],$$[$0-2],$$[$0],_$[$0-6].first_line,_$[$0-6].first_column);
 break;
 case 49:
-this.$ = "=="
+this.$ = "JE"
 break;
 case 50:
-this.$ = "!="
+this.$ = "JNE"
 break;
 case 51:
-this.$ = ">"
+this.$ = "JG"
 break;
 case 52:
-this.$ = "<"
+this.$ = "JL"
 break;
 case 53:
-this.$ = ">="
+this.$ = "JGE"
 break;
 case 54:
-this.$ = "<="
+this.$ = "JLE"
 break;
 case 55:
  this.$ = new Print(0,$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column,parser.linea); 

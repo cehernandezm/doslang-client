@@ -1,6 +1,7 @@
 var Ambito3D = /** @class */ (function () {
     function Ambito3D() {
         this.listaTemporales = [];
+        this.listaEtiquetas = [];
     }
     /**
      *
@@ -16,10 +17,34 @@ var Ambito3D = /** @class */ (function () {
         }
         return retorno;
     };
+    /**
+     * AGREGAMOS UN TEMPORAL AL AMBITO
+     * @param nombre
+     * @param tipo
+     */
     Ambito3D.prototype.agregarTemporal = function (nombre, tipo) {
         if (this.buscarTemporal(nombre) === null) {
             this.listaTemporales.push({ nombre: nombre, tipo: tipo });
         }
+    };
+    /**
+     * Agregamos una etiqueta
+     * @param etiqueta
+     */
+    Ambito3D.prototype.agregarEtiqueta = function (etiqueta) {
+        this.listaEtiquetas.push(etiqueta);
+    };
+    /**
+     * BUSCAMOS UNA ETIQUETA
+     * @param etiqueta
+     */
+    Ambito3D.prototype.buscarEtiqueta = function (etiqueta) {
+        var retorno = null;
+        for (var i = 0; i < this.listaEtiquetas.length; i++) {
+            if (this.listaEtiquetas[i] === etiqueta)
+                retorno = etiqueta;
+        }
+        return retorno;
     };
     return Ambito3D;
 }());

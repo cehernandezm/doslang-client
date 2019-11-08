@@ -387,6 +387,11 @@ $("#translateButton").on("click", function(e) {
     let listaInstrucciones = getInstrucciones3D();
     if (listaInstrucciones != null) {
       let codigo = "";
+      
+      listaInstrucciones.forEach(element =>{
+        if(element instanceof Etiqueta3D) element.ejecutarFirst(ambito);
+      });
+
       listaInstrucciones.forEach(element =>{
         let res = element.ejecutar(ambito);
         if(!(res instanceof Error3D)){
