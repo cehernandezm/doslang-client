@@ -84,4 +84,13 @@ class Generador{
     public static tipoComparacion(operacion:String,etiqueta:String,comentario:String){
         return "\n" + operacion + " " + etiqueta + "                              ;" + comentario;
     }
+
+    /**
+     * MUESTRA UNA INTERRUPCION
+     * @param i 
+     * @param comentario 
+     */
+    public static interrupcion(i:String,comentario:String){
+        return "\nINT " + i  + "                              ;" + comentario;
+    }
 }

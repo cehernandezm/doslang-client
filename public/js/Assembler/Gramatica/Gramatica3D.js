@@ -186,13 +186,13 @@ case 54:
 this.$ = "JLE"
 break;
 case 55:
- this.$ = new Print(0,$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column,parser.linea); 
+ this.$ = new Print3D(0,$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column); 
 break;
 case 56:
- this.$ = new Print(1,$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column,parser.linea); 
+ this.$ = new Print3D(1,$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column); 
 break;
 case 57:
- this.$ = new Print(2,$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column,parser.linea); 
+ this.$ = new Print3D(2,$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column); 
 break;
 case 58:
  this.$ = new Funcion($$[$0-6],$$[$0-5],_$[$0-10].first_line,_$[$0-10].first_column,parser.linea);

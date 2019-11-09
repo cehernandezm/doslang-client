@@ -77,5 +77,13 @@ var Generador = /** @class */ (function () {
     Generador.tipoComparacion = function (operacion, etiqueta, comentario) {
         return "\n" + operacion + " " + etiqueta + "                              ;" + comentario;
     };
+    /**
+     * MUESTRA UNA INTERRUPCION
+     * @param i
+     * @param comentario
+     */
+    Generador.interrupcion = function (i, comentario) {
+        return "\nINT " + i + "                              ;" + comentario;
+    };
     return Generador;
 }());

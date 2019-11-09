@@ -144,9 +144,9 @@ operador : JE                   {$$ = "JE"}
 
 
 
-imprimir : PRINT PARIZQ MODULO IE COMA e2 PARDER    { $$ = new Print(0,$6,@1.first_line,@1.first_column,parser.linea); }
-         | PRINT PARIZQ MODULO IC COMA e2 PARDER    { $$ = new Print(1,$6,@1.first_line,@1.first_column,parser.linea); }
-         | PRINT PARIZQ MODULO ID COMA e2 PARDER    { $$ = new Print(2,$6,@1.first_line,@1.first_column,parser.linea); }      
+imprimir : PRINT PARIZQ MODULO IE COMA e2 PARDER    { $$ = new Print3D(0,$6,@1.first_line,@1.first_column); }
+         | PRINT PARIZQ MODULO IC COMA e2 PARDER    { $$ = new Print3D(1,$6,@1.first_line,@1.first_column); }
+         | PRINT PARIZQ MODULO ID COMA e2 PARDER    { $$ = new Print3D(2,$6,@1.first_line,@1.first_column); }      
          ;
 
 
