@@ -263,6 +263,9 @@ $("#debugButton").on("click", function(e) {
   if (!$("#consolaTarget").is(":visible")) $("#consolaTarget").toggle();
 });
 
+/**
+ * STEP ON STEP EN DEBUG
+ */
 $("#nextStep").on("click", function(e) {
   let index = instruccionesDebug.siguienteDebug();
   markedText.clear();
@@ -278,12 +281,16 @@ $("#nextStep").on("click", function(e) {
   }
 });
 
+/**
+ * HACE UNA SALTO DE LINEA DESDE EL DEBUG
+ * @param {*} i
+ */
 function jumpToLine(i) {
   editorActual.editor.setCursor(i);
 }
 
 /**
- * METODO ENCARGADO DE EJECUTAR,TRADUCIR
+ * METODO ENCARGADO DE EJECUTAR CODIGO DE PASCAL (TRADUCIR EL CODIGO)
  */
 $("#playButton").on("click", function(e) {
   e.preventDefault();
@@ -387,18 +394,50 @@ $("#translateButton").on("click", function(e) {
     let listaInstrucciones = getInstrucciones3D();
     if (listaInstrucciones != null) {
       let codigo = "";
-      
-      listaInstrucciones.forEach(element =>{
-        if(element instanceof Etiqueta3D) element.ejecutarFirst(ambito);
+
+      /**
+       * ALMACENAMOS LAS ETIQUETAS
+       */
+      listaInstrucciones.forEach(element => {
+        if (element instanceof Etiqueta3D) element.ejecutarFirst(ambito);
       });
 
-      listaInstrucciones.forEach(element =>{
-        let res = element.ejecutar(ambito);
-        if(!(res instanceof Error3D)){
-          codigo += "\n" + res.codigo;
-        } 
+      /**
+       * HACE UNA PASADA BUSCANDO FUNCIONES
+       */
+      listaInstrucciones.forEach(element => {
+        if (element instanceof Funcion3D) {
+          let encontrado = ambito.buscarFuncion(element.nombre.toLowerCase());
+          if (encontrado != null)
+            addMensajeError(
+              "Semantico",
+              "La funcion: " + element.nombre.toLowerCase() + " ya existe",
+              element.l,
+              element.c
+            );
+          else ambito.agregarFuncion(element.nombre.toLowerCase());
+        }
       });
-      console.log(codigo);
+
+      listaInstrucciones.forEach(element => {
+        if (!(element instanceof Funcion3D)) {
+          let res = element.ejecutar(ambito);
+          if (!(res instanceof Error3D)) codigo += "\n" + res.codigo;
+          
+        }
+      });
+
+      let codigoTemp = "";
+      listaInstrucciones.forEach(element =>{
+        if(element instanceof Funcion3D){
+          let res = element.ejecutar(ambito);
+          if(!(res instanceof Error3D)) codigoTemp += "\n" + res.getcodigo();
+        }
+      })
+      
+      armarAssembler(codigo,ambito.getTemporales(),codigoTemp);
+      
+      
     }
   }
 });
@@ -424,4 +463,30 @@ function getInstrucciones3D() {
     return null;
   }
   return listaInstrucciones;
+}
+
+
+/**
+ * FUNCION ENCARGADA DE ARMAR EL CUERPO DEL ASSEMBLER
+ * @param {*} cuerpo 
+ * @param {*} ambito
+ */
+function armarAssembler(cuerpo,listaTemporales,funciones){
+  let codigo = Generador.getEncabezado();
+  codigo += "\n" + Generador.getDeclaraciones(listaTemporales);
+  codigo += "\n.CODE";
+  codigo += "\nMAIN PROC FAR";
+  codigo += "\nMOV AX,@DATA";
+  codigo += "\nMOV DS,AX";
+  codigo += "\nMOV H,0d";
+  codigo += "\nMOV P,0d";
+  codigo += "\n" + cuerpo;
+  codigo += "\nMOV AH,4CH"; 
+  codigo += "\nINT 21H";
+  codigo += "\nMAIN ENDP";
+  codigo += "\n" + Generador.funcionPrint();
+  codigo += "\n" + funciones;
+  codigo += "\nEND MAIN";
+  console.log(codigo);
+
 }

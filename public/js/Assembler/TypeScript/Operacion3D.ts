@@ -47,9 +47,12 @@ class Operacion3D {
                     addMensajeError("Semantico","El stack necesita una posicion",this.l,this.c);
                     return new Error();
                 }
-                codigo += Generador.guardarMov("bx",this.resultadoDer.getResultado(),"Guardamos en memoria la direccion");
-                codigo += Generador.guardarMov("cx","S[bx]","Almacenamos en memoria donde estamos accediendo");
-                codigo += Generador.guardarMov(this.estructura,"cx","Accedemos a la posicion: " + this.resultadoDer.getResultado() + " del stack");
+                codigo += this.resultadoDer.getcodigo();
+                codigo += Generador.guardarMov("ax",this.resultadoDer.getResultado(),"Guardamos en memoria la direccion");
+                codigo += Generador.arreglarIndice();
+                codigo += Generador.guardarMov("bx","ax","Indice ya arreglado");
+                codigo += Generador.guardarMov("ax","S[bx]","Almacenamos en memoria donde estamos accediendo");
+                codigo += Generador.guardarMov(this.estructura,"ax","Accedemos a la posicion: " + this.resultadoDer.getResultado() + " del stack");
                 ambito.agregarTemporal(this.estructura,Tipo.INT);
                 let nodo = new Nodo3D(codigo,null);
                 return nodo;
@@ -60,9 +63,12 @@ class Operacion3D {
                     addMensajeError("Semantico","El Heap necesita una posicion",this.l,this.c);
                     return new Error();
                 }
-                codigo += Generador.guardarMov("bx",this.resultadoDer.getResultado(),"Guardamos en memoria la direccion");
-                codigo += Generador.guardarMov("cx","He[bx]","Almacenamos en memoria donde estamos accediendo");
-                codigo += Generador.guardarMov(this.estructura,"cx","Accedemos a la posicion: " + this.resultadoDer.getResultado() + " del Heap");
+                codigo += Generador.guardarMov("ax",this.resultadoDer.getResultado(),"Guardamos en memoria la direccion");
+                codigo += Generador.arreglarIndice();
+                codigo += Generador.guardarMov("bx","ax","Indice ya arreglado");
+                codigo += Generador.guardarMov("ax",this.resultadoDer.getResultado(),"Guardamos en memoria la direccion");
+                codigo += Generador.guardarMov("ax","He[bx]","Almacenamos en memoria donde estamos accediendo");
+                codigo += Generador.guardarMov(this.estructura,"ax","Accedemos a la posicion: " + this.resultadoDer.getResultado() + " del Heap");
                 ambito.agregarTemporal(this.estructura,Tipo.INT);
                 let nodo = new Nodo3D(codigo,null);
                 return nodo;
@@ -77,7 +83,8 @@ class Operacion3D {
             
 
             let temp: Nodo3D = this.resultadoIzq;
-            codigo = Generador.guardarMov("[" + this.estructura + "]", temp.getResultado(), "Almacenamos el valor: " + temp.getResultado() + " en el temporal " + this.estructura);
+            codigo = temp.getcodigo();
+            codigo += Generador.guardarMovEspecial( this.estructura , temp.getResultado(), "Almacenamos el valor: " + temp.getResultado() + " en el temporal " + this.estructura);
 
             ambito.agregarTemporal(this.estructura.toLowerCase(), Tipo.INT);
             let nodo: Nodo3D = new Nodo3D(codigo, null);
@@ -94,8 +101,7 @@ class Operacion3D {
                 case Operacion.SUMA:
                     codigo = nodoIzq.getcodigo();
                     codigo += "\n" + nodoDer.getcodigo();
-                    codigo += Generador.guardarMov("AX", nodoIzq.getResultado(), "Asignamos el valor de " + nodoIzq.getResultado() + " a memoria");
-                    codigo += Generador.guardarAdd("AX", nodoDer.getResultado(), "Le sumamos el valor de: " + nodoDer.getResultado());
+                    codigo += Generador.guardarAdd(nodoIzq.getResultado(),nodoDer.getResultado(),"SUMA DE: " + nodoIzq.getResultado() + " CON: " + nodoDer.getResultado());
                     codigo += Generador.guardarMov(this.estructura, "AX", "Almacenamos la suma en :" + this.estructura);
                     let nodo: Nodo3D = new Nodo3D(codigo, Tipo.INT);
                     nodo.$resultado = this.estructura;
@@ -106,8 +112,7 @@ class Operacion3D {
                 case Operacion.RESTA:
                     codigo = nodoIzq.getcodigo();
                     codigo += "\n" + nodoDer.getcodigo();
-                    codigo += Generador.guardarMov("AX", nodoIzq.getResultado(), "Asignamos el valor de " + nodoIzq.getResultado() + " a memoria");
-                    codigo += Generador.guardarSub("AX", nodoDer.getResultado(), "Restamos el valor de: " + nodoDer.getResultado());
+                    codigo += "\n" + Generador.guardarSub(nodoIzq.getResultado(),nodoDer.getResultado(),"RESTA DE: " + nodoIzq.getResultado() + " CON: " + nodoDer.getResultado());
                     codigo += Generador.guardarMov(this.estructura, "AX", "Almacenamos la resta en: " + this.estructura);
                     nodo = new Nodo3D(codigo, Tipo.INT);
                     nodo.$resultado = this.estructura;
@@ -117,9 +122,7 @@ class Operacion3D {
                 case Operacion.MULTIPLICACION:
                     codigo = nodoIzq.getcodigo();
                     codigo += "\n" + nodoDer.getcodigo();
-                    codigo += Generador.guardarMov("AX", nodoIzq.getResultado(), "Asignamos el valor de " + nodoIzq.getResultado() + " a memoria");
-                    codigo += Generador.guardarMov("BX", nodoDer.getResultado(), "Asignamos el valor de " + nodoDer.getResultado() + " a memoria");
-                    codigo += Generador.guardarMul("BX", "Multiplicamos el valor de: " + nodoDer.getResultado());
+                    codigo += "\n" + Generador.guardarMul(nodoIzq.getResultado(),nodoDer.getResultado(),"MULTIPLICACION  DE: " + nodoIzq.getResultado() + " CON: " + nodoDer.getResultado());
                     codigo += Generador.guardarMov(this.estructura, "AX", "Almacenamos la multiplicacion en: " + this.estructura);
                     nodo = new Nodo3D(codigo, Tipo.INT);
                     nodo.$resultado = this.estructura;
@@ -130,10 +133,7 @@ class Operacion3D {
                 case Operacion.DIVISION:
                     codigo = nodoIzq.getcodigo();
                     codigo += "\n" + nodoDer.getcodigo();
-                    codigo += Generador.guardarMov("AX", nodoDer.getResultado(), "Asignamos el valor de " + nodoDer.getResultado() + " a memoria");
-                    codigo += Generador.guardarMov("BX", "AX", "");
-                    codigo += Generador.guardarMov("AX", nodoIzq.getResultado(), "Asignamos el valor de " + nodoIzq.getResultado() + " a memoria");
-                    codigo += Generador.guardarDiv("BX", "Realizamos la divison de ax/bx el resultado se almacena en ax, el residuo queda en dx");
+                    codigo += "\n" + Generador.guardarDiv(nodoIzq.getResultado(),nodoDer.getResultado(),"DIVISION  DE: " + nodoIzq.getResultado() + " CON: " + nodoDer.getResultado());
                     codigo += Generador.guardarMov(this.estructura, "AX", "Almacenamos la division en: " + this.estructura);
                     nodo = new Nodo3D(codigo, Tipo.INT);
                     nodo.$resultado = this.estructura;
@@ -143,12 +143,8 @@ class Operacion3D {
                 case Operacion.MODULO:
                     codigo = nodoIzq.getcodigo();
                     codigo += "\n" + nodoDer.getcodigo();
-                    codigo += Generador.guardarMov("AX", nodoDer.getResultado(), "Asignamos el valor de " + nodoDer.getResultado() + " a memoria");
-                    codigo += Generador.guardarMov("BX", "AX", "");
-                    codigo += Generador.guardarMov("AX", nodoIzq.getResultado(), "Asignamos el valor de " + nodoIzq.getResultado() + " a memoria");
-                    codigo += Generador.guardarDiv("BX", "Realizamos la divison de ax/bx el resultado se almacena en ax, el residuo queda en dx");
-                    codigo += Generador.guardarMov("AX","DX", "Almacenamos el modulo en AX");
-                    codigo += Generador.guardarMov(this.estructura, "AX", "Almacenamos la division en: " + this.estructura);
+                    codigo += "\n" + Generador.guardarDiv(nodoIzq.getResultado(),nodoDer.getResultado(),"MODULO  DE: " + nodoIzq.getResultado() + " CON: " + nodoDer.getResultado());
+                    codigo += Generador.guardarMov(this.estructura, "DX", "Almacenamos la division en: " + this.estructura);
                     nodo = new Nodo3D(codigo, Tipo.INT);
                     nodo.$resultado = this.estructura;
                     ambito.agregarTemporal(this.estructura, Tipo.INT);
@@ -182,8 +178,11 @@ class Operacion3D {
         let codigo:String = "";
         codigo += this.resultadoIzq.getcodigo();
         codigo += "\n" + this.resultadoDer.getcodigo();
-        codigo += Generador.guardarMov("bx",this.resultadoIzq.getResultado(),"Almacenamos en memoria la ubicacion");
-        codigo += Generador.guardarMov("S[bx]",this.resultadoDer.getResultado(),"Asignamos el valor: " + this.resultadoDer.getResultado() + " en la posicion: " + this.resultadoIzq.getResultado() + " del stack");
+        codigo += Generador.guardarMov("ax",this.resultadoIzq.getResultado(),"Almacenamos en memoria la ubicacion");
+        codigo += Generador.arreglarIndice();
+        codigo += Generador.guardarMov("bx","ax","Indice ya arreglado");
+        codigo += Generador.guardarMov("ax",this.resultadoDer.getResultado(),"Almacenamos en memoria el valor");
+        codigo += Generador.guardarMov("S[bx]","ax","Asignamos el valor: " + this.resultadoDer.getResultado() + " en la posicion: " + this.resultadoIzq.getResultado() + " del stack");
         let nodo = new Nodo3D(codigo,null);
         return nodo;
     }
@@ -198,13 +197,19 @@ class Operacion3D {
         let codigo:String = "";
         codigo += this.resultadoIzq.getcodigo();
         codigo += "\n" + this.resultadoDer.getcodigo();
-        codigo += Generador.guardarMov("bx",this.resultadoIzq.getResultado(),"Almacenamos en memoria la ubicacion");
-        codigo += Generador.guardarMov("He[bx]",this.resultadoDer.getResultado(),"Asignamos el valor: " + this.resultadoDer.getResultado() + " en la posicion: " + this.resultadoIzq.getResultado() + " del Heap");
+        codigo += Generador.guardarMov("ax",this.resultadoIzq.getResultado(),"Guardamos en memoria la direccion");
+        codigo += Generador.arreglarIndice();
+        codigo += Generador.guardarMov("bx","ax","Indice ya arreglado");
+
+        codigo += Generador.guardarMov("ax",this.resultadoDer.getResultado(),"Almacenamos en memoria el valor");
+        codigo += Generador.guardarMov("He[bx]","ax","Asignamos el valor: " + this.resultadoDer.getResultado() + " en la posicion: " + this.resultadoIzq.getResultado() + " del Heap");
         
         let nodo = new Nodo3D(codigo,null);
         return nodo;
     }
 
+
+    
 
 }
 

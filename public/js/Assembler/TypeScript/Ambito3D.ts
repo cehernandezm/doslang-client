@@ -1,10 +1,12 @@
 class Ambito3D{
     listaTemporales:any;
     listaEtiquetas:Array<String>;
+    listaFunciones:Array<String>;
 
     constructor(){
         this.listaTemporales = [];
         this.listaEtiquetas = [];
+        this.listaFunciones = [];
     }
 
 
@@ -53,6 +55,32 @@ class Ambito3D{
             if(this.listaEtiquetas[i] === etiqueta) retorno = etiqueta;
         }
         return retorno;
+    }
+
+    /**
+     * METODO QUE BUSCA FUNCIONES
+     * @param nombre 
+     */
+    buscarFuncion(nombre:String){
+        for(let i = 0; i < this.listaFunciones.length; i++){
+            if(this.listaFunciones[i] === nombre) return this.listaFunciones[i];
+        }
+        return null;
+    }
+
+    /**
+     * AGREGO UNA FUNCION
+     * @param nombre 
+     */
+    agregarFuncion(nombre:String){
+        this.listaFunciones.push(nombre);
+    }
+    
+    /**
+     * OBTENGO LOS TEMPORALES
+     */
+    getTemporales(){
+        return this.listaTemporales;
     }
 
 }

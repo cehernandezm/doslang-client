@@ -14,7 +14,12 @@ class Valor3D{
             nodo.$resultado= this.dato.valor + "d";
             return nodo;
         }
-        else if(this.dato.tipo === "double") return new Nodo3D(this.dato.valor,Tipo.DOUBLE);
+        else if(this.dato.tipo === "double") {
+            let nodo:Nodo3D = new Nodo3D("",Tipo.INT);
+
+            nodo.$resultado= "0" + "d";
+            return nodo;
+        }
         else if(this.dato.tipo === "temporal"){
             let temp = ambito.buscarTemporal(this.dato.valor.toLowerCase());
             if(temp === null){
@@ -33,7 +38,7 @@ class Valor3D{
 
         else if(this.dato.tipo === "p") {
             let nodo:Nodo3D = new Nodo3D("",Tipo.INT);
-            nodo.$resultado = "H";
+            nodo.$resultado = "P";
             return nodo;
         }
         else if(this.dato.tipo == "stack") return new Nodo3D("stack",null);

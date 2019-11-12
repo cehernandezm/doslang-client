@@ -192,10 +192,10 @@ case 57:
  this.$ = new Print3D(2,$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column); 
 break;
 case 58:
- this.$ = new Funcion($$[$0-6],$$[$0-5],_$[$0-10].first_line,_$[$0-10].first_column,parser.linea);
+ this.$ = new Funcion3D($$[$0-6],$$[$0-5],_$[$0-10].first_line,_$[$0-10].first_column);
 break;
 case 59:
-this.$ = new CallFuncion($$[$0],_$[$0-4].first_line,_$[$0-4].first_column,parser.linea);
+this.$ = new CallFuncion3D($$[$0],_$[$0-4].first_line,_$[$0-4].first_column);
 break;
 case 60:
  this.$ = new Read($$[$0-1],null,_$[$0-4].first_line,_$[$0-4].first_column,parser.linea); 

@@ -8,8 +8,11 @@ var Valor3D = /** @class */ (function () {
             nodo.$resultado = this.dato.valor + "d";
             return nodo;
         }
-        else if (this.dato.tipo === "double")
-            return new Nodo3D(this.dato.valor, Tipo.DOUBLE);
+        else if (this.dato.tipo === "double") {
+            var nodo = new Nodo3D("", Tipo.INT);
+            nodo.$resultado = "0" + "d";
+            return nodo;
+        }
         else if (this.dato.tipo === "temporal") {
             var temp = ambito.buscarTemporal(this.dato.valor.toLowerCase());
             if (temp === null) {
@@ -27,7 +30,7 @@ var Valor3D = /** @class */ (function () {
         }
         else if (this.dato.tipo === "p") {
             var nodo = new Nodo3D("", Tipo.INT);
-            nodo.$resultado = "H";
+            nodo.$resultado = "P";
             return nodo;
         }
         else if (this.dato.tipo == "stack")

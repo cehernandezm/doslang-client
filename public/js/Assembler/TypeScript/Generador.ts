@@ -1,4 +1,4 @@
-class Generador{
+class Generador {
 
     /**
      * GUARDA UN MOVIMIENTO
@@ -6,18 +6,27 @@ class Generador{
      * @param origen 
      * @param comentario 
      */
-    public static guardarMov(destino:String,origen:String,comentario:String){
-        return "\nMOV " + destino + "," + origen + "                              ;" + comentario;
+    public static guardarMov(destino: String, origen: String, comentario: String) {
+        return "\nMOV " + destino + ", " + origen + "                              ;" + comentario;
+        
     }
 
+    public static guardarMovEspecial(destino: String, origen: String, comentario: String) {
+        let codigo = "\nMOV AX," + origen;
+        codigo += "\nMOV " + destino + ", AX" + "                              ;" + comentario
+        return codigo;
+        
+    }
     /**
      * GUARDA UNA SUMA
      * @param destino 
      * @param origen 
      * @param comentario 
      */
-    public static guardarAdd(destino:String,origen:String,comentario:String){
-        return "\nADD " + destino + "," + origen + "                              ;" + comentario;
+    public static guardarAdd(destino: String, origen: String, comentario: String) {
+        let codigo = "\nMOV AX," + destino;
+        codigo += "\nADD AX," + origen + "                              ;" + comentario
+        return codigo;
     }
 
     /**
@@ -26,8 +35,10 @@ class Generador{
      * @param origen 
      * @param comentario 
      */
-    public static guardarSub(destino:String,origen:String,comentario:String){
-        return "\nSUB " + destino + "," + origen + "                              ;" + comentario;
+    public static guardarSub(destino: String, origen: String, comentario: String) {
+        let codigo = "\nMOV AX," + destino;
+        codigo += "\nSUB AX," + origen + "                              ;" + comentario;
+        return codigo;
     }
 
     /**
@@ -36,8 +47,11 @@ class Generador{
      * @param origen 
      * @param comentario 
      */
-    public static guardarMul(destino:String,comentario:String){
-        return "\nMUL " + destino  + "                              ;" + comentario;
+    public static guardarMul(destino: String, origen:String, comentario: String) {
+        let codigo = "\nMOV AX," + destino;
+        codigo += "\nMOV BX," + origen;
+        codigo += "\nMUL BX" + "                              ;" + comentario
+        return codigo;
     }
 
     /**
@@ -45,8 +59,12 @@ class Generador{
      * @param destino 
      * @param comentario 
      */
-    public static guardarDiv(destino:String,comentario:String){
-        return "\nDIV " + destino  + "                              ;" + comentario;
+    public static guardarDiv(destino: String, origen:String,comentario: String) {
+        let codigo = "\nMOV AX," + destino;
+        codigo += "\nXOR DX,DX";
+        codigo += "\nMOV BX," + origen;
+        codigo += "\nDIV BX" + "                              ;" + comentario;
+        return codigo;
     }
 
     /**
@@ -54,16 +72,16 @@ class Generador{
      * @param nombre 
      * @param comentario 
      */
-    public static llamarProc(nombre:String, comentario:String){
-        return "\nCALL "+ nombre + "                              ;" + comentario;
+    public static llamarProc(nombre: String, comentario: String) {
+        return "\nCALL " + nombre + "                              ;" + comentario;
     }
-    
+
     /**
      * GENERA EL CODIGO DE UN SALTO INCONDICIONAL
      * @param etiqueta 
      */
-    public static saltoIncondicional(etiqueta:String){
-        return "\nJMP " + etiqueta; 
+    public static saltoIncondicional(etiqueta: String) {
+        return "\nJMP " + etiqueta;
     }
 
     /**
@@ -71,8 +89,10 @@ class Generador{
      * @param izq 
      * @param der 
      */
-    public static comparador(izq:String,der:String,comentario:String){
-        return "\nCMP " + izq + "," + der + "                              ;" + comentario;
+    public static comparador(izq: String, der: String, comentario: String) {
+        let codigo = "\nMOV CX," + izq;
+        codigo += "\nCMP CX," + der + "                              ;" + comentario
+        return codigo;
     }
 
     /**
@@ -81,7 +101,7 @@ class Generador{
      * @param etiqueta 
      * @param comentario 
      */
-    public static tipoComparacion(operacion:String,etiqueta:String,comentario:String){
+    public static tipoComparacion(operacion: String, etiqueta: String, comentario: String) {
         return "\n" + operacion + " " + etiqueta + "                              ;" + comentario;
     }
 
@@ -90,7 +110,108 @@ class Generador{
      * @param i 
      * @param comentario 
      */
-    public static interrupcion(i:String,comentario:String){
-        return "\nINT " + i  + "                              ;" + comentario;
+    public static interrupcion(i: String, comentario: String) {
+        return "\nINT " + i + "                              ;" + comentario;
+    }
+
+
+    public static arreglarIndice(){
+        let codigo = this.guardarMov("bx","2d","Multiplicamos por 2");
+        codigo += "\nMUL bx";
+        return codigo;
+    }
+
+    /**
+     * DEVUELVE EL CODIGO ASSEMBLER DE LA FUNCION PRINT
+     */
+    public static funcionPrint() {
+        return 'PRINT PROC\n' +
+            ';initilize count\n' +
+            'mov cx,0\n' +
+            'mov dx,0\n' +
+            'cmp ax,0\n' +
+            'je printcero\n' +
+
+
+            'label1:\n' +
+            '; if ax is zero\n' +
+            'cmp ax,0\n' +
+            'je print1\n' +
+
+            ';initilize bx to 10 \n' +
+            'mov bx,10\n' +
+
+            '; extract the last digit\n' +
+            'div bx\n' +
+
+            ';push it in the stack\n' +
+            'push dx\n' +
+
+            ';increment the count\n' +
+            'inc cx\n' +
+
+            ';set dx to 0\n' +
+            'xor dx,dx\n' +
+            'jmp label1\n' +
+            'print1:\n' +
+            ';check if count\n' +
+            ';is greater than zero\n' +
+            'cmp cx,0\n' +
+            'je exit\n' +
+
+            ';pop the top of stack\n' +
+            'pop dx\n' +
+
+            ';add 48 so that it\n' +
+            ';represents the ASCII\n' +
+            ';value of digits\n' +
+            'add dx,48\n' +
+
+            ';interuppt to print a\n' +
+            ';character\n' +
+            'mov ah,02h\n' +
+            'int 21h\n' +
+
+            ';decrease the count\n' +
+            'dec cx\n' +
+            'jmp print1\n' +
+
+            'printcero:\n' +
+            'mov dx,48\n' +
+            'mov ah,02h\n' +
+            'int 21h\n' +
+            'jmp exit\n' +
+
+            'exit:\n' +
+            'ret\n' +
+            'PRINT ENDP\n'
+    }
+
+    /**
+     * OBTENEMOS LAS DECLARACIONES DE TODOS LOS TEMPORALES EN CODIGO ASSEMBLER
+     * @param listado 
+     */
+    public static getDeclaraciones(listado: any) {
+        let codigo = "";
+        listado.forEach(element => {
+            codigo += element.nombre + " dw ?\n";
+        });
+        return codigo;
+    }
+
+    /**
+     * OBTENEMOS EL CODIGO DEL ENCABEZADO EN CODIGO ASSEMBLER
+     */
+    public static getEncabezado() {
+        let codigo: String = "";
+        codigo = '.MODEL SMALL\n' +
+            '.STACK 100H\n' +
+            '.DATA\n' +
+
+            'S dw 500 DUP(?)\n' +
+            'He dw 1000 DUP(?)\n' +
+            'tP dw 0' +
+            'tH dw 0' 
+        return codigo;
     }
 }

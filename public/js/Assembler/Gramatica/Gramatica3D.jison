@@ -150,9 +150,9 @@ imprimir : PRINT PARIZQ MODULO IE COMA e2 PARDER    { $$ = new Print3D(0,$6,@1.f
          ;
 
 
-funcion : BEGIN COMA COMA COMA ID instruccionesF END COMA COMA COMA ID      { $$ = new Funcion($5,$6,@1.first_line,@1.first_column,parser.linea);}
+funcion : BEGIN COMA COMA COMA ID instruccionesF END COMA COMA COMA ID      { $$ = new Funcion3D($5,$6,@1.first_line,@1.first_column);}
         ;
-callFuncion : CALL COMA COMA COMA ID                                   {$$ = new CallFuncion($5,@1.first_line,@1.first_column,parser.linea);}
+callFuncion : CALL COMA COMA COMA ID                                   {$$ = new CallFuncion3D($5,@1.first_line,@1.first_column);}
             ;
 
 read : CALL COMA COMA e2 COMA                       { $$ = new Read($4,null,@1.first_line,@1.first_column,parser.linea); }

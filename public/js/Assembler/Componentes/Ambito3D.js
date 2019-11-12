@@ -2,6 +2,7 @@ var Ambito3D = /** @class */ (function () {
     function Ambito3D() {
         this.listaTemporales = [];
         this.listaEtiquetas = [];
+        this.listaFunciones = [];
     }
     /**
      *
@@ -45,6 +46,30 @@ var Ambito3D = /** @class */ (function () {
                 retorno = etiqueta;
         }
         return retorno;
+    };
+    /**
+     * METODO QUE BUSCA FUNCIONES
+     * @param nombre
+     */
+    Ambito3D.prototype.buscarFuncion = function (nombre) {
+        for (var i = 0; i < this.listaFunciones.length; i++) {
+            if (this.listaFunciones[i] === nombre)
+                return this.listaFunciones[i];
+        }
+        return null;
+    };
+    /**
+     * AGREGO UNA FUNCION
+     * @param nombre
+     */
+    Ambito3D.prototype.agregarFuncion = function (nombre) {
+        this.listaFunciones.push(nombre);
+    };
+    /**
+     * OBTENGO LOS TEMPORALES
+     */
+    Ambito3D.prototype.getTemporales = function () {
+        return this.listaTemporales;
     };
     return Ambito3D;
 }());
