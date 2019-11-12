@@ -30,7 +30,8 @@ class Print3D{
             codigo += Generador.llamarProc("Print","Llamamos la funcion print que se encargara de mostrar el numero");
         }
         else{
-            codigo += Generador.guardarMov("DL",nodoIzq.getResultado(),"guardamos el ascii a mostrar: " +  nodoIzq.getResultado());
+            codigo += Generador.guardarMov("bx",nodoIzq.getResultado(),"guardamos en memoria el valor");
+            codigo += Generador.guardarMov("DX","BX","guardamos el ascii a mostrar: " +  nodoIzq.getResultado());
             codigo += Generador.guardarMov("AH","02H","Interrupcion para mostrar un caracter");
             codigo += Generador.interrupcion("21H","Interrupcion para mostrar un caracter");
         }

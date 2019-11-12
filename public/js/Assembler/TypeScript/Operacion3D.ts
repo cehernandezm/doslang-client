@@ -22,8 +22,8 @@ class Operacion3D {
         this.resultadoIzq = this.izq.ejecutar(ambito);
         this.resultadoDer = (this.der == null) ? null : this.der.ejecutar(ambito);
         switch (this.estructura) {
-            case "heap": break;
-            case "stack": break;
+            case "heap": return this.operacionHeap();
+            case "stack": return this.operacionStack();
             //-------------------------------- ES UN TEMPORAL ----------------------------------------------
             default:
                 return this.operacionTemporal(ambito);
@@ -31,17 +31,53 @@ class Operacion3D {
         }
     }
 
+    /**
+     * METODO QUE SE ENCARGA DE HACER LA ASIGNACION A UN TEMPORAL
+     * @param ambito 
+     */
     private operacionTemporal(ambito: Ambito3D) {
         let codigo: String = "";
+       
         if (Operacion.IGUAL === this.operacion) {
+            
+            if (this.resultadoIzq instanceof Error3D) return this.resultadoIzq;
+
+            if(this.resultadoIzq.getcodigo() === "stack"){
+                if(this.resultadoDer === null){
+                    addMensajeError("Semantico","El stack necesita una posicion",this.l,this.c);
+                    return new Error();
+                }
+                codigo += Generador.guardarMov("bx",this.resultadoDer.getResultado(),"Guardamos en memoria la direccion");
+                codigo += Generador.guardarMov("cx","S[bx]","Almacenamos en memoria donde estamos accediendo");
+                codigo += Generador.guardarMov(this.estructura,"cx","Accedemos a la posicion: " + this.resultadoDer.getResultado() + " del stack");
+                ambito.agregarTemporal(this.estructura,Tipo.INT);
+                let nodo = new Nodo3D(codigo,null);
+                return nodo;
+            }
+
+            if(this.resultadoIzq.getcodigo() === "heap"){
+                if(this.resultadoDer === null){
+                    addMensajeError("Semantico","El Heap necesita una posicion",this.l,this.c);
+                    return new Error();
+                }
+                codigo += Generador.guardarMov("bx",this.resultadoDer.getResultado(),"Guardamos en memoria la direccion");
+                codigo += Generador.guardarMov("cx","He[bx]","Almacenamos en memoria donde estamos accediendo");
+                codigo += Generador.guardarMov(this.estructura,"cx","Accedemos a la posicion: " + this.resultadoDer.getResultado() + " del Heap");
+                ambito.agregarTemporal(this.estructura,Tipo.INT);
+                let nodo = new Nodo3D(codigo,null);
+                return nodo;
+            }
+
             if (this.resultadoDer != null) {
                 addMensajeError("Semantico", "No se puede igualar a dos valores", this.l, this.c);
                 return new Error3D();
             }
-            if (this.resultadoIzq instanceof Error3D) return this.resultadoIzq;
+           
+
+            
 
             let temp: Nodo3D = this.resultadoIzq;
-            codigo = Generador.guardarMov(this.estructura, temp.$resultado, "Almacenamos el valor: " + temp.$resultado + " en el temporal " + this.estructura);
+            codigo = Generador.guardarMov("[" + this.estructura + "]", temp.getResultado(), "Almacenamos el valor: " + temp.getResultado() + " en el temporal " + this.estructura);
 
             ambito.agregarTemporal(this.estructura.toLowerCase(), Tipo.INT);
             let nodo: Nodo3D = new Nodo3D(codigo, null);
@@ -136,6 +172,38 @@ class Operacion3D {
 
     }
 
+    /**
+     * SE ENCARGARA DE ASIGNAR EN EL STACK
+     * @param ambito 
+     */
+    private operacionStack(){
+        if(this.resultadoIzq instanceof Error3D || this.resultadoDer instanceof Error3D ) return new Error3D();
+
+        let codigo:String = "";
+        codigo += this.resultadoIzq.getcodigo();
+        codigo += "\n" + this.resultadoDer.getcodigo();
+        codigo += Generador.guardarMov("bx",this.resultadoIzq.getResultado(),"Almacenamos en memoria la ubicacion");
+        codigo += Generador.guardarMov("S[bx]",this.resultadoDer.getResultado(),"Asignamos el valor: " + this.resultadoDer.getResultado() + " en la posicion: " + this.resultadoIzq.getResultado() + " del stack");
+        let nodo = new Nodo3D(codigo,null);
+        return nodo;
+    }
+
+    /**
+     * SE ENCARGARA DE ASIGNAR EN EL HEAP
+     * @param ambito 
+     */
+    private operacionHeap(){
+        if(this.resultadoIzq instanceof Error3D || this.resultadoDer instanceof Error3D ) return new Error3D();
+
+        let codigo:String = "";
+        codigo += this.resultadoIzq.getcodigo();
+        codigo += "\n" + this.resultadoDer.getcodigo();
+        codigo += Generador.guardarMov("bx",this.resultadoIzq.getResultado(),"Almacenamos en memoria la ubicacion");
+        codigo += Generador.guardarMov("He[bx]",this.resultadoDer.getResultado(),"Asignamos el valor: " + this.resultadoDer.getResultado() + " en la posicion: " + this.resultadoIzq.getResultado() + " del Heap");
+        
+        let nodo = new Nodo3D(codigo,null);
+        return nodo;
+    }
 
 
 }

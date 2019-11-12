@@ -5,7 +5,7 @@ var Valor3D = /** @class */ (function () {
     Valor3D.prototype.ejecutar = function (ambito) {
         if (this.dato.tipo === "int") {
             var nodo = new Nodo3D("", Tipo.INT);
-            nodo.$resultado = this.dato.valor;
+            nodo.$resultado = this.dato.valor + "d";
             return nodo;
         }
         else if (this.dato.tipo === "double")
@@ -20,10 +20,20 @@ var Valor3D = /** @class */ (function () {
             nodo.$resultado = temp.nombre;
             return nodo;
         }
-        else if (this.dato.tipo === "h")
-            return new Nodo3D("h", Tipo.INT);
-        else if (this.dato.tipo === "p")
-            return new Nodo3D("p", Tipo.INT);
+        else if (this.dato.tipo === "h") {
+            var nodo = new Nodo3D("", Tipo.INT);
+            nodo.$resultado = "H";
+            return nodo;
+        }
+        else if (this.dato.tipo === "p") {
+            var nodo = new Nodo3D("", Tipo.INT);
+            nodo.$resultado = "H";
+            return nodo;
+        }
+        else if (this.dato.tipo == "stack")
+            return new Nodo3D("stack", null);
+        else if (this.dato.tipo == "heap")
+            return new Nodo3D("heap", null);
     };
     return Valor3D;
 }());

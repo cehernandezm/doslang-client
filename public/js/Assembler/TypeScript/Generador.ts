@@ -63,7 +63,7 @@ class Generador{
      * @param etiqueta 
      */
     public static saltoIncondicional(etiqueta:String){
-        return "\nJPM " + etiqueta; 
+        return "\nJMP " + etiqueta; 
     }
 
     /**

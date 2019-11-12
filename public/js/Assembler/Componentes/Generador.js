@@ -58,7 +58,7 @@ var Generador = /** @class */ (function () {
      * @param etiqueta
      */
     Generador.saltoIncondicional = function (etiqueta) {
-        return "\nJPM " + etiqueta;
+        return "\nJMP " + etiqueta;
     };
     /**
      * COMPARA DOS NUMEROS

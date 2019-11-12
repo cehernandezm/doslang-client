@@ -98,17 +98,14 @@ break;
 case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12: case 15: case 16: case 17: case 18: case 19: case 20:
 this.$ = $$[$0];
 break;
-case 21:
+case 21: case 22:
 this.$ = new Operacion3D($$[$0-4],$$[$0-2],$$[$0-6],$$[$0],_$[$0-6].first_line,_$[$0-6].first_column);
 break;
-case 22:
-this.$ = new Asignacion($$[$0-4],$$[$0-2],$$[$0-6],$$[$0],_$[$0-6].first_line,_$[$0-6].first_column,parser.linea);
-break;
 case 23:
-this.$ = new Asignacion($$[$0-4],$$[$0-2],$$[$0-6],"h",_$[$0-6].first_line,_$[$0-6].first_column,parser.linea);
+this.$ = new Operacion3D($$[$0-4],$$[$0-2],$$[$0-6],"h",_$[$0-6].first_line,_$[$0-6].first_column,parser.linea);
 break;
 case 24:
-this.$ = new Asignacion($$[$0-4],$$[$0-2],$$[$0-6],"p",_$[$0-6].first_line,_$[$0-6].first_column,parser.linea);
+this.$ = new Operacion3D($$[$0-4],$$[$0-2],$$[$0-6],"p",_$[$0-6].first_line,_$[$0-6].first_column,parser.linea);
 break;
 case 25:
 this.$ = new Operacion3D($$[$0-3],null,$$[$0-5],$$[$0],_$[$0-5].first_line,_$[$0-5].first_column,parser.linea);

@@ -11,25 +11,53 @@ var Operacion3D = /** @class */ (function () {
         this.resultadoIzq = this.izq.ejecutar(ambito);
         this.resultadoDer = (this.der == null) ? null : this.der.ejecutar(ambito);
         switch (this.estructura) {
-            case "heap": break;
-            case "stack": break;
+            case "heap": return this.operacionHeap();
+            case "stack": return this.operacionStack();
             //-------------------------------- ES UN TEMPORAL ----------------------------------------------
             default:
                 return this.operacionTemporal(ambito);
                 break;
         }
     };
+    /**
+     * METODO QUE SE ENCARGA DE HACER LA ASIGNACION A UN TEMPORAL
+     * @param ambito
+     */
     Operacion3D.prototype.operacionTemporal = function (ambito) {
         var codigo = "";
         if (Operacion.IGUAL === this.operacion) {
+            if (this.resultadoIzq instanceof Error3D)
+                return this.resultadoIzq;
+            if (this.resultadoIzq.getcodigo() === "stack") {
+                if (this.resultadoDer === null) {
+                    addMensajeError("Semantico", "El stack necesita una posicion", this.l, this.c);
+                    return new Error();
+                }
+                codigo += Generador.guardarMov("bx", this.resultadoDer.getResultado(), "Guardamos en memoria la direccion");
+                codigo += Generador.guardarMov("cx", "S[bx]", "Almacenamos en memoria donde estamos accediendo");
+                codigo += Generador.guardarMov(this.estructura, "cx", "Accedemos a la posicion: " + this.resultadoDer.getResultado() + " del stack");
+                ambito.agregarTemporal(this.estructura, Tipo.INT);
+                var nodo_1 = new Nodo3D(codigo, null);
+                return nodo_1;
+            }
+            if (this.resultadoIzq.getcodigo() === "heap") {
+                if (this.resultadoDer === null) {
+                    addMensajeError("Semantico", "El Heap necesita una posicion", this.l, this.c);
+                    return new Error();
+                }
+                codigo += Generador.guardarMov("bx", this.resultadoDer.getResultado(), "Guardamos en memoria la direccion");
+                codigo += Generador.guardarMov("cx", "He[bx]", "Almacenamos en memoria donde estamos accediendo");
+                codigo += Generador.guardarMov(this.estructura, "cx", "Accedemos a la posicion: " + this.resultadoDer.getResultado() + " del Heap");
+                ambito.agregarTemporal(this.estructura, Tipo.INT);
+                var nodo_2 = new Nodo3D(codigo, null);
+                return nodo_2;
+            }
             if (this.resultadoDer != null) {
                 addMensajeError("Semantico", "No se puede igualar a dos valores", this.l, this.c);
                 return new Error3D();
             }
-            if (this.resultadoIzq instanceof Error3D)
-                return this.resultadoIzq;
             var temp = this.resultadoIzq;
-            codigo = Generador.guardarMov(this.estructura, temp.$resultado, "Almacenamos el valor: " + temp.$resultado + " en el temporal " + this.estructura);
+            codigo = Generador.guardarMov("[" + this.estructura + "]", temp.getResultado(), "Almacenamos el valor: " + temp.getResultado() + " en el temporal " + this.estructura);
             ambito.agregarTemporal(this.estructura.toLowerCase(), Tipo.INT);
             var nodo = new Nodo3D(codigo, null);
             return nodo;
@@ -112,6 +140,36 @@ var Operacion3D = /** @class */ (function () {
                     return nodo;
             }
         }
+    };
+    /**
+     * SE ENCARGARA DE ASIGNAR EN EL STACK
+     * @param ambito
+     */
+    Operacion3D.prototype.operacionStack = function () {
+        if (this.resultadoIzq instanceof Error3D || this.resultadoDer instanceof Error3D)
+            return new Error3D();
+        var codigo = "";
+        codigo += this.resultadoIzq.getcodigo();
+        codigo += "\n" + this.resultadoDer.getcodigo();
+        codigo += Generador.guardarMov("bx", this.resultadoIzq.getResultado(), "Almacenamos en memoria la ubicacion");
+        codigo += Generador.guardarMov("S[bx]", this.resultadoDer.getResultado(), "Asignamos el valor: " + this.resultadoDer.getResultado() + " en la posicion: " + this.resultadoIzq.getResultado() + " del stack");
+        var nodo = new Nodo3D(codigo, null);
+        return nodo;
+    };
+    /**
+     * SE ENCARGARA DE ASIGNAR EN EL HEAP
+     * @param ambito
+     */
+    Operacion3D.prototype.operacionHeap = function () {
+        if (this.resultadoIzq instanceof Error3D || this.resultadoDer instanceof Error3D)
+            return new Error3D();
+        var codigo = "";
+        codigo += this.resultadoIzq.getcodigo();
+        codigo += "\n" + this.resultadoDer.getcodigo();
+        codigo += Generador.guardarMov("bx", this.resultadoIzq.getResultado(), "Almacenamos en memoria la ubicacion");
+        codigo += Generador.guardarMov("He[bx]", this.resultadoDer.getResultado(), "Asignamos el valor: " + this.resultadoDer.getResultado() + " en la posicion: " + this.resultadoIzq.getResultado() + " del Heap");
+        var nodo = new Nodo3D(codigo, null);
+        return nodo;
     };
     return Operacion3D;
 }());

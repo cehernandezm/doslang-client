@@ -10,7 +10,8 @@ class Valor3D{
     ejecutar(ambito:Ambito3D){
         if(this.dato.tipo === "int") {
             let nodo:Nodo3D = new Nodo3D("",Tipo.INT);
-            nodo.$resultado= this.dato.valor;
+
+            nodo.$resultado= this.dato.valor + "d";
             return nodo;
         }
         else if(this.dato.tipo === "double") return new Nodo3D(this.dato.valor,Tipo.DOUBLE);
@@ -24,8 +25,19 @@ class Valor3D{
             nodo.$resultado = temp.nombre;
             return nodo;
         }
-        else if(this.dato.tipo === "h") return new Nodo3D("h",Tipo.INT);
-        else if(this.dato.tipo === "p") return new Nodo3D("p",Tipo.INT);
+        else if(this.dato.tipo === "h") {
+            let nodo:Nodo3D = new Nodo3D("",Tipo.INT);
+            nodo.$resultado = "H";
+            return nodo;
+        }
+
+        else if(this.dato.tipo === "p") {
+            let nodo:Nodo3D = new Nodo3D("",Tipo.INT);
+            nodo.$resultado = "H";
+            return nodo;
+        }
+        else if(this.dato.tipo == "stack") return new Nodo3D("stack",null);
+        else if(this.dato.tipo == "heap") return new Nodo3D("heap",null);
 
     }
     

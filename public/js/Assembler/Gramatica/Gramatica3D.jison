@@ -87,9 +87,9 @@ instruccionF : asignacion                             {$$ = $1;}
             ;
 
 asignacion : operacion COMA e COMA e2 COMA TEMPORAL          {$$ = new Operacion3D($3,$5,$1,$7,@1.first_line,@1.first_column);} // T = e op e
-           | operacion COMA e COMA e2 COMA estructura        {$$ = new Asignacion($3,$5,$1,$7,@1.first_line,@1.first_column,parser.linea);} // H|S [e] = e;
-           | operacion COMA e COMA e2 COMA H                 {$$ = new Asignacion($3,$5,$1,"h",@1.first_line,@1.first_column,parser.linea);}// H = H op e
-           | operacion COMA e COMA e2 COMA P                 {$$ = new Asignacion($3,$5,$1,"p",@1.first_line,@1.first_column,parser.linea);}// P = P op e
+           | operacion COMA e COMA e2 COMA estructura        {$$ = new Operacion3D($3,$5,$1,$7,@1.first_line,@1.first_column);} // H|S [e] = e;
+           | operacion COMA e COMA e2 COMA H                 {$$ = new Operacion3D($3,$5,$1,"h",@1.first_line,@1.first_column,parser.linea);}// H = H op e
+           | operacion COMA e COMA e2 COMA P                 {$$ = new Operacion3D($3,$5,$1,"p",@1.first_line,@1.first_column,parser.linea);}// P = P op e
            | operacion COMA e COMA  COMA TEMPORAL            {$$ = new Operacion3D($3,null,$1,$6,@1.first_line,@1.first_column,parser.linea);}// T = e
            ;
 
