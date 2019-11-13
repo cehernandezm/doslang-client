@@ -1,110 +1,134 @@
 <html>
-    <head>
-        <title>
-            PRUEBA
-        </title>
-        <link rel="stylesheet" href="../css/BootsTrap/bootstrap.min.css">
-        <link rel="stylesheet" href="../css/BootsTrap/bootstrap.css">
-        <link rel="stylesheet" href="../css/CodeMirror/codemirror.css">
-        <link rel="stylesheet" href="../theme/dracula.css">
 
-        <link rel="stylesheet" href="../css/Pestañas/Pestaña.css">
+<head>
+    <title>
+        PRUEBA
+    </title>
+    <link rel="stylesheet" href="../css/BootsTrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/BootsTrap/bootstrap.css" />
+    <link rel="stylesheet" href="../css/CodeMirror/codemirror.css" />
+    <link rel="stylesheet" href="../theme/dracula.css" />
 
-        <script type="text/javascript" src="../js/Configuracion/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="../js/CodeMirror/codemirror.js"></script>
-        <script type="text/javascript" src="../js/Bootstrap/popper.min.js"></script>
-        <script type="text/javascript" src="../js/Bootstrap/bootstrap.min.js"></script>
-        
-        <script type="text/javascript" src="../mode/clike.js"></script>
-        <script type="text/javascript" src="../mode/pascal.js"></script>
-        <script type="text/javascript" src="../mode/gas.js"></script>
-        <script type="text/javascript" src="../js/Editores/configEditores.js"></script>
-        
-    </head>
-    <body>
+    <link rel="stylesheet" href="../css/Pestañas/Pestaña.css" />
 
-        <!--                  CONTENEDOR                                  -->
-        <div class="container-fluid">
-            <!--                              MENU DE ACCIONES               -->
-            <div class="row" style="height: 5%;">
-                <!--                         PESTAÑAS                          -->
-                <div class="col-md-9">
-                    <nav class ="nav-tab">
-                        <div class="nav nav-tabs  navbar-navEditable" id="nav-tab" role="tablist" >
+    <script type="text/javascript" src="../js/Configuracion/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../js/CodeMirror/codemirror.js"></script>
+    <script type="text/javascript" src="../js/Bootstrap/popper.min.js"></script>
+    <script type="text/javascript" src="../js/Bootstrap/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="../mode/clike.js"></script>
+    <script type="text/javascript" src="../mode/pascal.js"></script>
+    <script type="text/javascript" src="../mode/gas.js"></script>
+    <script type="text/javascript" src="../js/Editores/configEditores.js"></script>
+</head>
+
+<body>
+    <!--                  CONTENEDOR                                  -->
+    <div class="container-fluid">
+        <!--                              MENU DE ACCIONES               -->
+        <div class="row" style="height: 5%;">
+            <!--                         PESTAÑAS                          -->
+            <div class="col-md-9">
+                <nav class="nav-tab">
+                    <div class="nav nav-tabs  navbar-navEditable" id="nav-tab" role="tablist"></div>
+                </nav>
+            </div>
+            <!--                         FIN PESTAÑAS                                     -->
+            <div class="col-md-3" style="background-color:#21252B;border:0;margin-bottom:1px;">
+                <div class="dropdown">
+                    <!--                                      NEW FILE BUTTON                        -->
+                    <button class="btn btn-secondary dropdown-toggle newFile" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        New File
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" id="newPascal" href="#">Pascal</a>
+                        <a class="dropdown-item" id="new3D" href="#">3D</a>
+                    </div>
+                    <!--                                     DEBUG BUTTON                           -->
+                    <img src="../images/debug.png" id="debugButton" width="30px" height="30px" />
+                    <!--                                    PLAY BUTTON                             -->
+                    <img src="../images/play.png" id="playButton" width="35px" height="35px"
+                        style="margin-left: 10px;" />
+                    <!--                                   TRANSLATE BUTTON                    -->
+                    <img src="../images/traductor.png" id="translateButton" width="30px" height="30px"
+                        style="margin-left: 10px;" />
+                </div>
+            </div>
+        </div>
+        <!--                         FIN MENU ACCIONES          -->
+        <!--                         EDTIORES                   -->
+        <div class="row" style="background-color:#282C34; height: 90%;margin-top: 2px; ">
+            <!--                    CONSOLA                        -->
+            <div id="espacioEditores" class="tab-content textArea" style="width: 100%;">
+                <div id="consolaTarget" class="consolaTarget"></div>
+                <!--                      OPCIONES DEBUG                                                -->
+                <div id="debugTarget" class="debugTarget">
+                    <img id="nextStep" src="../images/next.png" width="30px" height="30px" style="margin-left: 15px;" />
+                    <img id="stopDebug" src="../images/stop.png" width="30px" height="30px"
+                        style="margin-left: 15px;" />
+                </div>
+                <!--                    FIN OPCIONES DEBUG                      -->
+
+                <!--                  DIVS CON INFORMACION DEL STACK Y EL HEAP -->
+                <div id="bodyInfo" class="bodyInfo row">
+                    <!--              STACK                -->
+                    <div class="stackInfo col-md-5 ">
+                        <div class="head">
+                            Stack
+                        </div>
+                        <div id="elementsStack" class="elements">
                             
                         </div>
-                    </nav>
-                </div>
-                <!--                         FIN PESTAÑAS                                     -->
-                <div class="col-md-3" style="background-color:#21252B;border:0;margin-bottom:1px;">
-                    <div class="dropdown">
-                        <!--                                      NEW FILE BUTTON                        -->
-                        <button class="btn btn-secondary dropdown-toggle newFile" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          New File
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" id="newPascal" href="#">Pascal</a>
-                          <a class="dropdown-item" id="new3D" href="#">3D</a>
-                        </div>
-                        <!--                                     DEBUG BUTTON                           -->
-                        <img src="../images/debug.png" id="debugButton" width="30px" height="30px"/>
-                        <!--                                    PLAY BUTTON                             -->
-                        <img src="../images/play.png" id="playButton" width="35px" height="35px" style="margin-left: 10px;"/>
-                        <!--                                   TRANSLATE BUTTON                    -->
-                        <img src="../images/traductor.png" id="translateButton" width="30px" height="30px" style="margin-left: 10px;" >
-                      </div>
-                </div>
-            </div>
-            <!--                         FIN MENU ACCIONES          -->
-            <!--                         EDTIORES                   -->
-            <div class="row" style="background-color:#282C34; height: 90%;margin-top: 2px; "  >
-                <!--                    CONSOLA                        -->
-                <div  id="espacioEditores" class="tab-content textArea" style="width: 100%;" >
-                    <div id ="consolaTarget" class="consolaTarget"></div>
-                    <div id ="debugTarget" class="debugTarget">
-                        <img id="nextStep" src="../images/next.png" width="30px" height="30px" style="margin-left: 15px;">
-                        <img src="../images/stop.png" width="30px" height="30px" style="margin-left: 15px;">
                     </div>
-
+                    <!--              FIN STACK              -->
+                    <div class="col-md-2"></div>
+                    <div class="heapInfo col-md-5">
+                        <div class="head">
+                            Heap
+                        </div>
+                        <div id="elementsHeap" class="elements">
+                            
+                        </div>
+                    </div>
                 </div>
-                
+                <!--                  FIN DIVS CON INFORMACION DEL STACK Y EL HEAP -->
             </div>
-            <!--                   FIN EDITORES                       -->
-            <div class="row" style="background-color:#21252B; height: 5%;"  >
-                
-               <h7 id="consolaClick">  > consola </h7>
-            </div>
-            
         </div>
-        <!--                 FIN  CONTENEDOR                                  -->
-    
-    </body>
-    <script type="text/javascript" src="../js/function.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Gramatica/Gramatica.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Componentes/Asignacion.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Componentes/MensajeError.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Componentes/Etiqueta.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Componentes/Incondicional.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Componentes/Valor.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Componentes/Condicional.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Componentes/Print.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Componentes/Ambito.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Componentes/Funcion.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Componentes/CallFuncion.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Componentes/Read.js"></script>
-    <script type="text/javascript" src="../js/3DCODE/Componentes/Instruccion.js"></script>
-    <!--                              ASSEMBLER                                 -->
-    <script type="text/javascript" src="../js/Assembler/Gramatica/Gramatica3D.js"></script>
-    <script type="text/javascript" src="../js/Assembler/Componentes/Ambito3D.js"></script>
-    <script type="text/javascript" src="../js/Assembler/Componentes/Error3D.js"></script>
-    <script type="text/javascript" src="../js/Assembler/Componentes/Generador.js"></script>
-    <script type="text/javascript" src="../js/Assembler/Componentes/Nodo3D.js"></script>
-    <script type="text/javascript" src="../js/Assembler/Componentes/Operacion3D.js"></script>
-    <script type="text/javascript" src="../js/Assembler/Componentes/Valor3D.js"></script>
-    <script type="text/javascript" src="../js/Assembler/Componentes/Etiqueta3D.js"></script>
-    <script type="text/javascript" src="../js/Assembler/Componentes/Incondicional3D.js"></script>
-    <script type="text/javascript" src="../js/Assembler/Componentes/Condicional3D.js"></script>
-    <script type="text/javascript" src="../js/Assembler/Componentes/Print3D.js"></script>
-    <script type="text/javascript" src="../js/Assembler/Componentes/Funcion3D.js"></script>
-    <script type="text/javascript" src="../js/Assembler/Componentes/CallFuncion3D.js"></script>
+        <!--                   FIN EDITORES                       -->
+        <div class="row" style="background-color:#21252B; height: 5%;">
+            <h7 id="consolaClick"> > consola </h7>
+        </div>
+    </div>
+    <!--                 FIN  CONTENEDOR                                  -->
+</body>
+<script type="text/javascript" src="../js/function.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Gramatica/Gramatica.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Componentes/Asignacion.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Componentes/MensajeError.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Componentes/Etiqueta.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Componentes/Incondicional.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Componentes/Valor.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Componentes/Condicional.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Componentes/Print.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Componentes/Ambito.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Componentes/Funcion.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Componentes/CallFuncion.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Componentes/Read.js"></script>
+<script type="text/javascript" src="../js/3DCODE/Componentes/Instruccion.js"></script>
+<!--                              ASSEMBLER                                 -->
+<script type="text/javascript" src="../js/Assembler/Gramatica/Gramatica3D.js"></script>
+<script type="text/javascript" src="../js/Assembler/Componentes/Ambito3D.js"></script>
+<script type="text/javascript" src="../js/Assembler/Componentes/Error3D.js"></script>
+<script type="text/javascript" src="../js/Assembler/Componentes/Generador.js"></script>
+<script type="text/javascript" src="../js/Assembler/Componentes/Nodo3D.js"></script>
+<script type="text/javascript" src="../js/Assembler/Componentes/Operacion3D.js"></script>
+<script type="text/javascript" src="../js/Assembler/Componentes/Valor3D.js"></script>
+<script type="text/javascript" src="../js/Assembler/Componentes/Etiqueta3D.js"></script>
+<script type="text/javascript" src="../js/Assembler/Componentes/Incondicional3D.js"></script>
+<script type="text/javascript" src="../js/Assembler/Componentes/Condicional3D.js"></script>
+<script type="text/javascript" src="../js/Assembler/Componentes/Print3D.js"></script>
+<script type="text/javascript" src="../js/Assembler/Componentes/Funcion3D.js"></script>
+<script type="text/javascript" src="../js/Assembler/Componentes/CallFuncion3D.js"></script>
+
 </html>
