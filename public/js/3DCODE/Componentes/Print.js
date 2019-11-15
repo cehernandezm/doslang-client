@@ -13,8 +13,13 @@ var Print = /** @class */ (function () {
                 addMessage(Math.floor(resultado.valor));
             else if (this.operacion === 1) {
                 var modulo = resultado.valor % 1;
-                if (modulo === 0)
-                    addMessage(String.fromCharCode(resultado.valor));
+                if (modulo === 0) {
+                    if (resultado.valor === 10) {
+                        addMessage("<br>");
+                    }
+                    else
+                        addMessage(String.fromCharCode(resultado.valor));
+                }
                 else
                     addMessage(resultado.valor - 48);
             }

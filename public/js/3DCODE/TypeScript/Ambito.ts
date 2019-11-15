@@ -120,7 +120,7 @@ class Ambito{
      */
     inicializarStack(){
         for(let i = 0; i < 10000 ; i++){
-            this.Stack.push({tipo : "null", valor : -1});
+            this.Stack.push({tipo : "null", valor : -11});
         }
     }
 
@@ -163,6 +163,7 @@ class Ambito{
         });
         return inicio;
     }
+
 
     
     

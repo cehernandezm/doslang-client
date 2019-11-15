@@ -296,8 +296,8 @@ function recorrerStack(){
 
     for(let i = 0; i < ambitoActual.getAllStack().length; i++){
         let dato = ambitoActual.getAllStack()[i];
-        if(dato.valor != -1){
-            let div = '<div class="element">' + dato.valor + '</div>';
+        if(dato.valor != -11){
+            let div = '<div class="element">' + i +".       " + dato.valor + '</div>';
             codigo += "\n" + div;
         }
     }
@@ -313,7 +313,7 @@ function recorrerHeap(){
     for(let i = 0; i < ambitoActual.getAllHeap().length; i++){
         let dato = ambitoActual.getAllHeap()[i];
         if(dato.valor != -11){
-            let div = '<div class="element">' + dato.valor + '</div>';
+            let div = '<div class="element">' + i +".       " + dato.valor + '</div>';
             codigo += "\n" + div;
         }
     }
@@ -421,7 +421,7 @@ function addMensajeError(tipo, mensaje, linea, columna) {
  * @param {} mensaje
  */
 function addMessage(mensaje) {
-    let salida = '<p class="message"> > ' + mensaje + "</p>";
+    let salida = '<spam class="message">' + mensaje + "</spam>";
     $("#consolaTarget").append(salida);
 }
 

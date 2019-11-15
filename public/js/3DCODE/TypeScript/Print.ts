@@ -29,7 +29,12 @@ class Print{
             
             else if(this.operacion === 1) {
                 let modulo:number = resultado.valor % 1;
-                if(modulo === 0) addMessage(String.fromCharCode(resultado.valor));
+                if(modulo === 0) {
+                    if(resultado.valor === 10){
+                        addMessage("<br>");
+                    }
+                    else addMessage(String.fromCharCode(resultado.valor));
+                }
                 else addMessage(resultado.valor - 48);
             }
             else addMessage(resultado.valor);

@@ -98,7 +98,7 @@ var Ambito = /** @class */ (function () {
      */
     Ambito.prototype.inicializarStack = function () {
         for (var i = 0; i < 10000; i++) {
-            this.Stack.push({ tipo: "null", valor: -1 });
+            this.Stack.push({ tipo: "null", valor: -11 });
         }
     };
     /**
