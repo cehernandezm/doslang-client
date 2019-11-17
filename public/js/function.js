@@ -379,6 +379,7 @@ function getInstrucciones() {
                 element.columna
             );
         });
+        Gramatica.arbol.errores = [];
         return null;
     }
     return listaInstrucciones;
