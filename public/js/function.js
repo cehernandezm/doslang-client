@@ -280,6 +280,7 @@ $("#nextStep").on("click", function (e) {
     markedText.clear();
     if (index === -777) {
         $("#debugTarget").toggle();
+        document.getElementById("bodyInfo").style.visibility = "hidden";
     } else {
         jumpToLine(index);
         recorrerStack();
