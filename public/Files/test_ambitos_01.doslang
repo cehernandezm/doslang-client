@@ -1,0 +1,121 @@
+{
+    En este ejemplo se evalúa las sentencias:
+    - uses
+    - Arreglos: definción, acceso a posiciones para escritura y lectura
+    - Registros: reservación de espacios
+    - Pasos de párametros por valor y referencia
+    - Manejo correcto de ámbitos
+    - Expresiones
+
+    @autor: rainman sian
+}
+
+program test_ambitos_01;
+uses aux_ambitos_01;
+type
+    int = integer;
+    Estudiante = Record
+        carnet : int;
+        asistio_parcial : boolean;
+        no_asistencias : int;
+        nota_obtenida : real;
+        nota_final : real;
+    end;
+const
+    NO_ESTUDIANTES : int = 10;
+var
+    i : int = 0;
+    listadoDeEstudiantes : array [0 .. NO_ESTUDIANTES] of Estudiante;
+
+procedure imprimirEstudiantes(var listadoDeEstudiantes : array [0 .. NO_ESTUDIANTES] of Estudiante);
+var
+    i : int = 333;
+    estudianteTemp : Estudiante;
+    { Las siguientes variables me sirven para verificar que lean del registro}
+    asistio_parcial : boolean = true; 
+    no_asistencias : int = -10;
+begin
+
+    (* reasigno i intencionalmente *)
+    for i := 0 to NO_ESTUDIANTES-1 do
+    begin
+        with listadoDeEstudiantes[i] do
+            Writeln("Carnet: ", carnet);
+            Writeln("Asistio a Parcial?: ", asistio_parcial);
+            Writeln("No. de Asistencias: ", no_asistencias);
+            Writeln("nota_obtenida: ", nota_obtenida);
+            Writeln("nota_final: ", nota_final);
+            Writeln("");
+        end;
+    end;
+
+end;
+
+procedure cargarDatos(var listadoDeEstudiantes : array [0 .. NO_ESTUDIANTES] of Estudiante);
+var
+    i : int = 666;
+    estudianteTemp : Estudiante;
+
+    { Las siguientes variables me sirven para verificar que lean del registro}
+    asistio_parcial : boolean = true; 
+    no_asistencias : int = -10;
+begin
+
+    (* reasigno i intencionalmente *)
+    for i := 0 to NO_ESTUDIANTES-1 do
+    begin
+
+        (* creo una referencia nueva para el record estudiante para cada iteración*)
+        estudianteTemp := malloc(sizeof(Estudiante));
+        
+        with estudianteTemp do
+            carnet := 2019100 + i + 1;
+            (*evalúo expresiones, el resultado de int / int debe ser int *)
+            no_asistencias := i / getASISTENCIA_MINIMA() ;
+
+            { 
+                marco impares como asistio_parcial = true
+                cuando i = 0, el carnet debeía ser 2019101, impar
+                por lo tanto la expresión de abajo debería retornar TRUE
+            }
+            asistio_parcial := NOT(NOT((i % 2 = 0 AND true) ));
+            nota_obtenida := 40 + (i * 10 / 2);  (*notas de 45 a 90*)
+        end;
+
+        
+
+        (*alimento el arreglo*)
+        listadoDeEstudiantes[i] := estudianteTemp;
+
+        free(estudianteTemp);
+    end;
+end;
+
+begin
+    Writeln("Calificando Proyecto 1");
+    Writeln("Cargando Datos");
+    cargarDatos(listadoDeEstudiantes);
+
+    Writeln("Datos Cargados");
+    Writeln("==============================================================");
+    imprimirEstudiantes(listadoDeEstudiantes);
+
+    Writeln("Calculando Nota Final");
+    for i := 0 to NO_ESTUDIANTES-1 do
+    begin
+
+        (* limpio los valores de la iteración anterior*)
+        clear();
+
+        (* seteo los valores al programa auxiliar*)
+        setAsistencias(listadoDeEstudiantes[i].no_asistencias);
+        setAsistioParcial(listadoDeEstudiantes[i].asistio_parcial);
+
+        (* calculo la nota *)
+        listadoDeEstudiantes[i].nota_final := calcularNota(listadoDeEstudiantes[i].nota_obtenida);
+    end;
+    Writeln("Notas Calculadas");
+    Writeln("==============================================================");
+    imprimirEstudiantes(listadoDeEstudiantes);
+
+end.

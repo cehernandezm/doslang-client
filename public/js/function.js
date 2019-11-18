@@ -5,6 +5,14 @@
  */
 
 
+ /**
+  * TIPOS DE EDITORES
+  * 0: PASCAL
+  * 1: 3D
+  * 
+  */
+
+
 var listaSalida = [];
 var listaEtiquetas = [];
 var listaFuncion = [];
@@ -336,15 +344,37 @@ function jumpToLine(i) {
  */
 $("#playButton").on("click", function (e) {
     e.preventDefault();
+    inicializarDatos();
     if (editorActual) {
         switch (editorActual.tipo) {
             //------------------------------------- EJECUTAR 3D -----------------------------------------------------------------------
+            case 0:
+                sendTraduccion();
+                break;
+            
             case 1:
                 ejecutar3D();
                 break;
         }
     }
 });
+
+
+function sendTraduccion(){
+    let code = editorActual.editor.getValue();
+    $.ajax({
+        type: "post",
+        datatype: "json",
+        url: "/readFiles",
+        data: { cuerpo : code },
+        succes : function(data,textStatus,xhr){},
+        error : function(XMLHttpRequest,textStatus,errorThrow){
+            alert("Error de conexion con el servidor");
+            console.error(XMLHttpRequest);
+        }
+    });
+}
+
 
 /**
  * EJECUTA EL CODIGO 3D -

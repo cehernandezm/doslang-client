@@ -1,0 +1,76 @@
+{
+    En este ejemplo se evalúa las sentencias:
+    - cosntantes
+    - alias en tipos
+    - lectura y escritura de valores a traves de llamdas a metodos y funciones
+
+    @autor: rainman sian
+}
+
+program aux_ambitos_01;
+type
+    int = integer;
+const
+    ASISTENCIA_MINIMA : int = 3;
+    PUNTOS_PENALIZACION : int = 5; (* puntos *)
+var
+    no_asistencias : int = 0;
+    asistio_parcial : boolean = false;
+
+
+
+function getNoAsistencias() : int;
+begin
+    getNoAsistencias := no_asistencias;
+end;
+
+procedure setAsistencias(no_asistencias_param:int);
+begin
+    no_asistencias := no_asistencias_param;
+end;
+
+function isAsistioParcial() : boolean;
+begin
+    isAsistioParcial := asistio_parcial;
+end;
+
+procedure setAsistioParcial(asistio_parcial_param: boolean);
+begin
+    asistio_parcial := asistio_parcial_param;
+end;
+
+
+function getASISTENCIA_MINIMA() : int;
+begin
+    getASISTENCIA_MINIMA := ASISTENCIA_MINIMA;
+end;    
+
+
+procedure clear();
+begin
+    no_asistencias := 0;
+    asistio_parcial := false;
+end;
+
+
+function calcularNota(nota_obtenida: real) : real;
+var
+    penalizacion : int = 0;
+begin
+
+    if (no_asistencias < ASISTENCIA_MINIMA) then
+        (**** 5 pts menos por cada inacistencia ****)
+        penalizacion := (ASISTENCIA_MINIMA - no_asistencias) * PUNTOS_PENALIZACION;
+
+    if (not asistio_parcial) then
+        penalizacion := penalizacion + PUNTOS_PENALIZACION;
+
+    Writeln("Calculo de penalización igual a: ", penalizacion);
+
+    calcularNota := nota_obtenida - penalizacion;
+end;
+
+begin
+    Writeln("No debería imprimir esto");    
+    clear();
+end.
