@@ -31,7 +31,6 @@ procedure imprimirEstudiantes(var listadoDeEstudiantes : array [0 .. NO_ESTUDIAN
 var
     i : int = 333;
     estudianteTemp : Estudiante;
-    { Las siguientes variables me sirven para verificar que lean del registro}
     asistio_parcial : boolean = true; 
     no_asistencias : int = -10;
 begin
@@ -56,15 +55,14 @@ var
     i : int = 666;
     estudianteTemp : Estudiante;
 
-    { Las siguientes variables me sirven para verificar que lean del registro}
     asistio_parcial : boolean = true; 
     no_asistencias : int = -10;
 begin
-
+    Writeln(NO_ESTUDIANTES);
     (* reasigno i intencionalmente *)
     for i := 0 to NO_ESTUDIANTES-1 do
     begin
-
+        Writeln(i);
         (* creo una referencia nueva para el record estudiante para cada iteración*)
         estudianteTemp := malloc(sizeof(Estudiante));
         
@@ -87,7 +85,7 @@ begin
         (*alimento el arreglo*)
         listadoDeEstudiantes[i] := estudianteTemp;
 
-        free(estudianteTemp);
+        
     end;
 end;
 

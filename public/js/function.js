@@ -128,6 +128,14 @@ $("#newPascal").on("click", function (e) {
  */
 $("#new3D").on("click", function (e) {
     e.preventDefault();
+    new3D("");
+});
+
+/**
+ * CREA UNA NUEVA PESTAÑA CON UN ARCHIVO 3D
+ * @param {*} texto 
+ */
+function new3D(texto){
     $("#nav-tab").append(
         '<a class="nav-item nav-link"  data-toggle="tab" href="#nav-' +
         TabId +
@@ -172,12 +180,58 @@ $("#new3D").on("click", function (e) {
     });
 
     listaEditores.push(objectEditor);
-
+    editor.getDoc().setValue(texto);
     editor.refresh;
 
     $("#nav-tab a").click();
     TabId++;
-});
+}
+
+/**
+ * CREA UN NUEVO ARCHIVO ASSEMBLER
+ * @param {*} texto 
+ */
+function newAssembler(texto){
+    $("#nav-tab").append(
+        '<a class="nav-item nav-link"  data-toggle="tab" href="#nav-' +
+        TabId +
+        '" role="tab" >' +
+        " Pestaña " +
+        TabId +
+        '<span class="badge" id="Tab' +
+        TabId +
+        '">x</span>' +
+        " </a>"
+    );
+
+    let tab = document.createElement("div");
+    tab.setAttribute("id", "nav-" + TabId);
+    tab.className = "tab-pane active";
+
+    let cuerpo = document.createElement("textarea");
+    tab.appendChild(cuerpo);
+
+    let es = document.getElementById("espacioEditores");
+    es.appendChild(tab);
+    let editor = CodeMirror.fromTextArea(cuerpo, prefEditor3D);
+    editor.setSize(null, "100%");
+
+    let objectEditor = {
+        editor: editor,
+        id: "Tab" + TabId,
+        tab: "nav-" + TabId,
+        breakpoins: [],
+        tipo: 2
+    };
+
+   
+    listaEditores.push(objectEditor);
+    editor.getDoc().setValue(texto);
+    editor.refresh;
+
+    $("#nav-tab a").click();
+    TabId++;
+}
 
 /**
  * FUNCION QUE AGREGA UN MARCADOR(BREAKPOINT)
@@ -360,6 +414,9 @@ $("#playButton").on("click", function (e) {
 });
 
 
+/**
+ * METODO ENCARGADO DE LEER TODOS LOS ARCHIVOS QUE ESTEN CARGADOS EN EL SISTEMA Y ENVIARLOS AL SERVER
+ */
 function sendTraduccion(){
     let code = editorActual.editor.getValue();
     $.ajax({
@@ -560,7 +617,8 @@ function armarAssembler(cuerpo, listaTemporales, funciones) {
     codigo += "\n" + Generador.funcionPrint();
     codigo += "\n" + funciones;
     codigo += "\nEND MAIN";
-    console.log(codigo);
+    newAssembler(codigo);
+    //console.log(codigo);
 
 }
 

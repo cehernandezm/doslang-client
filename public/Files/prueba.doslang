@@ -1,0 +1,9 @@
+program prueba;
+
+procedure saluda(mensaje:String);
+begin
+    Writeln(mensaje);
+end;
+begin
+Writeln("hola")
+end.

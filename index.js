@@ -75,6 +75,7 @@ app.post("/readFiles", function (solicitud, respuesta) {
   allFiles.forEach(element =>{
     let dir = path.join(__dirname,'/public/Files/' + element);
     let content = fs.readFileSync(dir,).toString('utf8');
+    element = (element.split("."))[0];
     let newFile = {"name": element , "body": content };
     codigo.push(newFile);
 
