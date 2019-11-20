@@ -69,7 +69,7 @@ begin
         estudianteTemp := malloc(sizeof(Estudiante));
         
         with estudianteTemp do
-            carnet := 2019100 + i + 1;
+            carnet := 201612118 + i + 1;
             (*evalúo expresiones, el resultado de int / int debe ser int *)
             no_asistencias := i / getASISTENCIA_MINIMA() ;
 

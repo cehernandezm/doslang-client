@@ -12,11 +12,19 @@
   * 
   */
 
+/**
+ * OPTIMIZACION:
+ *  linea
+ *  regla
+ *  detalle
+ */
+
 
 var listaSalida = [];
 var listaEtiquetas = [];
 var listaFuncion = [];
 var listaEditores = [];
+var reglasAplicada = [];
 
 var TabId = 0;
 
@@ -572,6 +580,27 @@ $("#translateButton").on("click", function (e) {
     }
 });
 
+
+$("#optimizarButton").on('click',function(e){
+    if(editorActual.tipo === 1){
+        reglasAplicada = [];
+        let codigo = editorActual.editor.getValue().split('\n');
+        let primeraRegla = new Regla1(codigo);
+        let optimizado = primeraRegla.optimizar();
+        let segundaRegla = new Regla2(optimizado);
+        optimizado = segundaRegla.optimizar();
+        optimizado.forEach(element => {
+            console.log(element);
+        });
+
+        reglasAplicada.forEach(element => {
+            console.log(element);
+        });
+
+    }
+});
+
+
 /**
  * NOS DEVUELVE EL CONJUNTO DE INSTRUCCIONES DEL ANALISIS DE UN CODIGO 3D PARA TRADUCIR
  */
@@ -632,3 +661,47 @@ $("#stopDebug").on("click", function (e) {
     $("#debugTarget").toggle();
     document.getElementById("bodyInfo").style.visibility = "hidden";
 });
+
+
+/**
+ * --------------------------------------------------------------------------------------------------------------------------------------------------------- 
+ * ------------------------------------------------------------- METODOS DE OPTIMIZACION -------------------------------------------------------------------
+ * ---------------------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+/**
+ * VERIFICA QUE ES UN CUADRUPLO Y NO UN COMENTARIO O UN SALTO DE LINEA
+ */
+function isCuadruplo(linea){
+    let cuadruplo = linea.split(',');
+    return cuadruplo.length === 4; 
+}
+
+/**
+ * METODO PARA OBTENER UN TEMPORAL Y NO TIENE UN COMENTARIO ADYACENTE EJEMPLO T1//OPERACION
+ */
+function limpiarTemporal(temp){
+    return temp.split('/')[0].trim();
+}
+
+/**
+ * METODO PARA VERIFICAR SI ES UNA ETIQUETA LX
+ */
+function isEtiqueta(linea){
+    return linea.toLowerCase().includes("l");
+}
+
+/**
+ * AGREGA UNA NUEVA REGLA APLICADA EN LA EJECUCION DEL PROGRAMA
+ */
+function addNewRegla(linea,tipo,detalle){
+    reglasAplicada.push({linea:linea,regla:tipo,detalle:detalle});
+}
+
+/**
+ * VERIFICA SI ES UN COMENTARIO
+ */
+function isComentario(linea){
+    linea = linea.trim();
+    return linea.indexOf("\/") === 0;
+}

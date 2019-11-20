@@ -46,13 +46,17 @@
                         <a class="dropdown-item" id="new3D" href="#">3D</a>
                     </div>
                     <!--                                     DEBUG BUTTON                           -->
-                    <img src="../images/debug.png" id="debugButton" width="30px" height="30px" />
+                    <img src="../images/debug.png" id="debugButton" width="30px" height="30px" title="DEBUG CODE" />
                     <!--                                    PLAY BUTTON                             -->
                     <img src="../images/play.png" id="playButton" width="35px" height="35px"
-                        style="margin-left: 10px;" />
+                        style="margin-left: 10px;" title="EJECUTAR CODIGO"/>
                     <!--                                   TRANSLATE BUTTON                    -->
                     <img src="../images/traductor.png" id="translateButton" width="30px" height="30px"
-                        style="margin-left: 10px;" />
+                        style="margin-left: 10px;" title="TRADUCIR CODIGO A ASSEMBLER"/>
+
+                    <!--                                  OPTIMIZAR BUTTON                      -->
+                    <img src="../images/optimizacion.png" id="optimizarButton" width="30px" height="30px"
+                        style="margin-left:10px" title="OPTIMIZAR CODIGO 3D"/>
                 </div>
             </div>
         </div>
@@ -134,5 +138,9 @@
 <!--                                  SOCKETS                                         -->
 <script type="text/javascript" src="../js/Configuracion/socket.io.js"></script>
 <script type="text/javascript" src="../js/Sockets/WebSocket.js"></script>
+
+<!--                                  OPTIMIZAR CODIGO                    -->
+<script type="text/javascript" src="../js/Optimizacion/Componentes/Regla1.js"></script>
+<script type="text/javascript" src="../js/Optimizacion/Componentes/Regla2.js"></script>
 
 </html>
