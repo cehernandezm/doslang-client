@@ -8,14 +8,14 @@ class Generador {
      */
     public static guardarMov(destino: String, origen: String, comentario: String) {
         return "\nMOV " + destino + ", " + origen + "                              ;" + comentario;
-        
+
     }
 
     public static guardarMovEspecial(destino: String, origen: String, comentario: String) {
         let codigo = "\nMOV AX," + origen;
         codigo += "\nMOV " + destino + ", AX" + "                              ;" + comentario
         return codigo;
-        
+
     }
     /**
      * GUARDA UNA SUMA
@@ -47,7 +47,7 @@ class Generador {
      * @param origen 
      * @param comentario 
      */
-    public static guardarMul(destino: String, origen:String, comentario: String) {
+    public static guardarMul(destino: String, origen: String, comentario: String) {
         let codigo = "\nMOV AX," + destino;
         codigo += "\nMOV BX," + origen;
         codigo += "\nMUL BX" + "                              ;" + comentario
@@ -59,7 +59,7 @@ class Generador {
      * @param destino 
      * @param comentario 
      */
-    public static guardarDiv(destino: String, origen:String,comentario: String) {
+    public static guardarDiv(destino: String, origen: String, comentario: String) {
         let codigo = "\nMOV AX," + destino;
         codigo += "\nXOR DX,DX";
         codigo += "\nMOV BX," + origen;
@@ -115,8 +115,8 @@ class Generador {
     }
 
 
-    public static arreglarIndice(){
-        let codigo = this.guardarMov("bx","2d","Multiplicamos por 2");
+    public static arreglarIndice() {
+        let codigo = this.guardarMov("bx", "2d", "Multiplicamos por 2");
         codigo += "\nMUL bx";
         return codigo;
     }
@@ -200,6 +200,33 @@ class Generador {
     }
 
     /**
+     * DEVUELVE EL CODIGO ASSEMBLER DE LA FUNCION POTENCIA
+     */
+    public static funcionPotencia() {
+        
+        return 'POTENCIA PROC\n' +
+
+        'cmp cx, 0\n' +
+        'jg etiquetaLoop\n' +
+        'mov ax, 1d\n' +
+        'jmp exitPotencia\n' +
+
+        'etiquetaLoop:\n' +
+        'cmp cx, 1\n' +
+        'jle exitPotencia\n' +
+        'mul bx\n' +
+        'dec cx\n' +
+        'jmp etiquetaLoop\n' +
+
+
+
+
+        'exitPotencia:\n' +
+        'ret\n' +
+        'POTENCIA ENDP\n';
+    }
+
+    /**
      * OBTENEMOS EL CODIGO DEL ENCABEZADO EN CODIGO ASSEMBLER
      */
     public static getEncabezado() {
@@ -208,10 +235,8 @@ class Generador {
             '.STACK 100H\n' +
             '.DATA\n' +
 
-            'S dw 500 DUP(?)\n' +
-            'He dw 1000 DUP(?)\n' +
-            'tP dw 0' +
-            'tH dw 0' 
+            'S dw 1000 DUP(0d)\n' +
+            'He dw 3000 DUP(0d)\n'
         return codigo;
     }
 }

@@ -172,6 +172,25 @@ var Generador = /** @class */ (function () {
         return codigo;
     };
     /**
+     * DEVUELVE EL CODIGO ASSEMBLER DE LA FUNCION POTENCIA
+     */
+    Generador.funcionPotencia = function () {
+        return 'POTENCIA PROC\n' +
+            'cmp cx, 0\n' +
+            'jg etiquetaLoop\n' +
+            'mov ax, 1d\n' +
+            'jmp exitPotencia\n' +
+            'etiquetaLoop:\n' +
+            'cmp cx, 1\n' +
+            'jle exitPotencia\n' +
+            'mul bx\n' +
+            'dec cx\n' +
+            'jmp etiquetaLoop\n' +
+            'exitPotencia:\n' +
+            'ret\n' +
+            'POTENCIA ENDP\n';
+    };
+    /**
      * OBTENEMOS EL CODIGO DEL ENCABEZADO EN CODIGO ASSEMBLER
      */
     Generador.getEncabezado = function () {
@@ -179,10 +198,8 @@ var Generador = /** @class */ (function () {
         codigo = '.MODEL SMALL\n' +
             '.STACK 100H\n' +
             '.DATA\n' +
-            'S dw 500 DUP(?)\n' +
-            'He dw 1000 DUP(?)\n' +
-            'tP dw 0' +
-            'tH dw 0';
+            'S dw 1000 DUP(0d)\n' +
+            'He dw 3000 DUP(0d)\n';
         return codigo;
     };
     return Generador;

@@ -615,6 +615,7 @@ function armarAssembler(cuerpo, listaTemporales, funciones) {
     codigo += "\nINT 21H";
     codigo += "\nMAIN ENDP";
     codigo += "\n" + Generador.funcionPrint();
+    codigo += "\n" + Generador.funcionPotencia();
     codigo += "\n" + funciones;
     codigo += "\nEND MAIN";
     newAssembler(codigo);
