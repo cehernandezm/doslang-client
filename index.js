@@ -31,9 +31,20 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 const io = require('socket.io').listen(server);
 io.on('connection',(socket)=>{
   console.log("usuario conectado");
+  //------------------------------------------------- CANAL PARA RECIBIR EL RESULTADO DEL ANALISIS DE PASCAL
   socket.on('result',(data)=>{
     socket.broadcast.emit('resultadoAnalisis',data); //-------------------- ENVIAMOS UNA SEÑAL AL WEBSOCKET EN JS -----
   });
+  //------------------------------------------------ CANAL PARA RECIBIR EL JSON DEL REPORTE DE LA COMPILACION PREVIAMENTE EN PASCAL
+  socket.on('reporte',(data)=>{
+    socket.broadcast.emit('resultadoReporte',data);
+  });
+
+  socket.on("getReporte",(data)=>{
+    io.emit("reporteStack","");
+  });
+
+
 });
 
 

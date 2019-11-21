@@ -17,6 +17,34 @@ socket.on('resultadoAnalisis',function(data){
 });
 
 /**
+ * LISTENER PARA OBTENER EL RESULTADOD DE LOS REPORTES
+ */
+socket.on('resultadoReporte',function(data){
+    let json = JSON.parse(data);
+    let codigo = "";
+    let index = 0;
+    json.forEach(element => {
+        codigo += "\n<tr>";
+        codigo += "\n<td>" + index + "</td>";
+        codigo += "\n<td>" + element.id + "</td>";
+        codigo += "\n<td>" + element.ambito + "</td>";
+        codigo += "\n<td>" + element.archivo + "</td>";
+        codigo += "\n<td>" + element.constante + "</td>";
+        codigo += "\n<td>" + element.parametro + "</td>";
+        codigo += "\n<td>" + element.posicion + "</td>";
+        codigo += "\n<td>" + element.posicionrel + "</td>";
+        codigo += "\n<td>" + element.referencia + "</td>";
+        codigo += "\n<td>" + element.tipo + "</td>";
+        codigo += "\n</tr>";
+        index++;
+    });
+    document.getElementById("bodyModalStack").innerHTML = codigo;
+    $("#modalStack").modal();
+    
+});
+
+
+/**
  * METODO QUE AGREGA LOS ERRORES A CONSOLA
  * @param {*} data 
  */

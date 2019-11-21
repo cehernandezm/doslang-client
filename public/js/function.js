@@ -290,6 +290,9 @@ function newAssembler(texto){
     TabId++;
 }
 
+/**
+ * OBTENGO EL TEXTO DE LA PESTAÑA ACTUAL Y LO GUARDO EN UN ARCHIVO
+ */
 $("#saveFile").on('click',function(e){
     e.preventDefault();
     let edi = editorActual.editor;
@@ -489,6 +492,13 @@ $("#playButton").on("click", function (e) {
                 break;
         }
     }
+});
+
+/**
+ * OBTENER EL REPORTE ATRAVEZ DE SOCKETS
+ */
+$("#reportButton").on('click',function(e){
+    socket.emit("getReporte","");
 });
 
 
