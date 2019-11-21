@@ -42,7 +42,12 @@
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" id="newPascal" href="#">New Pascal</a>
-                        <a class="dropdown-item" id="new3D" href="#">new 3D</a>
+                        <a class="dropdown-item" id="new3D" href="#">New 3D</a>
+                        <a class="dropdown-item" id="openPascal" href="#">Open Pascal</a>
+                        <input type="file" id="filePascal" style="display: none;" multiple onchange="handleFilePascal(this.files)"/>
+                        <a class="dropdown-item" id="open3D" href="#">Open 3D</a>
+                        <input type="file" id="file3D" style="display: none;" multiple onchange="handleFile3D(this.files)"/>
+                        <a class="dropdown-item" id="saveFile" href="#">Save File</a>
                     </div>
                     <!--                                     DEBUG BUTTON                           -->
                     <img src="../images/debug.png" id="debugButton" width="30px" height="30px" title="DEBUG CODE"

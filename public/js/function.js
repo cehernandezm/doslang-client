@@ -91,6 +91,63 @@ function buscarFuncion(nombre) {
  */
 $("#newPascal").on("click", function (e) {
     e.preventDefault();
+    newPascal("");
+});
+
+/**
+ * METODO PARA CREAR UN NUEVO ARCHIVO DE 3D
+ */
+$("#new3D").on("click", function (e) {
+    e.preventDefault();
+    new3D("");
+});
+
+/**
+ * ABRIR UN ARCHIVO DE PASCAL
+ */
+$("#openPascal").on('click',function(e){
+    let file = document.getElementById("filePascal");
+    if(file) file.click();
+});
+
+/**
+ * FUNCION QUE MANEJA EL INPUT FILE DE PASCAL
+ */
+function handleFilePascal(){
+    let file = document.getElementById("filePascal").files[0];
+    let fileReader = new FileReader();
+    fileReader.onload = function(fileLoadedEvent){
+        let text = fileLoadedEvent.target.result;
+        newPascal(text);
+    };
+    fileReader.readAsText(file,"UTF-8");
+}
+
+/**
+ * ABRIR UN NUEVO ARCHIVO DE CUADRUPLOS
+ */
+$("#open3D").on('click',function(e){
+    let file = document.getElementById("file3D");
+    if(file) file.click();
+});
+
+/**
+ * FUNCION QUE MANEJA EL INPUT FILE DE 3D
+ */
+function handleFile3D(){
+    let file = document.getElementById("file3D").files[0];
+    let fileReader = new FileReader();
+    fileReader.onload = function(fileLoadedEvent){
+        let text = fileLoadedEvent.target.result;
+        new3D(text);
+    };
+    fileReader.readAsText(file,"UTF-8");
+}
+
+/**
+ * ARCHIVO PARA CREAR UN NUEVO ARCHIVO DE PASCAL
+ */
+function newPascal(texto){
     $("#nav-tab").append(
         '<a class="nav-item nav-link"  data-toggle="tab" href="#nav-' +
         TabId +
@@ -124,20 +181,12 @@ $("#newPascal").on("click", function (e) {
     };
 
     listaEditores.push(objectEditor);
-
+    editor.getDoc().setValue(texto);
     editor.refresh;
 
     $("#nav-tab a").click();
     TabId++;
-});
-
-/**
- * METODO PARA CREAR UN NUEVO ARCHIVO DE 3D
- */
-$("#new3D").on("click", function (e) {
-    e.preventDefault();
-    new3D("");
-});
+}
 
 /**
  * CREA UNA NUEVA PESTAÑA CON UN ARCHIVO 3D
@@ -240,6 +289,27 @@ function newAssembler(texto){
     $("#nav-tab a").click();
     TabId++;
 }
+
+$("#saveFile").on('click',function(e){
+    e.preventDefault();
+    let edi = editorActual.editor;
+    let texto = edi.getValue();
+    let nombre = (editorActual.tipo === 0) ? "archivo.doslang" : "archivo.txt";
+    var element = document.createElement("a");
+    element.setAttribute(
+      "href",
+      "data:text/plain;charset=utf-8," + encodeURIComponent(texto)
+    );
+    element.setAttribute("download", nombre);
+
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+});
+
 
 /**
  * FUNCION QUE AGREGA UN MARCADOR(BREAKPOINT)
