@@ -2,7 +2,7 @@
 
 <head>
     <title>
-        DOSLANG 
+        DOSLANG
     </title>
     <link rel="stylesheet" href="../css/BootsTrap/bootstrap.min.css" />
     <link rel="stylesheet" href="../css/BootsTrap/bootstrap.css" />
@@ -37,26 +37,26 @@
             <div class="col-md-3" style="background-color:#21252B;border:0;margin-bottom:1px;">
                 <div class="dropdown">
                     <!--                                      NEW FILE BUTTON                        -->
-                    <button class="btn btn-secondary dropdown-toggle newFile" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        New File
-                    </button>
+                    <img class="dropdown-toggle newFile" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" src="../images/file.png" title="File" width="30px" height="30px">
+
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" id="newPascal" href="#">Pascal</a>
-                        <a class="dropdown-item" id="new3D" href="#">3D</a>
+                        <a class="dropdown-item" id="newPascal" href="#">New Pascal</a>
+                        <a class="dropdown-item" id="new3D" href="#">new 3D</a>
                     </div>
                     <!--                                     DEBUG BUTTON                           -->
-                    <img src="../images/debug.png" id="debugButton" width="30px" height="30px" title="DEBUG CODE" />
+                    <img src="../images/debug.png" id="debugButton" width="30px" height="30px" title="DEBUG CODE"
+                        style="margin-left:10px ;" />
                     <!--                                    PLAY BUTTON                             -->
-                    <img src="../images/play.png" id="playButton" width="35px" height="35px"
-                        style="margin-left: 10px;" title="EJECUTAR CODIGO"/>
+                    <img src="../images/play.png" id="playButton" width="35px" height="35px" style="margin-left: 10px;"
+                        title="EJECUTAR CODIGO" />
                     <!--                                   TRANSLATE BUTTON                    -->
                     <img src="../images/traductor.png" id="translateButton" width="30px" height="30px"
-                        style="margin-left: 10px;" title="TRADUCIR CODIGO A ASSEMBLER"/>
+                        style="margin-left: 10px;" title="TRADUCIR CODIGO A ASSEMBLER" />
 
                     <!--                                  OPTIMIZAR BUTTON                      -->
                     <img src="../images/optimizacion.png" id="optimizarButton" width="30px" height="30px"
-                        style="margin-left:10px" title="OPTIMIZAR CODIGO 3D"/>
+                        style="margin-left:10px" title="OPTIMIZAR CODIGO 3D" />
                 </div>
             </div>
         </div>
@@ -82,7 +82,7 @@
                             Stack
                         </div>
                         <div id="elementsStack" class="elements">
-                            
+
                         </div>
                     </div>
                     <!--              FIN STACK              -->
@@ -92,7 +92,7 @@
                             Heap
                         </div>
                         <div id="elementsHeap" class="elements">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -105,6 +105,37 @@
         </div>
     </div>
     <!--                 FIN  CONTENEDOR                                  -->
+
+
+
+
+
+    <!--                MODAL CON RESULTADO DE REGLAS APLICADAS PARA OPTIMIZACION                  -->
+    <div class="modal" tabindex="-1" role="dialog" id="modalOptimizacion">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">REGLAS APLICADAS</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <th>Linea</th>
+                            <th>Regla</th>
+                            <th>Detalle</th>
+                        </thead>
+                        <tbody id="bodyOptimizacion">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 <script type="text/javascript" src="../js/function.js"></script>
 <script type="text/javascript" src="../js/3DCODE/Gramatica/Gramatica.js"></script>
@@ -155,4 +186,5 @@
 <script type="text/javascript" src="../js/Optimizacion/Componentes/Regla16.js"></script>
 <script type="text/javascript" src="../js/Optimizacion/Componentes/Regla4.js"></script>
 <script type="text/javascript" src="../js/Optimizacion/Componentes/Regla5.js"></script>
+
 </html>

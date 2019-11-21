@@ -636,13 +636,20 @@ $("#optimizarButton").on('click',function(e){
         let R16 = new Regla16(optimizado);
         optimizado = R16.optimizar();
 
+        let codigoFinal = "";
         optimizado.forEach(element => {
-            console.log(element);
+            
+            codigoFinal += element + "\n";
         });
 
+        new3D(codigoFinal);
+        let codigoHTML = "";
         reglasAplicada.forEach(element => {
-            console.log(element);
+            codigoHTML += '<tr><td>' + element.linea + '</td><td>' + element.regla + '</td><td>' + element.detalle + '</td></tr>\n'; 
         });
+        document.getElementById("bodyOptimizacion").innerHTML = codigoHTML;
+        $("#modalOptimizacion").modal();
+        
 
     }
 });

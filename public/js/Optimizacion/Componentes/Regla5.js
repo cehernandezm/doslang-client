@@ -27,7 +27,27 @@ var Regla5 = /** @class */ (function () {
                 var etiqueta = limpiarTemporal(cuadruplo[3]);
                 if (operadoresLogicos(operador.toLowerCase()) !== undefined) {
                     if (!(isTemporal(izq.toLowerCase())) && !(isTemporal(der.toLowerCase()))) {
-                        if (izq.toLowerCase() !== der.toLowerCase()) {
+                        if (operador.toLowerCase() === "je" && (izq.toLowerCase() !== der.toLowerCase())) {
+                            if (this.ejecutar(i, etiqueta))
+                                addNewRegla(i, "Regla 5", element);
+                        }
+                        else if (operador.toLowerCase() === "jne" && (izq.toLowerCase() === der.toLowerCase())) {
+                            if (this.ejecutar(i, etiqueta))
+                                addNewRegla(i, "Regla 5", element);
+                        }
+                        else if (operador.toLowerCase() === "jg" && (+izq.toLowerCase() < +der.toLowerCase())) {
+                            if (this.ejecutar(i, etiqueta))
+                                addNewRegla(i, "Regla 5", element);
+                        }
+                        else if (operador.toLowerCase() === "jl" && (+izq.toLowerCase() > +der.toLowerCase())) {
+                            if (this.ejecutar(i, etiqueta))
+                                addNewRegla(i, "Regla 5", element);
+                        }
+                        else if (operador.toLowerCase() === "jge" && (+izq.toLowerCase() <= +der.toLowerCase())) {
+                            if (this.ejecutar(i, etiqueta))
+                                addNewRegla(i, "Regla 5", element);
+                        }
+                        else if (operador.toLowerCase() === "jle" && (+izq.toLowerCase() >= +der.toLowerCase())) {
                             if (this.ejecutar(i, etiqueta))
                                 addNewRegla(i, "Regla 5", element);
                         }
