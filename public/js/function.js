@@ -580,7 +580,9 @@ $("#translateButton").on("click", function (e) {
     }
 });
 
-
+/**
+ * SE ENCARGARA DE OPTIMIZAR CODIGO 3D
+ */
 $("#optimizarButton").on('click',function(e){
     if(editorActual.tipo === 1){
         reglasAplicada = [];
@@ -590,6 +592,12 @@ $("#optimizarButton").on('click',function(e){
          
         let segundaRegla = new Regla2(optimizado);
         optimizado = segundaRegla.optimizar();
+
+        let R4 = new Regla4(optimizado);
+        optimizado = R4.optimizar();
+
+        let R5 = new Regla5(optimizado);
+        optimizado = R5.optimizar();
 
         let sextaRegla = new Regla6(optimizado);
         optimizado = sextaRegla.optimizar();
@@ -743,4 +751,21 @@ function addNewRegla(linea,tipo,detalle){
 function isComentario(linea){
     linea = linea.trim();
     return linea.indexOf("\/") === 0;
+}
+
+/**
+ * FUNCION QUE RETONAR SI ES UN TEMPORAL
+ * @param {*} linea 
+ */
+function isTemporal(linea){
+    return linea.toLowerCase().includes("t");
+}
+
+/**
+ * RETORNA SI EXISTE UN OPERADOR O NO
+ * @param {*} operador 
+ */
+function operadoresLogicos(operador){
+    let operadores  = ["je","jne","jg","jl","jge","jle"];
+    return operadores.find(element => element === operador.toLowerCase());
 }
