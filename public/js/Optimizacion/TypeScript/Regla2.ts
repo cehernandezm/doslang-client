@@ -7,6 +7,17 @@ class Regla2 {
     instrucciones:Array<String>;
     
     /**
+     * ESTA REGLA SE ENCARGA DE ELIMINAR CODIGO INNALCANZABLE ES DECIR:
+     * JPM,,,L2
+     * CODIGO
+     * L2:
+     * LA REGLA ELIMINARA EL CODIGO ENTRE EL SALTO Y LA ETIQUETA L2 SIEMPRE Y CUANDO
+     * NO EXISTA UNA ETIQUETA DENTRO DE 'CODIGO'
+     * 
+     */
+
+
+    /**
      * CONSTRUCTOR DE LA CLASE
      * @param instrucciones 
      */

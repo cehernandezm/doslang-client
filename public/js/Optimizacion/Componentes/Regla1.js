@@ -1,5 +1,12 @@
 var Regla1 = /** @class */ (function () {
     /**
+     * ESTA REGLA EVALUA SI EXISTE UNA ASIGNACION IGUAL ES DECIR:
+     * A = B, Y LUEGO MAS ADELANTE EN EL CODIGO EXISTE UN
+     * B = A, SIEMPRE Y CUANDO NO HAYA UNA ETIQUETA ENTRE ESTAS DOS ASIGNACIONES
+     * SE PROCEDE  ELIMINAR B = A
+     *
+     */
+    /**
      * CONSTRUCTOR DE LA CLASE
      * @param instrucciones
      */
@@ -40,6 +47,7 @@ var Regla1 = /** @class */ (function () {
                         if (izq === temporal && temp === izquierdo) {
                             addNewRegla(i + 1, "Regla 1", element);
                             this.instrucciones.splice(i, 1); // a=b y b=a, eliminamos b=a
+                            i--;
                         }
                     }
                 }

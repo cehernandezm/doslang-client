@@ -221,7 +221,7 @@ function newAssembler(texto){
 
     let es = document.getElementById("espacioEditores");
     es.appendChild(tab);
-    let editor = CodeMirror.fromTextArea(cuerpo, prefEditor3D);
+    let editor = CodeMirror.fromTextArea(cuerpo, prefEditorAssembler);
     editor.setSize(null, "100%");
 
     let objectEditor = {
@@ -587,8 +587,47 @@ $("#optimizarButton").on('click',function(e){
         let codigo = editorActual.editor.getValue().split('\n');
         let primeraRegla = new Regla1(codigo);
         let optimizado = primeraRegla.optimizar();
+         
         let segundaRegla = new Regla2(optimizado);
         optimizado = segundaRegla.optimizar();
+
+        let sextaRegla = new Regla6(optimizado);
+        optimizado = sextaRegla.optimizar();
+
+        
+
+        let septimaRegla = new Regla7(optimizado);
+        optimizado = septimaRegla.optimizar();
+
+        let octavaRegla = new Regla8(optimizado);
+        optimizado = octavaRegla.optimizar();
+
+        let novenaRegla = new Regla9(optimizado);
+        optimizado = novenaRegla.optimizar();
+
+
+        let R10 = new Regla10(optimizado);
+        optimizado = R10.optimizar();
+
+
+        let R11 = new Regla11(optimizado);
+        optimizado = R11.optimizar();
+
+        let R12 = new Regla12(optimizado);
+        optimizado = R12.optimizar();
+
+        let R13 = new Regla13(optimizado);
+        optimizado = R13.optimizar();
+
+        let R14 = new Regla14(optimizado);
+        optimizado = R14.optimizar();
+
+        let R15 = new Regla15(optimizado);
+        optimizado = R15.optimizar();
+
+        let R16 = new Regla16(optimizado);
+        optimizado = R16.optimizar();
+
         optimizado.forEach(element => {
             console.log(element);
         });

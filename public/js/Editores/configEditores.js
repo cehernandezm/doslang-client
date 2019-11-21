@@ -5,10 +5,16 @@ var prefEditorPascal = {
     theme:"dracula",
 };
 
-var prefEditor3D = {
+var prefEditorAssembler = {
     lineNumbers : true,
     mode : "text/x-gas",
     theme : "dracula",
     gutters: ["CodeMirror-linenumbers", "breakpoints"]
 }
 
+var prefEditor3D = {
+    lineNumbers : true,
+    mode : "text/x-csrc",
+    theme : "dracula",
+    gutters: ["CodeMirror-linenumbers", "breakpoints"]
+}
