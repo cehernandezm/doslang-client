@@ -10,7 +10,7 @@ var Valor3D = /** @class */ (function () {
         }
         else if (this.dato.tipo === "double") {
             var nodo = new Nodo3D("", Tipo.INT);
-            nodo.$resultado = "0" + "d";
+            nodo.$resultado = "5" + "d";
             return nodo;
         }
         else if (this.dato.tipo === "temporal") {

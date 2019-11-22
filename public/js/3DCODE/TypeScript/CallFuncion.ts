@@ -29,6 +29,7 @@ class CallFuncion{
         
         if(funcion === null) addMensajeError("Semantico", "La funcion: " + this.id + " no existe",this.l,this.c);
         else funcion.ejecutar(ambito);
+        ambito.limpiarEntorno(ambito.getEntorno());
         ambito.entornos.pop();
         
 

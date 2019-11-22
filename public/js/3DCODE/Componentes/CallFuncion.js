@@ -19,6 +19,7 @@ var CallFuncion = /** @class */ (function () {
             addMensajeError("Semantico", "La funcion: " + this.id + " no existe", this.l, this.c);
         else
             funcion.ejecutar(ambito);
+        ambito.limpiarEntorno(ambito.getEntorno());
         ambito.entornos.pop();
         return -1;
     };

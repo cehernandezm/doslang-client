@@ -17,7 +17,7 @@ class Valor3D{
         else if(this.dato.tipo === "double") {
             let nodo:Nodo3D = new Nodo3D("",Tipo.INT);
 
-            nodo.$resultado= "0" + "d";
+            nodo.$resultado= "5" + "d";
             return nodo;
         }
         else if(this.dato.tipo === "temporal"){

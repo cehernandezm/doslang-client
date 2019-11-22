@@ -137,5 +137,14 @@ var Ambito = /** @class */ (function () {
         });
         return inicio;
     };
+    Ambito.prototype.limpiarEntorno = function (index) {
+        for (var i = 0; i < this.Temporales.length; i++) {
+            var element = this.Temporales[i];
+            if (element.ambito === index) {
+                this.Temporales.splice(i, 1);
+                i--;
+            }
+        }
+    };
     return Ambito;
 }());

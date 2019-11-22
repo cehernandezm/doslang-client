@@ -164,7 +164,15 @@ class Ambito{
         return inicio;
     }
 
-
+    limpiarEntorno(index){
+        for(let i = 0; i < this.Temporales.length; i++){
+            let element = this.Temporales[i];
+            if(element.ambito === index){
+                this.Temporales.splice(i,1);
+                i--;
+            }
+        }
+    }
     
     
 }
