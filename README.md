@@ -92,7 +92,7 @@ $ npm i fs
 ```bash
 $ npm i socket.io
 ```
-### Body-Parder
+### Body-Parser
 ```bash
 $ npm i body-parser
 ```
